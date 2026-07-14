@@ -1,0 +1,94 @@
+/* Zdog Module Part 006 - Dragger
+   Format: Modular Fragment <= 220 lines */
+(function(t,e) {
+  if(typeof module=="object"&&module.exports) {
+    module.exports=e()
+  }
+  else {
+    t.Zdog.Dragger=e()
+  }
+}
+)(this,function t() {
+  var r=typeof window!="undefined";
+  var e="mousedown";
+  var i="mousemove";
+  var n="mouseup";
+  if(r) {
+    if(window.PointerEvent) {
+      e="pointerdown";
+      i="pointermove";
+      n="pointerup"
+    }
+    else if("ontouchstart"in window) {
+      e="touchstart";
+      i="touchmove";
+      n="touchend"
+    }
+  }
+  function o() {
+  }
+  function s(t) {
+    this.create(t || {})
+  }
+  s.prototype.create=function(t) {
+    this.onDragStart=t.onDragStart||o;
+    this.onDragMove=t.onDragMove||o;
+    this.onDragEnd=t.onDragEnd||o;
+    this.bindDrag(t.startElement)
+  };
+  s.prototype.bindDrag=function(t) {
+    t=this.getQueryElement(t);
+    if(!t) {
+      return
+    }
+    t.style.touchAction="none";
+    t.addEventListener(e,this)
+  };
+  s.prototype.getQueryElement=function(t) {
+    if(typeof t=="string") {
+      t=document.querySelector(t)
+    }
+    return t
+  };
+  s.prototype.handleEvent=function(t) {
+    var e=this["on"+t.type];
+    if(e) {
+      e.call(this,t)
+    }
+  };
+  s.prototype.onmousedown=s.prototype.onpointerdown=function(t) {
+    this.dragStart(t,t)
+  };
+  s.prototype.ontouchstart=function(t) {
+    this.dragStart(t,t.changedTouches[0])
+  };
+  s.prototype.dragStart=function(t,e) {
+    t.preventDefault();
+    this.dragStartX=e.pageX;
+    this.dragStartY=e.pageY;
+    if(r) {
+      window.addEventListener(i,this);
+      window.addEventListener(n,this)
+    }
+    this.onDragStart(e)
+  };
+  s.prototype.ontouchmove=function(t) {
+    this.dragMove(t,t.changedTouches[0])
+  };
+  s.prototype.onmousemove=s.prototype.onpointermove=function(t) {
+    this.dragMove(t,t)
+  };
+  s.prototype.dragMove=function(t,e) {
+    t.preventDefault();
+    var r=e.pageX-this.dragStartX;
+    var i=e.pageY-this.dragStartY;
+    this.onDragMove(e,r,i)
+  };
+  s.prototype.onmouseup=s.prototype.onpointerup=s.prototype.ontouchend=s.prototype.dragEnd=function() {
+    window.removeEventListener(i,this);
+    window.removeEventListener(n,this);
+    this.onDragEnd()
+  };
+  return s
+}
+);

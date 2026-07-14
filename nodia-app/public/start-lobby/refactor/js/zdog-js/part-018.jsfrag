@@ -1,0 +1,132 @@
+/* Zdog Module Part 018 - Box
+   Format: Modular Fragment <= 220 lines */
+(function(t,e) {
+  if(typeof module=="object"&&module.exports) {
+    module.exports=e(require("./boilerplate"),require("./anchor"),require("./shape"),require("./rect"))
+  }
+  else {
+    var r=t.Zdog;
+    r.Box=e(r,r.Anchor,r.Shape,r.Rect)
+  }
+}
+)(this,function t(e,r,i,n) {
+  var o=n.subclass();
+  o.prototype.copyGraph=function() {};var s=e.TAU;
+  var a=["frontFace","rearFace","leftFace","rightFace","topFace","bottomFace"];
+  var h=e.extend( {
+  }, i.defaults);
+  delete h.path;
+  a.forEach(function(t) {
+    h[t]=true
+  }
+  );
+  e.extend(h, {
+    width:1,height:1,depth:1,fill:true
+  }
+  );
+  var u=r.subclass(h);
+  u.prototype.create=function(t) {
+    r.prototype.create.call(this,t);
+    this.updatePath();
+    this.fill=this.fill
+  };
+  u.prototype.updatePath=function() {
+    a.forEach(function(t) {
+      this[t]=this[t]
+    }, this)
+  };
+  a.forEach(function(e) {
+    var r="_"+e;
+    Object.defineProperty(u.prototype,e, {
+      get:function() {
+        return this[r]
+      }, set:function(t) {
+        this[r]=t;
+        this.setFace(e,t)
+      }
+    }
+    )
+  }
+  );
+  u.prototype.setFace=function(t,e) {
+    var r=t+"Rect";
+    var i=this[r];
+    if(!e) {
+      this.removeChild(i);
+      return
+    }
+    var n=this.getFaceOptions(t);
+    n.color=typeof e=="string"?e:this.color;
+    if(i) {
+      i.setOptions(n)
+    }
+    else {
+      i=this[r]=new o(n)
+    }
+    i.updatePath();
+    this.addChild(i)
+  };
+  u.prototype.getFaceOptions=function(t) {
+    return {
+      frontFace: {
+        width:this.width,height:this.height,translate: {
+          z:this.depth/2
+        }
+      }, rearFace: {
+        width:this.width,height:this.height,translate: {
+          z:-this.depth/2
+        }, rotate: {
+          y:s/2
+        }
+      }, leftFace: {
+        width:this.depth,height:this.height,translate: {
+          x:-this.width/2
+        }, rotate: {
+          y:-s/4
+        }
+      }, rightFace: {
+        width:this.depth,height:this.height,translate: {
+          x:this.width/2
+        }, rotate: {
+          y:s/4
+        }
+      }, topFace: {
+        width:this.width,height:this.depth,translate: {
+          y:-this.height/2
+        }, rotate: {
+          x:-s/4
+        }
+      }, bottomFace: {
+        width:this.width,height:this.depth,translate: {
+          y:this.height/2
+        }, rotate: {
+          x:s/4
+        }
+      }
+    }
+    [t]
+  };
+  var p=["color","stroke","fill","backface","front","visible"];
+  p.forEach(function(o) {
+    var t="_"+o;
+    Object.defineProperty(u.prototype,o, {
+      get:function() {
+        return this[t]
+      }, set:function(n) {
+        this[t]=n;
+        a.forEach(function(t) {
+          var e=this[t+"Rect"];
+          var r=typeof this[t]=="string";
+          var i=o=="color"&&r;
+          if(e&&!i) {
+            e[o]=n
+          }
+        }, this)
+      }
+    }
+    )
+  }
+  );
+  return u
+}
+);

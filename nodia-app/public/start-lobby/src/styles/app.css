@@ -1,0 +1,4 @@
+/* Refactor manifest for src/styles/app.css. */
+@import url("../../refactor/css/src-styles-app-css/part-001.css");
+@import url("../../refactor/css/src-styles-app-css/part-002.css");
+@import url("../../refactor/css/src-styles-app-css/part-003.css");

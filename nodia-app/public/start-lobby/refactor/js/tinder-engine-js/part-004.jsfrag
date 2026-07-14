@@ -1,0 +1,220 @@
+      await showPhaseTransition(done, next, [...TINDER_STATE.kept]);
+      beginSelectionRound(false);
+      return;
+    }
+
+    const winner = TINDER_STATE.kept[0] || TINDER_STATE.deck[0];
+    if (winner && !TINDER_STATE.selectedGenres.some((item) => item.id === winner.id)) {
+      TINDER_STATE.selectedGenres.push(winner);
+      TINDER_STATE.pool = TINDER_STATE.pool.filter((item) => item.id !== winner.id);
+    }
+    await showPhaseTransition(phaseDescriptor(3), null, [...TINDER_STATE.selectedGenres]);
+    await enterResultado();
+    return;
+  }
+
+  const activeNext = TINDER_STATE.deck[TINDER_STATE.currentIndex];
+  if (activeNext) syncAuroraToGenre(activeNext);
+  stackDeck();
+  attachTopCardDrag();
+}
+
+function undoLastSwipe() {
+  const last = TINDER_STATE.lastSwipe;
+  if (!last || TINDER_STATE.currentIndex <= 0) return;
+
+  if (last.direction === 'match') {
+    const idx = TINDER_STATE.kept.findIndex((item) => item.id === last.genre.id);
+    if (idx >= 0) TINDER_STATE.kept.splice(idx, 1);
+  }
+
+  TINDER_STATE.currentIndex = Math.max(0, TINDER_STATE.currentIndex - 1);
+  TINDER_STATE.decisions[TINDER_STATE.currentIndex] = undefined;
+  TINDER_STATE.lastSwipe = null;
+  enableUndo(false);
+  writeHint('Último swipe revertido.');
+
+  renderCurrentDeck();
+  const restored = tinderDeckEl?.querySelector('.genre-card');
+  if (restored) {
+    restored.style.transform = last.direction === 'match'
+      ? 'translateX(120vw) rotate(24deg)'
+      : 'translateX(-120vw) rotate(-24deg)';
+    restored.style.opacity = '0';
+    requestAnimationFrame(() => {
+      restored.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease';
+      restored.style.transform = 'translateX(0) rotate(0deg)';
+      restored.style.opacity = '1';
+    });
+  }
+
+  updatePhaseUI();
+  updateTinderSideHud();
+}
+
+function enableUndo(enabled) {
+  if (!btnUndo) return;
+  btnUndo.disabled = !enabled;
+}
+
+async function enterResultado() {
+  TINDER_STATE.phase = 4;
+  hideAllTinderScreens();
+
+  const screen = document.getElementById('result-screen');
+  if (screen) screen.style.display = 'flex';
+  btnIniciarMundo?.classList.remove('visible');
+  btnAddVariant?.classList.remove('visible');
+
+  const handEl = document.getElementById('result-hand');
+  if (handEl) {
+    handEl.innerHTML = '';
+    const allSelected = [...TINDER_STATE.selectedGenres];
+    allSelected.forEach((genre) => {
+      const card = buildCard(genre, { showBio: false, showTags: true, compact: true });
+      card.style.width = '18vh';
+      card.style.height = 'calc(18vh * 4/3)';
+      handEl.appendChild(card);
+    });
+
+    if (fusionTagline) fusionTagline.textContent = '';
+    if (fusionSeed1) fusionSeed1.textContent = '';
+    if (fusionSeed2) fusionSeed2.textContent = '';
+    document.getElementById('ai-thinking')?.style?.setProperty('display', 'flex');
+
+    try {
+      const narrative = await generateFusionNarrative(allSelected[0], allSelected.slice(1));
+      if (fusionTagline) fusionTagline.textContent = narrative.tagline || '';
+      if (fusionSeed1) fusionSeed1.textContent = narrative.seed1 ? `"${narrative.seed1}"` : '';
+      if (fusionSeed2) fusionSeed2.textContent = narrative.seed2 ? `"${narrative.seed2}"` : '';
+    } catch (error) {
+      const names = allSelected.map((item) => item.name).join(' + ');
+      if (fusionTagline) fusionTagline.textContent = `Una historia donde ${names} se entrelazan para crear algo nuevo.`;
+    }
+  }
+
+  document.getElementById('ai-thinking')?.style?.setProperty('display', 'none');
+  setTimeout(() => {
+    btnIniciarMundo?.classList.add('visible');
+    if (TINDER_STATE.selectedGenres.length < TINDER_STATE.maxSelections && TINDER_STATE.pool.length > 1) {
+      btnAddVariant?.classList.add('visible');
+    }
+  }, 220);
+}
+
+function addVariantSelection() {
+  if (TINDER_STATE.selectedGenres.length >= TINDER_STATE.maxSelections) return;
+  if (!Array.isArray(TINDER_STATE.pool) || TINDER_STATE.pool.length < 2) return;
+  hideAllTinderScreens();
+  const deckScreen = document.getElementById('tinder-deck-screen');
+  if (deckScreen) deckScreen.style.display = 'flex';
+  beginSelectionRound(true);
+}
+
+function updatePhaseUI() {
+  const phaseCfg = phaseDescriptor(TINDER_STATE.round);
+  if (phaseLabel) phaseLabel.textContent = phaseCfg.label;
+  if (phaseTitle) phaseTitle.textContent = phaseCfg.objective(TINDER_STATE.targetKeep, TINDER_STATE.deck.length);
+  updateProgressHeader();
+}
+
+function updateProgressHeader() {
+  if (!progressBar) return;
+  const phaseCfg = phaseDescriptor(TINDER_STATE.round);
+  const total = TINDER_STATE.deck.length;
+  const seen = TINDER_STATE.currentIndex;
+  const accepted = TINDER_STATE.kept.length;
+  const rejected = TINDER_STATE.decisions.slice(0, seen).filter((item) => item === 'pass').length;
+  const acceptedFill = Math.min((accepted / Math.max(TINDER_STATE.targetKeep, 1)) * 100, 100);
+  const rejectedBase = Math.max(total - TINDER_STATE.targetKeep, 1);
+  const rejectedFill = Math.min((rejected / rejectedBase) * 100, 100);
+
+  progressBar.innerHTML = `
+    <div class="progress-phase-label">
+      <span class="phase-number">FASE ${phaseCfg.id}</span>
+      <span class="phase-separator">—</span>
+      <span class="phase-name">${phaseCfg.label.replace(/^FASE \d+\s+—\s+/i, '')}</span>
+    </div>
+    <div class="progress-objective">
+      ${phaseCfg.objective(TINDER_STATE.targetKeep, total)}
+    </div>
+    <div class="progress-dual-track">
+      <div class="track-accepted">
+        <div class="track-fill track-fill--accepted" style="--fill:${acceptedFill}%"></div>
+        <span class="track-label track-label--accepted"><span class="track-count">${accepted}</span>/${TINDER_STATE.targetKeep}</span>
+      </div>
+      <div class="track-current"><span class="track-current-dot">◆</span></div>
+      <div class="track-rejected">
+        <div class="track-fill track-fill--rejected" style="--fill:${rejectedFill}%"></div>
+        <span class="track-label track-label--rejected"><span class="track-count">${rejected}</span></span>
+      </div>
+    </div>
+    <div class="progress-dots" id="progress-dots"></div>
+  `;
+
+  const dotsWrap = progressBar.querySelector('#progress-dots');
+  if (!dotsWrap) return;
+  for (let i = 0; i < total; i += 1) {
+    const dot = document.createElement('div');
+    const decision = TINDER_STATE.decisions[i];
+    let stateClass = 'progress-dot--pending';
+    if (i === seen && seen < total) stateClass = 'progress-dot--current';
+    else if (decision === 'match') stateClass = 'progress-dot--accepted';
+    else if (decision === 'pass') stateClass = 'progress-dot--rejected';
+    dot.className = `progress-dot ${stateClass}`;
+    dotsWrap.appendChild(dot);
+  }
+}
+
+function updateTinderSideHud() {
+  const activeGenre = TINDER_STATE.deck[TINDER_STATE.currentIndex];
+  if (activeGenre) {
+    const profile = getOrCreateCardProfile(activeGenre);
+    if (activeGenreEl) activeGenreEl.textContent = activeGenre.name;
+    if (activeCharacterEl) activeCharacterEl.textContent = activeGenre.character?.name || 'Personaje base';
+    if (activeBioEl) activeBioEl.textContent = (profile.bio.text || activeGenre.description || '').slice(0, 260);
+  }
+
+  const remaining = Math.max(0, TINDER_STATE.deck.length - TINDER_STATE.currentIndex);
+  if (statRemainingEl) statRemainingEl.textContent = String(remaining);
+  if (statKeptEl) statKeptEl.textContent = String(TINDER_STATE.kept.length + TINDER_STATE.selectedGenres.length);
+  if (statTargetEl) statTargetEl.textContent = String(TINDER_STATE.targetKeep || 0);
+
+  if (!pickedListEl) return;
+  pickedListEl.innerHTML = '';
+  const combined = [...TINDER_STATE.selectedGenres, ...TINDER_STATE.kept];
+  if (!combined.length) {
+    const empty = document.createElement('div');
+    empty.className = 'tinder-picked-empty';
+    empty.textContent = 'Aún sin cartas guardadas.';
+    pickedListEl.appendChild(empty);
+    return;
+  }
+  combined.slice(-6).forEach((genre) => {
+    const chip = document.createElement('span');
+    chip.className = 'tinder-picked-chip';
+    chip.textContent = genre.name;
+    pickedListEl.appendChild(chip);
+  });
+}
+
+function phaseDescriptor(round) {
+  const phase = TINDER_PHASES[Math.min(Math.max(round, 1), 3) - 1];
+  return phase || TINDER_PHASES[0];
+}
+
+async function showPhaseTransition(phaseCompleted, nextPhase, acceptedCards) {
+  const overlay = document.createElement('div');
+  overlay.className = 'phase-transition-overlay';
+  overlay.innerHTML = `
+    <div class="phase-transition-inner">
+      <div class="phase-transition-check">✓</div>
+      <h2 class="phase-transition-title">${phaseCompleted.label} completada</h2>
+      <p class="phase-transition-kept">Conservaste <strong>${acceptedCards.length}</strong> géneros</p>
+      <div class="phase-transition-cards">
+        ${acceptedCards.slice(0, 6).map((genre) => `
+          <div class="mini-card" style="--color:${genre.dominantColor || '#C5A367'}">
+            <img src="${resolveArtworkUrl(genre.artwork)}" alt="${escapeHtml(genre.name)}">
+            <span>${escapeHtml(genre.name)}</span>
+          </div>
+        `).join('')}

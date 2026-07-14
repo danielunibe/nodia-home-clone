@@ -1,0 +1,199 @@
+/* Zdog Module Part 007 - Illustration
+   Format: Modular Fragment <= 220 lines */
+(function(t,e) {
+  if(typeof module=="object"&&module.exports) {
+    module.exports=e(require("./boilerplate"),require("./anchor"),require("./dragger"))
+  }
+  else {
+    var r=t.Zdog;
+    r.Illustration=e(r,r.Anchor,r.Dragger)
+  }
+}
+)(this,function t(e,r,a) {
+  function i() {
+  }
+  var h=e.TAU;
+  var n=r.subclass( {
+    element:undefined,centered:true,zoom:1,dragRotate:false,resize:false,onPrerender:i,onDragStart:i,onDragMove:i,onDragEnd:i,onResize:i
+  }
+  );
+  e.extend(n.prototype,a.prototype);
+  n.prototype.create=function(t) {
+    r.prototype.create.call(this,t);
+    a.prototype.create.call(this,t);
+    this.setElement(this.element);
+    this.setDragRotate(this.dragRotate);
+    this.setResize(this.resize)
+  };
+  n.prototype.setElement=function(t) {
+    t=this.getQueryElement(t);
+    if(!t) {
+      throw new Error("Zdog.Illustration element required. Set to "+t)
+    }
+    var e=t.nodeName.toLowerCase();
+    if(e=="canvas") {
+      this.setCanvas(t)
+    }
+    else if(e=="svg") {
+      this.setSvg(t)
+    }
+  };
+  n.prototype.setSize=function(t,e) {
+    t=Math.round(t);
+    e=Math.round(e);
+    if(this.isCanvas) {
+      this.setSizeCanvas(t,e)
+    }
+    else if(this.isSvg) {
+      this.setSizeSvg(t,e)
+    }
+  };
+  n.prototype.setResize=function(t) {
+    this.resize=t;
+    if(!this.resizeListener) {
+      this.resizeListener=this.onWindowResize.bind(this)
+    }
+    if(t) {
+      window.addEventListener("resize",this.resizeListener);
+      this.onWindowResize()
+    }
+    else {
+      window.removeEventListener("resize",this.resizeListener)
+    }
+  };
+  n.prototype.onWindowResize=function() {
+    this.setMeasuredSize();
+    this.onResize(this.width,this.height)
+  };
+  n.prototype.setMeasuredSize=function() {
+    var t,e;
+    var r=this.resize=="fullscreen";
+    if(r) {
+      t=window.innerWidth;
+      e=window.innerHeight
+    }
+    else {
+      var i=this.element.getBoundingClientRect();
+      t=i.width;
+      e=i.height
+    }
+    this.setSize(t,e)
+  };
+  n.prototype.renderGraph=function(t) {
+    if(this.isCanvas) {
+      this.renderGraphCanvas(t)
+    }
+    else if(this.isSvg) {
+      this.renderGraphSvg(t)
+    }
+  };
+  n.prototype.updateRenderGraph=function(t) {
+    this.updateGraph();
+    this.renderGraph(t)
+  };
+  n.prototype.setCanvas=function(t) {
+    this.element=t;
+    this.isCanvas=true;
+    this.ctx=this.element.getContext("2d");
+    this.setSizeCanvas(t.width,t.height)
+  };
+  n.prototype.setSizeCanvas=function(t,e) {
+    this.width=t;
+    this.height=e;
+    var r=this.pixelRatio=window.devicePixelRatio||1;
+    this.element.width=this.canvasWidth=t*r;
+    this.element.height=this.canvasHeight=e*r;
+    var i=r>1&&!this.resize;
+    if(i) {
+      this.element.style.width=t+"px";
+      this.element.style.height=e+"px"
+    }
+  };
+  n.prototype.renderGraphCanvas=function(t) {
+    t=t||this;
+    this.prerenderCanvas();
+    r.prototype.renderGraphCanvas.call(t,this.ctx);
+    this.postrenderCanvas()
+  };
+  n.prototype.prerenderCanvas=function() {
+    var t=this.ctx;
+    t.lineCap="round";
+    t.lineJoin="round";
+    t.clearRect(0,0,this.canvasWidth,this.canvasHeight);
+    t.save();
+    if(this.centered) {
+      var e=this.width/2*this.pixelRatio;
+      var r=this.height/2*this.pixelRatio;
+      t.translate(e,r)
+    }
+    var i=this.pixelRatio*this.zoom;
+    t.scale(i,i);
+    this.onPrerender(t)
+  };
+  n.prototype.postrenderCanvas=function() {
+    this.ctx.restore()
+  };
+  n.prototype.setSvg=function(t) {
+    this.element=t;
+    this.isSvg=true;
+    this.pixelRatio=1;
+    var e=t.getAttribute("width");
+    var r=t.getAttribute("height");
+    this.setSizeSvg(e,r)
+  };
+  n.prototype.setSizeSvg=function(t,e) {
+    this.width=t;
+    this.height=e;
+    var r=t/this.zoom;
+    var i=e/this.zoom;
+    var n=this.centered?-r/2:0;
+    var o=this.centered?-i/2:0;
+    this.element.setAttribute("viewBox",n+" "+o+" "+r+" "+i);
+    if(this.resize) {
+      this.element.removeAttribute("width");
+      this.element.removeAttribute("height")
+    }
+    else {
+      this.element.setAttribute("width",t);
+      this.element.setAttribute("height",e)
+    }
+  };
+  n.prototype.renderGraphSvg=function(t) {
+    t=t||this;
+    o(this.element);
+    this.onPrerender(this.element);
+    r.prototype.renderGraphSvg.call(t,this.element)
+  };
+  function o(t) {
+    while(t.firstChild) {
+      t.removeChild(t.firstChild)
+    }
+  }
+  n.prototype.setDragRotate=function(t) {
+    if(!t) {
+      return
+    }
+    else if(t===true) {
+      t=this
+    }
+    this.dragRotate=t;
+    this.bindDrag(this.element)
+  };
+  n.prototype.dragStart=function() {
+    this.dragStartRX=this.dragRotate.rotate.x;
+    this.dragStartRY=this.dragRotate.rotate.y;
+    a.prototype.dragStart.apply(this,arguments)
+  };
+  n.prototype.dragMove=function(t,e) {
+    var r=e.pageX-this.dragStartX;
+    var i=e.pageY-this.dragStartY;
+    var n=Math.min(this.width,this.height);
+    var o=r/n*h;
+    var s=i/n*h;
+    this.dragRotate.rotate.x=this.dragStartRX-s;
+    this.dragRotate.rotate.y=this.dragStartRY-o;
+    a.prototype.dragMove.apply(this,arguments)
+  };
+  return n
+}
+);

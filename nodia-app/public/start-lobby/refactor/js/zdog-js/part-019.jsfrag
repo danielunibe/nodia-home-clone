@@ -1,0 +1,31 @@
+/* Zdog Module Part 019 - UMD Wrapper / Export
+   Format: Modular Fragment <= 220 lines */
+(function(t,e) {
+  if(typeof module=="object"&&module.exports) {
+    module.exports=e(require("./boilerplate"),require("./canvas-renderer"),require("./svg-renderer"),require("./vector"),require("./anchor"),require("./dragger"),require("./illustration"),require("./path-command"),require("./shape"),require("./group"),require("./rect"),require("./rounded-rect"),require("./ellipse"),require("./polygon"),require("./hemisphere"),require("./cylinder"),require("./cone"),require("./box"))
+  }
+  else if(typeof define=="function"&&define.amd) {
+    define("zdog",[],t.Zdog)
+  }
+}
+)(this,function t(e,r,i,n,o,s,a,h,u,p,d,c,f,l,v,y,m,g) {
+  e.CanvasRenderer=r;
+  e.SvgRenderer=i;
+  e.Vector=n;
+  e.Anchor=o;
+  e.Dragger=s;
+  e.Illustration=a;
+  e.PathCommand=h;
+  e.Shape=u;
+  e.Group=p;
+  e.Rect=d;
+  e.RoundedRect=c;
+  e.Ellipse=f;
+  e.Polygon=l;
+  e.Hemisphere=v;
+  e.Cylinder=y;
+  e.Cone=m;
+  e.Box=g;
+  return e
+}
+);

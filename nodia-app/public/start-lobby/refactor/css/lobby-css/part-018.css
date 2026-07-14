@@ -1,0 +1,220 @@
+
+.settings-select,
+.settings-slider,
+.settings-switch {
+  accent-color: var(--genre-color, #3A7BD5);
+}
+
+.settings-select {
+  min-width: 14vh;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(11,16,24,0.78);
+  color: rgba(245,249,255,0.9);
+  border-radius: 0.75vh;
+  padding: 0.35vh 0.62vh;
+  font-size: 0.9vh;
+}
+
+.settings-switch {
+  width: 1.58vh;
+  height: 1.58vh;
+}
+
+.settings-slider {
+  width: 12vh;
+}
+
+.settings-footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.56vh;
+}
+
+.settings-cta {
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 0.85vh;
+  background: rgba(255,255,255,0.04);
+  color: rgba(240,246,255,0.92);
+  font-size: 0.92vh;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.66vh 1.05vh;
+  cursor: pointer;
+}
+
+.settings-cta-primary {
+  border-color: color-mix(in srgb, var(--genre-color, #3A7BD5) 56%, #fff 44%);
+  background: color-mix(in srgb, var(--genre-color, #3A7BD5) 20%, rgba(255,255,255,0.08));
+}
+
+.settings-preview {
+  padding: 1.25vh 1.05vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 0.8vh;
+}
+
+.settings-preview-card {
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 1.12vh;
+  background: rgba(255,255,255,0.03);
+  padding: 0.88vh;
+}
+
+.settings-preview-title {
+  margin-top: 0.3vh;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75vh;
+  color: rgba(248,251,255,0.95);
+}
+
+.settings-preview-copy {
+  margin-top: 0.4vh;
+  font-size: 0.98vh;
+  line-height: 1.46;
+  color: rgba(215,228,252,0.82);
+}
+
+.settings-preview-demo {
+  margin-top: 0.8vh;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 0.92vh;
+  padding: 0.7vh;
+  background:
+    radial-gradient(circle at 10% 18%, rgba(255,255,255,0.08), transparent 48%),
+    linear-gradient(140deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+    rgba(10, 14, 21, 0.72);
+}
+
+.settings-preview-chip {
+  width: fit-content;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.16);
+  padding: 0.18vh 0.52vh;
+  font-size: 0.78vh;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(244,249,255,0.88);
+}
+
+.settings-preview-line {
+  margin-top: 0.42vh;
+  height: 0.5vh;
+  border-radius: 999px;
+  background: rgba(226,238,255,0.34);
+}
+
+.settings-preview-line.short {
+  width: 68%;
+}
+
+.settings-preview-note {
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 1vh;
+  background: rgba(9, 14, 22, 0.46);
+  padding: 0.8vh;
+  font-size: 0.92vh;
+  line-height: 1.46;
+  color: rgba(209,223,247,0.8);
+  align-self: start;
+}
+
+@media (max-width: 1180px) {
+  .settings-shell {
+    grid-template-columns: 1fr;
+    overflow: auto;
+  }
+
+  .settings-sidebar,
+  .settings-main,
+  .settings-preview {
+    min-height: auto;
+  }
+
+  .settings-nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ── FINAL OVERRIDES v7.5 (shape gradient cards + subgéneros más protagonista) ── */
+#view-templates .genre-info-box {
+  border: none !important;
+  border-radius: 1.4vh !important;
+  background:
+    linear-gradient(152deg, rgba(255,255,255,0.11), rgba(255,255,255,0.02) 38%, rgba(255,255,255,0.01) 100%),
+    linear-gradient(145deg, color-mix(in srgb, var(--genre-color, #C5A367) 24%, #0b1220 76%), rgba(8,12,20,0.84)) !important;
+  box-shadow:
+    0 1.2vh 3.4vh rgba(0,0,0,0.32),
+    0 0 2.4vh color-mix(in srgb, var(--genre-color, #C5A367) 24%, transparent) !important;
+}
+
+#view-templates .genre-intel-grid {
+  grid-template-columns: 0.92fr 1.08fr !important;
+  gap: 0.88vh !important;
+}
+
+#view-templates .genre-pillars-col,
+#view-templates .genre-sub-col {
+  border: none !important;
+  border-radius: 1.2vh !important;
+  background:
+    linear-gradient(160deg, rgba(255,255,255,0.13), rgba(255,255,255,0.03) 40%, rgba(255,255,255,0.01) 100%),
+    linear-gradient(142deg, rgba(10, 16, 28, 0.86), rgba(10, 16, 28, 0.62)) !important;
+  box-shadow:
+    inset 0 0.08vh 0 rgba(255,255,255,0.18),
+    0 1vh 2.4vh rgba(0,0,0,0.28) !important;
+  padding: 0.82vh !important;
+}
+
+#view-templates .genre-pillars-col .genre-deep-item {
+  border: none !important;
+  border-radius: 0.9vh !important;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03)),
+    rgba(255,255,255,0.02) !important;
+  box-shadow:
+    inset 0 0.07vh 0 rgba(255,255,255,0.16),
+    0 0.6vh 1.5vh rgba(0,0,0,0.18) !important;
+}
+
+#view-templates .genre-sub-col {
+  min-height: 16.8vh;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+}
+
+#view-templates .subgenre-focus-card {
+  margin-top: 0.74vh !important;
+  border: none !important;
+  border-radius: 1.08vh !important;
+  min-height: 10.8vh !important;
+  padding: 0.82vh 0.88vh !important;
+  background:
+    linear-gradient(148deg, rgba(255,255,255,0.14), rgba(255,255,255,0.03) 42%, rgba(255,255,255,0.01) 100%),
+    linear-gradient(145deg, color-mix(in srgb, var(--genre-color, #C5A367) 16%, #0b1220 84%), rgba(8,12,20,0.68)) !important;
+  box-shadow:
+    inset 0 0.08vh 0 rgba(255,255,255,0.18),
+    0 0.95vh 2.2vh rgba(0,0,0,0.24) !important;
+}
+
+#view-templates .discovery-inline-left {
+  justify-content: flex-start !important;
+  margin-top: 0.42vh !important;
+}
+
+#view-templates .discovery-inline .tinder-trigger-compact {
+  min-width: auto !important;
+  height: 3.2vh !important;
+  padding: 0.44vh 0.9vh !important;
+  border: none !important;
+  border-radius: 999px !important;
+  background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03)) !important;
+  color: rgba(235, 241, 255, 0.86) !important;
+  font-size: 0.86vh !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase;
+  box-shadow:
+    inset 0 0.07vh 0 rgba(255,255,255,0.18),
+    0 0.55vh 1.5vh rgba(0,0,0,0.2) !important;
+}
+

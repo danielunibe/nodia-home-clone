@@ -1,0 +1,220 @@
+
+#view-templates .detail-character-label {
+  font-size: 11px !important;
+}
+
+#view-templates .detail-character-name {
+  font-size: 19px !important;
+}
+
+#view-templates .detail-character-note {
+  margin: 0 !important;
+  font-size: 14px !important;
+  line-height: 1.48 !important;
+  padding: 10px 12px !important;
+  border-radius: 10px !important;
+}
+
+#view-templates .genre-meta-row {
+  margin: 0 !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+}
+
+#view-templates .genre-meta-pill {
+  font-size: 12px !important;
+  line-height: 1.3 !important;
+  padding: 6px 10px !important;
+}
+
+#view-templates .genre-desc {
+  margin: 2px 0 0 !important;
+  font-size: 15px !important;
+  line-height: 1.62 !important;
+  color: rgba(233, 240, 252, 0.92) !important;
+}
+
+#view-templates .intel-title {
+  margin-bottom: 8px !important;
+  font-size: 11px !important;
+  letter-spacing: 0.1em !important;
+}
+
+#view-templates .genre-intel-grid {
+  grid-template-columns: 1fr 1fr !important;
+  gap: 12px !important;
+}
+
+#view-templates .genre-pillars-col,
+#view-templates .genre-sub-col {
+  padding: 10px !important;
+  border-radius: 12px !important;
+}
+
+#view-templates .genre-pillars-col .genre-deep-info {
+  gap: 8px !important;
+}
+
+#view-templates .genre-pillars-col .genre-deep-item {
+  border-radius: 10px !important;
+  padding: 8px 10px !important;
+}
+
+#view-templates .genre-pillars-col .genre-deep-item .deep-label {
+  font-size: 11px !important;
+}
+
+#view-templates .genre-pillars-col .genre-deep-item p {
+  font-size: 14px !important;
+  line-height: 1.46 !important;
+}
+
+#view-templates .genre-sub-col .genre-tags-list {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+}
+
+#view-templates .genre-sub-col .genre-tag-chip {
+  position: relative;
+  font-size: 13px !important;
+  line-height: 1.2 !important;
+  padding: 8px 11px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  background: rgba(10, 15, 26, 0.7) !important;
+  color: rgba(244, 247, 255, 0.92) !important;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease !important;
+}
+
+#view-templates .genre-sub-col .genre-tag-chip:hover {
+  transform: translateY(-1px) !important;
+}
+
+#view-templates .genre-sub-col .genre-tag-chip.is-active {
+  border-color: color-mix(in srgb, var(--genre-color, #3A7BD5) 64%, #fff 36%) !important;
+  background: color-mix(in srgb, var(--genre-color, #3A7BD5) 28%, rgba(10,15,26,0.84)) !important;
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.28),
+    0 0 14px color-mix(in srgb, var(--genre-color, #3A7BD5) 28%, transparent) !important;
+}
+
+#view-templates .subgenre-focus-title {
+  font-size: 15px !important;
+}
+
+#view-templates .subgenre-focus-text {
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+}
+
+#view-templates .template-visual-meta {
+  width: min(560px, 100%) !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  justify-content: center !important;
+  margin-top: 10px !important;
+}
+
+#view-templates .template-meta-chip {
+  padding: 6px 10px !important;
+  border-radius: 999px !important;
+  font-size: 12px !important;
+  letter-spacing: 0.02em !important;
+  color: rgba(236, 243, 255, 0.88) !important;
+  border: 1px solid rgba(255, 255, 255, 0.17) !important;
+  background: rgba(10, 14, 24, 0.58) !important;
+}
+
+#view-templates .deck-action-module {
+  width: min(560px, 100%) !important;
+  margin-top: 10px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03)),
+    rgba(8, 12, 22, 0.62) !important;
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.36),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
+  padding: 12px !important;
+  display: grid !important;
+  gap: 8px !important;
+}
+
+#view-templates .deck-controls {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  gap: 10px !important;
+}
+
+#view-templates .nav-btn {
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 12px !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.36),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06) !important;
+}
+
+#view-templates .nav-btn svg {
+  width: 22px !important;
+  height: 22px !important;
+}
+
+#view-templates .primary-btn-inline {
+  height: 62px !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  border-radius: 12px !important;
+  font-size: 14px !important;
+  letter-spacing: 0.06em !important;
+  font-weight: 700 !important;
+}
+
+#view-templates .template-cta-note {
+  margin: 0 !important;
+  font-size: 13px !important;
+  line-height: 1.46 !important;
+  text-align: center !important;
+  color: rgba(214, 226, 247, 0.82) !important;
+}
+
+#view-templates .deck-status {
+  position: static !important;
+  margin-top: 0 !important;
+  gap: 7px !important;
+}
+
+#view-templates .deck-counter-row {
+  justify-content: center !important;
+}
+
+#view-templates #deckCounter {
+  font-size: 13px !important;
+  letter-spacing: 0.05em !important;
+  color: rgba(245, 249, 255, 0.95) !important;
+}
+
+/* Atmósfera: mantener mood y quitar ruido competitivo */
+body.show-templates .genre-symbol-field {
+  opacity: 0.22 !important;
+  filter: blur(0.6px) saturate(0.84) !important;
+}
+
+body.show-templates .genre-symbol {
+  opacity: 0.14 !important;
+}
+
+body.show-templates .genre-symbol:nth-child(2n) {
+  opacity: 0.08 !important;
+}
+
+body.show-templates .noise {
+  opacity: 0.018 !important;
+}
+
+body.show-templates .stars {

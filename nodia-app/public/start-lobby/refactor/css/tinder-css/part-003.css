@@ -1,0 +1,220 @@
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.94);
+  cursor: pointer;
+}
+
+.btn-add-variant.visible {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-add-variant:hover {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.4);
+}
+
+/* ── FINAL OVERRIDES v3.1 (gameplay layout + feedback) ── */
+.tinder-game-layout {
+  display: grid !important;
+  grid-template-columns: minmax(26vh, 0.95fr) minmax(40vh, 1.35fr) minmax(26vh, 0.95fr);
+  gap: clamp(1.2vh, 1.8vw, 2.8vh);
+  align-items: stretch;
+  padding: 2vh 3vw 3vh;
+}
+
+.tinder-side-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tinder-side-card {
+  width: 100%;
+  min-height: 100%;
+  border-radius: 1.4vh;
+  padding: 1.4vh 1.4vh;
+  background: linear-gradient(155deg, rgba(10, 15, 28, 0.74), rgba(10, 15, 28, 0.48));
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+}
+
+.tinder-side-kicker {
+  font-size: 0.95vh;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.64);
+  margin-bottom: 0.8vh;
+}
+
+.tinder-side-genre {
+  font-size: 2.2vh;
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 0.4vh;
+  color: rgba(255,255,255,0.95);
+}
+
+.tinder-side-character {
+  font-size: 1.22vh;
+  color: rgba(255,255,255,0.82);
+  margin-bottom: 1vh;
+}
+
+.tinder-side-bio {
+  font-size: 1.08vh;
+  line-height: 1.46;
+  color: rgba(235,240,255,0.84);
+}
+
+.tinder-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6vh;
+  margin-bottom: 1.1vh;
+}
+
+.tinder-stat {
+  border-radius: 0.84vh;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.04);
+  padding: 0.56vh;
+  text-align: center;
+}
+
+.tinder-stat span {
+  display: block;
+  font-size: 0.84vh;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.62);
+}
+
+.tinder-stat strong {
+  font-size: 1.34vh;
+  color: rgba(255,255,255,0.94);
+}
+
+.tinder-picked-title {
+  font-size: 0.92vh;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 0.65vh;
+}
+
+.tinder-picked-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45vh;
+}
+
+.tinder-picked-chip {
+  padding: 0.38vh 0.74vh;
+  border-radius: 999px;
+  font-size: 0.92vh;
+  color: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.16);
+}
+
+.tinder-picked-empty {
+  font-size: 0.98vh;
+  color: rgba(255,255,255,0.56);
+}
+
+.tinder-center-stage {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+.tinder-deck {
+  width: clamp(36vh, 41vh, 47vh) !important;
+  height: calc(clamp(36vh, 41vh, 47vh) * 4/3) !important;
+}
+
+.tinder-overlay.swipe-pass .bg-canvas,
+.tinder-overlay.swipe-match .bg-canvas {
+  filter: saturate(1.08);
+}
+
+.tinder-overlay.swipe-pass::before,
+.tinder-overlay.swipe-match::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 220ms ease;
+}
+
+.tinder-overlay.swipe-pass::before {
+  background: radial-gradient(circle at 35% 50%, rgba(255, 76, 72, 0.22), transparent 46%);
+}
+
+.tinder-overlay.swipe-match::before {
+  background: radial-gradient(circle at 65% 50%, rgba(82, 224, 139, 0.22), transparent 46%);
+}
+
+@media (max-width: 1260px) {
+  .tinder-game-layout {
+    grid-template-columns: 1fr;
+    padding-top: 1vh;
+  }
+  .tinder-side-panel {
+    display: none;
+  }
+  .tinder-deck {
+    width: clamp(30vh, 34vh, 40vh) !important;
+    height: calc(clamp(30vh, 34vh, 40vh) * 4/3) !important;
+  }
+}
+
+/* ── FINAL OVERRIDES v3.2 (clean Tinder look, no card text overlays) ── */
+.tinder-overlay {
+  background:
+    radial-gradient(110% 86% at 50% 10%, rgba(255,255,255,0.05), transparent 42%),
+    linear-gradient(180deg, #070b13 0%, #0a101a 58%, #080d15 100%) !important;
+}
+
+.tinder-header {
+  padding: 2.2vh 3.2vw !important;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, rgba(7,10,16,0.85), rgba(7,10,16,0.42));
+}
+
+.tinder-phase-title {
+  font-size: 2.05vh !important;
+}
+
+.tinder-game-layout {
+  grid-template-columns: 1fr !important;
+  padding: 1.2vh 2vw 2.2vh !important;
+}
+
+.tinder-side-panel {
+  display: none !important;
+}
+
+.tinder-center-stage {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+}
+
+.tinder-deck {
+  width: clamp(34vh, 40vh, 46vh) !important;
+  height: calc(clamp(34vh, 40vh, 46vh) * 4/3) !important;
+}
+
+.tinder-deck .genre-card {
+  border-radius: 2.2vh !important;
+}
+
+/* Sin información encima de la tarjeta en modo Tinder */
+.tinder-overlay .genre-card .card-content,
+.tinder-overlay .genre-card .card-bio-box,
+.tinder-overlay .genre-card .card-subgenre-tags,
+.tinder-overlay .genre-card .card-category-line,

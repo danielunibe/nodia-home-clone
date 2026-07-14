@@ -1,0 +1,220 @@
+/* ─── NODIA v3.0 — tinder-engine.js (Tinder v2: El Perfil Habla) ─── */
+'use strict';
+
+const TINDER_PHASES = [
+  {
+    id: 1,
+    label: 'FASE 1 — PRIMERA IMPRESIÓN',
+    phaseTitle: 'Desliza para encontrar tu género',
+    subtext: 'Confía en lo que sientes al ver la tarjeta.',
+    objective: (keep, total) => `Conserva ${keep} de ${total} para avanzar.`
+  },
+  {
+    id: 2,
+    label: 'FASE 2 — SEGUNDA VUELTA',
+    phaseTitle: 'Reduce el mazo con intención',
+    subtext: 'Ahora decide por potencial narrativo.',
+    objective: (keep, total) => `Conserva ${keep} de ${total} para continuar.`
+  },
+  {
+    id: 3,
+    label: 'FASE 3 — MATCH FINAL',
+    phaseTitle: 'Elige el corazón de tu historia',
+    subtext: 'Solo puede quedar una base principal.',
+    objective: () => 'Elige tu género principal.'
+  }
+];
+
+const TINDER_COPY = {
+  swipeHints: [
+    'Confía en lo que sientes al ver la tarjeta.',
+    'Si dudas, pasa. Si te detiene, acéptalo.',
+    'No todos los géneros son para hoy.',
+    'El género correcto te habla rápido.',
+    'Primero vibra, luego razonamos.'
+  ],
+  matchMessages: [
+    'Match. Este género tiene algo que decirte.',
+    'Buena elección. Hay potencial real aquí.',
+    'Conexión detectada. Sigamos.',
+    'Sí. Esa carta abre historia.'
+  ],
+  passMessages: [
+    'No es hoy. Seguimos.',
+    'Pasamos a la siguiente.',
+    'Sin problema: lo importante es afinar.',
+    'Descartada. Vamos con otra voz.'
+  ]
+};
+
+const TINDER_PROFILE_TONES = {
+  fantasia: ['Épico', 'Mitológico', 'Exploración'],
+  'ciencia-ficcion': ['Distópico', 'Técnico', 'Futuro social'],
+  terror: ['Inquietante', 'Psicológico', 'Visceral'],
+  noir: ['Ambiguo', 'Urbano', 'Moral gris'],
+  drama: ['Íntimo', 'Humano', 'Emocional'],
+  epico: ['Monumental', 'Heroico', 'Político'],
+  aventura: ['Exploración', 'Riesgo', 'Descubrimiento'],
+  accion: ['Urgente', 'Físico', 'Impacto'],
+  comedia: ['Irónico', 'Satírico', 'Ligero'],
+  romance: ['Vulnerable', 'Tierno', 'Intenso'],
+  western: ['Frontera', 'Honor', 'Polvo'],
+  belico: ['Táctico', 'Brutal', 'Supervivencia'],
+  'post-apocaliptico': ['Supervivencia', 'Esperanza', 'Reconstrucción'],
+  superheroes: ['Épico', 'Responsabilidad', 'Identidad'],
+  musical: ['Teatral', 'Catarsis', 'Ritmo'],
+  deportivo: ['Disciplina', 'Competición', 'Redención']
+};
+
+const CATEGORY_LINE_SEALS = {
+  fantasia: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 12 62 38 90 50 62 62 50 88 38 62 10 50 38 38Z" fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="round"/><circle cx="50" cy="50" r="8" fill="currentColor"/></svg>`,
+  'ciencia-ficcion': `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="7" fill="currentColor"/><ellipse cx="50" cy="50" rx="34" ry="13" fill="none" stroke="currentColor" stroke-width="5"/><ellipse cx="50" cy="50" rx="34" ry="13" fill="none" stroke="currentColor" stroke-width="4" opacity="0.75" transform="rotate(60 50 50)"/><ellipse cx="50" cy="50" rx="34" ry="13" fill="none" stroke="currentColor" stroke-width="4" opacity="0.55" transform="rotate(-60 50 50)"/></svg>`,
+  terror: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M24 60c0-18 12-31 26-31s26 13 26 31v15l-9-6-7 6-10-6-10 6-7-6-9 6Z" fill="currentColor"/><circle cx="42" cy="58" r="3.8" fill="#111"/><circle cx="58" cy="58" r="3.8" fill="#111"/></svg>`,
+  noir: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="43" cy="43" r="18" fill="none" stroke="currentColor" stroke-width="7"/><circle cx="43" cy="43" r="9" fill="none" stroke="currentColor" stroke-width="5" opacity="0.75"/><path d="M56 56 80 80" stroke="currentColor" stroke-width="8" stroke-linecap="round"/></svg>`,
+  drama: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 16c14 16 16 27 16 36 0 10-7 19-16 19s-16-9-16-19c0-9 2-20 16-36Z" fill="none" stroke="currentColor" stroke-width="6"/><path d="M66 26 72 34 80 36 74 42 76 50 68 46 60 50 62 42 56 36 64 34Z" fill="currentColor" opacity="0.8"/></svg>`,
+  epico: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M30 62h40l-4 20H34l-4-20Z" fill="currentColor" opacity="0.85"/><path d="M32 44h36l-4 12H36l-4-12Z" fill="currentColor"/><path d="M40 38c0-6 4-10 10-10s10 4 10 10" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/></svg>`,
+  aventura: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="27" fill="none" stroke="currentColor" stroke-width="6"/><path d="M50 24 58 50 50 76 42 50Z" fill="currentColor"/><path d="M24 50h52M50 24v52" stroke="currentColor" stroke-width="4" opacity="0.6"/></svg>`,
+  accion: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="14" fill="currentColor"/><path d="M50 10v18M50 72v18M10 50h18M72 50h18M21 21l13 13M66 66l13 13M21 79l13-13M66 34l13-13" stroke="currentColor" stroke-width="6" stroke-linecap="round"/></svg>`,
+  comedia: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="6"/><circle cx="40" cy="44" r="4" fill="currentColor"/><circle cx="60" cy="44" r="4" fill="currentColor"/><path d="M34 58c4 8 10 12 16 12s12-4 16-12" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/></svg>`,
+  romance: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 82C24 66 16 52 16 38c0-10 8-18 18-18 7 0 13 4 16 10 3-6 9-10 16-10 10 0 18 8 18 18 0 14-8 28-34 44Z" fill="currentColor"/></svg>`,
+  western: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M18 60c0-8 14-14 32-14s32 6 32 14-14 14-32 14-32-6-32-14Z" fill="currentColor"/><path d="M30 48c0-12 9-20 20-20s20 8 20 20v6H30Z" fill="currentColor" opacity="0.72"/></svg>`,
+  belico: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M22 58a28 28 0 0 1 56 0v10H22Z" fill="currentColor"/><path d="M34 52h32" stroke="#101318" stroke-width="6" stroke-linecap="round" opacity="0.45"/></svg>`,
+  'post-apocaliptico': `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="8" fill="currentColor"/><circle cx="50" cy="50" r="29" fill="none" stroke="currentColor" stroke-width="6"/><path d="M50 50 42 31h16L50 50Zm0 0 23 9-13 14L50 50Zm0 0-14 22-10-15L50 50Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/></svg>`,
+  superheroes: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 14 58 34 80 34 62 48 70 70 50 58 30 70 38 48 20 34 42 34Z" fill="currentColor"/></svg>`,
+  musical: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M56 12v64c0 8-6 14-14 14s-14-6-14-14 6-14 14-14c3 0 6 1 8 2V24c0-8 7-14 15-14h12v14h-10c-6 0-11 4-11 10Z" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="56" cy="12" r="5" fill="currentColor"/></svg>`,
+  deportivo: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="7"/><path d="M50 20c8 8 12 18 12 30s-4 22-12 30M50 20c-8 8-12 18-12 30s4 22 12 30M20 50h60" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>`
+};
+
+const TINDER_STATE = {
+  phase: 0,
+  selectedGenres: [],
+  pool: [],
+  deck: [],
+  kept: [],
+  decisions: [],
+  profileCache: new Map(),
+  currentIndex: 0,
+  round: 1,
+  targetKeep: 0,
+  maxRounds: 3,
+  maxSelections: 3,
+  lastSwipe: null,
+  hintTicker: null
+};
+
+let tinderOverlay;
+let tinderDeckEl;
+let phaseLabel;
+let phaseTitle;
+let progressBar;
+let desempateScreen;
+let resultScreen;
+let fusionTagline;
+let fusionSeed1;
+let fusionSeed2;
+let btnIniciarMundo;
+let btnAddVariant;
+let btnPass;
+let btnMatch;
+let btnUndo;
+let hintTextEl;
+let activeGenreEl;
+let activeCharacterEl;
+let activeBioEl;
+let statRemainingEl;
+let statKeptEl;
+let statTargetEl;
+let pickedListEl;
+let keyboardBound = false;
+
+function initTinderEngine() {
+  tinderOverlay = document.getElementById('tinder-overlay');
+  tinderDeckEl = document.getElementById('tinder-deck');
+  phaseLabel = document.getElementById('tinder-phase-label');
+  phaseTitle = document.getElementById('tinder-phase-title');
+  progressBar = document.getElementById('tinder-progress-bar');
+  desempateScreen = document.getElementById('desempate-screen');
+  resultScreen = document.getElementById('result-screen');
+  fusionTagline = document.getElementById('fusion-tagline');
+  fusionSeed1 = document.getElementById('fusion-seed-1');
+  fusionSeed2 = document.getElementById('fusion-seed-2');
+  btnIniciarMundo = document.getElementById('btn-iniciar-mundo');
+  btnAddVariant = document.getElementById('btn-add-variant');
+  btnPass = document.getElementById('btn-pass');
+  btnMatch = document.getElementById('btn-match');
+  btnUndo = document.getElementById('btn-undo');
+  hintTextEl = document.getElementById('tinder-hint-text');
+  activeGenreEl = document.getElementById('tinder-active-genre');
+  activeCharacterEl = document.getElementById('tinder-active-character');
+  activeBioEl = document.getElementById('tinder-active-bio');
+  statRemainingEl = document.getElementById('tinder-stat-remaining');
+  statKeptEl = document.getElementById('tinder-stat-kept');
+  statTargetEl = document.getElementById('tinder-stat-target');
+  pickedListEl = document.getElementById('tinder-picked-list');
+
+  document.getElementById('btn-tinder-trigger')?.addEventListener('click', startTinder);
+  document.getElementById('btn-exit-tinder')?.addEventListener('click', exitTinder);
+  btnPass?.addEventListener('click', () => triggerSwipe('pass'));
+  btnMatch?.addEventListener('click', () => triggerSwipe('match'));
+  btnUndo?.addEventListener('click', undoLastSwipe);
+  btnAddVariant?.addEventListener('click', addVariantSelection);
+
+  initKeyboardControls();
+}
+
+function initKeyboardControls() {
+  if (keyboardBound) return;
+  keyboardBound = true;
+  document.addEventListener('keydown', (event) => {
+    if (!tinderOverlay?.classList.contains('active') || TINDER_STATE.phase === 0) return;
+    const key = event.key.toLowerCase();
+    if (key === 'arrowleft' || key === 'a') {
+      event.preventDefault();
+      triggerSwipe('pass');
+    } else if (key === 'arrowright' || key === 'd') {
+      event.preventDefault();
+      triggerSwipe('match');
+    } else if (key === 'z' && event.ctrlKey) {
+      event.preventDefault();
+      undoLastSwipe();
+    } else if (key === 'escape') {
+      event.preventDefault();
+      exitTinder();
+    }
+  });
+}
+
+function startTinder() {
+  bioManager.reset();
+  TINDER_STATE.phase = 1;
+  TINDER_STATE.selectedGenres = [];
+  TINDER_STATE.pool = [...GENRES];
+  TINDER_STATE.deck = [];
+  TINDER_STATE.kept = [];
+  TINDER_STATE.decisions = [];
+  TINDER_STATE.profileCache.clear();
+  TINDER_STATE.currentIndex = 0;
+  TINDER_STATE.round = 1;
+  TINDER_STATE.lastSwipe = null;
+  enableUndo(false);
+
+  tinderOverlay?.classList.add('active');
+  hideAllTinderScreens();
+  const deckScreen = document.getElementById('tinder-deck-screen');
+  if (deckScreen) deckScreen.style.display = 'flex';
+
+  beginSelectionRound(true);
+  startHintTicker();
+}
+
+function exitTinder() {
+  stopHintTicker();
+  tinderOverlay?.classList.remove('active');
+  TINDER_STATE.phase = 0;
+}
+
+function hideAllTinderScreens() {
+  ['tinder-deck-screen', 'desempate-screen', 'result-screen'].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });

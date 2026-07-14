@@ -1,0 +1,47 @@
+/* Zdog Module Part 010 - Group
+   Format: Modular Fragment <= 220 lines */
+(function(t,e) {
+  if(typeof module=="object"&&module.exports) {
+    module.exports=e(require("./anchor"))
+  }
+  else {
+    var r=t.Zdog;
+    r.Group=e(r.Anchor)
+  }
+}
+)(this,function t(r) {
+  var e=r.subclass( {
+    updateSort:false,visible:true
+  }
+  );
+  e.prototype.updateSortValue=function() {
+    var e=0;
+    this.flatGraph.forEach(function(t) {
+      t.updateSortValue();
+      e+=t.sortValue
+    }
+    );
+    this.sortValue=e/this.flatGraph.length;
+    if(this.updateSort) {
+      this.flatGraph.sort(r.shapeSorter)
+    }
+  };
+  e.prototype.render=function(e,r) {
+    if(!this.visible) {
+      return
+    }
+    this.flatGraph.forEach(function(t) {
+      t.render(e,r)
+    }
+    )
+  };
+  e.prototype.updateFlatGraph=function() {
+    var t=[];
+    this.flatGraph=this.addChildFlatGraph(t)
+  };
+  e.prototype.getFlatGraph=function() {
+    return[this]
+  };
+  return e
+}
+);

@@ -1,0 +1,220 @@
+  opacity: 0.35 !important;
+  animation: holographic-pulse 2s ease-in-out infinite;
+}
+
+@keyframes holographic-pulse {
+  0%, 100% { filter: hue-rotate(0deg) brightness(1.2); }
+  50%      { filter: hue-rotate(180deg) brightness(1.5); }
+}
+
+.card-artwork-flat {
+  z-index: 0;
+}
+
+.card-content {
+  position: absolute;
+  z-index: 3 !important;
+}
+
+/* ── FINAL OVERRIDES v6.0 (seal position + premium readability) ── */
+.genre-card {
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.52),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 -28px 48px rgba(0, 0, 0, 0.34) !important;
+}
+
+.genre-card::before {
+  background:
+    radial-gradient(circle at var(--foil-x, 50%) var(--foil-y, 50%), rgba(255,255,255,0.14) 0%, transparent 26%),
+    linear-gradient(
+      110deg,
+      transparent 34%,
+      rgba(255, 219, 112, 0.14) 43%,
+      rgba(120, 214, 255, 0.1) 50%,
+      rgba(255, 140, 0, 0.11) 56%,
+      transparent 64%
+    ) !important;
+}
+
+.card-content {
+  z-index: 5 !important;
+}
+
+.card-seal {
+  inset: auto 50% 20% auto !important;
+  width: 11.6vh;
+  height: 11.6vh;
+  transform: translateX(50%);
+  z-index: 4 !important;
+  opacity: 0.1 !important;
+  color: color-mix(in srgb, var(--genre-accent, #C9A84C) 82%, white 18%);
+}
+
+.card-seal svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 16px rgba(255,255,255,0.08));
+}
+
+.genre-card:hover .card-seal,
+.genre-card.tilted .card-seal {
+  opacity: 0.28 !important;
+}
+
+.card-category-line {
+  position: relative;
+  z-index: 6;
+  background: rgba(8, 12, 20, 0.68) !important;
+  border-color: rgba(255,255,255,0.22) !important;
+  box-shadow:
+    0 2px 14px rgba(0,0,0,0.28),
+    inset 0 0 0 1px rgba(255,255,255,0.07) !important;
+}
+
+.card-category-seal {
+  width: 1.58vh;
+  height: 1.58vh;
+  color: color-mix(in srgb, var(--genre-accent, #C9A84C) 78%, white 22%);
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.14));
+}
+
+.card-character-title {
+  position: relative;
+  z-index: 6;
+  text-shadow:
+    0 2px 8px rgba(0,0,0,0.74),
+    0 0 20px rgba(0,0,0,0.24);
+}
+
+/* ── FINAL OVERRIDES v6.1 (clarity-first cards) ── */
+.genre-card::before {
+  opacity: 0 !important;
+}
+
+.genre-card:hover::before {
+  opacity: 0.42 !important;
+}
+
+.genre-card.tilted::before {
+  opacity: 0.5 !important;
+}
+
+.card-content {
+  background:
+    linear-gradient(180deg, transparent 0%, rgba(5, 8, 16, 0.45) 24%, rgba(5, 8, 16, 0.86) 100%);
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.card-category-line {
+  padding: 0.4vh 1vh !important;
+}
+
+.card-character-title {
+  text-transform: none !important;
+  font-weight: 700;
+  letter-spacing: 0.01em !important;
+  font-size: clamp(2vh, 2.25vh, 2.6vh) !important;
+}
+
+/* ── FINAL OVERRIDES v6.2 (remove intrusive line + softer holo) ── */
+.card-tabletop-frame::before {
+  border: none !important;
+}
+
+.card-holo-grid {
+  opacity: 0.03 !important;
+}
+
+.genre-card:hover .card-holo-grid {
+  opacity: 0.08 !important;
+}
+
+.genre-card::before {
+  opacity: 0 !important;
+}
+
+.genre-card:hover::before {
+  opacity: 0.14 !important;
+}
+
+.genre-card.tilted::before {
+  opacity: 0.26 !important;
+}
+
+.card-content {
+  border-top: none !important;
+  background:
+    linear-gradient(180deg, transparent 0%, rgba(5, 8, 16, 0.34) 32%, rgba(5, 8, 16, 0.82) 100%) !important;
+}
+
+/* ── FINAL OVERRIDES v6.3 (large holo seal behind genre text, no pill) ── */
+.card-category-line {
+  position: relative !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0.08vh 0 0.18vh !important;
+  min-height: 3.2vh;
+  display: grid !important;
+  place-items: center;
+  overflow: visible;
+}
+
+.card-category-seal {
+  position: absolute !important;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 4.1vh !important;
+  height: 4.1vh !important;
+  opacity: 0.2;
+  filter: drop-shadow(0 0 14px rgba(255,255,255,0.2));
+}
+
+.card-category-text {
+  position: relative;
+  z-index: 2;
+  background: transparent !important;
+  font-size: 0.98vh !important;
+  letter-spacing: 0.15em !important;
+  color: rgba(245, 248, 255, 0.92) !important;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.56);
+}
+
+.genre-card:hover .card-category-seal,
+.genre-card.tilted .card-category-seal {
+  opacity: 0.34;
+}
+
+/* ── FINAL OVERRIDES v6.4 (subtle halo depth) ── */
+.genre-card {
+  box-shadow:
+    0 16px 42px rgba(0,0,0,0.44),
+    0 0 24px color-mix(in srgb, var(--genre-color, #3A7BD5) 22%, transparent),
+    inset 0 0 0 1px rgba(255,255,255,0.07),
+    inset 0 -24px 42px rgba(0,0,0,0.3) !important;
+}
+
+.genre-card:hover,
+.genre-card.tilted {
+  box-shadow:
+    0 22px 54px rgba(0,0,0,0.5),
+    0 0 30px color-mix(in srgb, var(--genre-color, #3A7BD5) 30%, transparent),
+    inset 0 0 0 1px rgba(255,255,255,0.09),
+    inset 0 -24px 42px rgba(0,0,0,0.34) !important;
+}
+
+.card-category-text {
+  text-shadow:
+    0 2px 8px rgba(0,0,0,0.52),
+    0 0 12px color-mix(in srgb, var(--genre-color, #3A7BD5) 28%, transparent) !important;
+}
+
+/* ── FINAL OVERRIDES v6.8 (premium bevel + stronger hologram clarity) ── */
+.genre-card {
+  border-radius: 2.35vh !important;
+  border: 1px solid rgba(255,255,255,0.16) !important;
+  box-shadow:
+    0 20px 44px rgba(0, 0, 0, 0.48),

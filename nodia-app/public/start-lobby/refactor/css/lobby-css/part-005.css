@@ -1,0 +1,220 @@
+    rgba(9, 10, 16, 0.72);
+  color: rgba(255,255,255,0.92);
+  border: 1px solid rgba(255,255,255,0.16);
+  box-shadow:
+    0 10px 28px rgba(0,0,0,0.45),
+    inset 0 0 0 1px rgba(255,255,255,0.08),
+    0 0 20px var(--genre-color-alpha, rgba(58,123,213,0.2));
+}
+.nav-btn:hover {
+  transform: translateY(-2px) scale(1.06);
+  border-color: rgba(255,255,255,0.35);
+}
+
+.deck-status {
+  bottom: -8vh;
+}
+
+.deck-counter-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8vh;
+  padding: 0.4vh 1vh;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.deck-counter-icon { font-size: 1.35vh; line-height: 1; }
+#deckCounter {
+  font-size: 1.45vh !important;
+  font-weight: 700;
+  color: var(--gold) !important;
+  letter-spacing: 0.1em;
+  min-width: 6.8vh;
+  text-align: center;
+}
+
+.detail-character-line {
+  margin-bottom: 0.4vh;
+  min-height: 3.6vh;
+}
+
+.detail-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 3.3vh;
+  height: 3.3vh;
+  color: var(--gold);
+}
+
+.detail-icon .detail-seal-mini svg {
+  width: 2.8vh;
+  height: 2.8vh;
+  opacity: 0.95;
+  filter: drop-shadow(0 0 10px rgba(197,163,103,0.24));
+}
+
+/* Ajustes modal: evita overlay roto/sobrepuesto */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(3,4,8,0.64);
+  backdrop-filter: blur(10px);
+  z-index: 1200;
+}
+.modal-overlay.active { display: flex; }
+.modal-content {
+  width: min(56vh, 88vw);
+  border-radius: 1.6vh;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: linear-gradient(150deg, rgba(22,24,34,0.96), rgba(10,12,18,0.94));
+  box-shadow: 0 26px 60px rgba(0,0,0,0.5);
+  overflow: hidden;
+}
+.modal-header,
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4vh 1.6vh;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.modal-footer {
+  border-bottom: none;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  justify-content: flex-end;
+}
+.modal-title { font-size: 1.7vh; font-weight: 700; letter-spacing: 0.06em; color: rgba(255,255,255,0.92); }
+.modal-body { padding: 1.6vh; color: rgba(255,255,255,0.75); font-size: 1.25vh; }
+.modal-close {
+  width: 3.2vh;
+  height: 3.2vh;
+  border-radius: 0.9vh;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.9);
+  font-size: 2vh;
+  line-height: 1;
+  cursor: pointer;
+}
+.btn-save {
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.94);
+  border-radius: 0.95vh;
+  padding: 0.9vh 1.4vh;
+  font-size: 1.1vh;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ── FINAL OVERRIDES v4.9 (controls + templates composition) ── */
+.templates-layout {
+  grid-template-columns: 0.85fr 1.15fr;
+  align-items: start;
+}
+
+.genre-details {
+  padding-top: 2vh;
+}
+
+.genre-deck-wrapper {
+  align-self: start;
+  justify-self: center;
+}
+
+.deck-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6vh;
+  margin-top: 1vh;
+}
+
+.primary-btn-inline {
+  width: min(34vh, 44vw);
+  height: 7.2vh;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 0 1.2vh;
+  border-radius: 1.2vh;
+  font-size: 1.18vh;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.deck-status {
+  position: static;
+  margin-top: 1.2vh;
+}
+
+.deck-progress-bar {
+  width: 26vh;
+  height: 3px;
+}
+
+.discovery-box {
+  width: min(42vh, 92%);
+  margin-top: 1.2vh;
+}
+
+.discovery-box-left {
+  width: 100%;
+  margin-top: 1.2vh;
+}
+
+/* ── FINAL OVERRIDES v5.1 (no overflow on templates) ── */
+#view-templates.view-layer {
+  overflow: hidden;
+}
+
+.templates-layout {
+  height: 100%;
+  max-height: 100%;
+  align-items: start;
+  overflow: hidden;
+}
+
+.genre-details {
+  max-height: calc(100vh - 18vh);
+  overflow: auto;
+  padding-right: 0.4vh;
+}
+
+.genre-deck-wrapper {
+  max-height: calc(100vh - 18vh);
+  overflow: visible;
+}
+
+.deck-status {
+  margin-top: 0.8vh;
+}
+
+/* ── FINAL OVERRIDES v5.2 (no overflow in templates viewport) ── */
+#view-templates.view-layer {
+  top: clamp(96px, 12.4vh, 132px) !important;
+  bottom: clamp(18px, 2.8vh, 38px) !important;
+  left: clamp(20px, 4.4vw, 72px) !important;
+  right: clamp(20px, 4.4vw, 72px) !important;
+  overflow: hidden !important;
+}
+
+.templates-layout {
+  height: 100% !important;
+  max-height: 100% !important;
+  display: grid !important;
+  grid-template-columns: minmax(34vh, 0.96fr) minmax(44vh, 1.04fr) !important;
+  gap: clamp(1.6vh, 2.2vw, 3.2vh) !important;
+  align-items: stretch !important;
+  overflow: hidden !important;
+}
+
+.genre-details,
+.genre-deck-wrapper {
+  min-height: 0 !important;

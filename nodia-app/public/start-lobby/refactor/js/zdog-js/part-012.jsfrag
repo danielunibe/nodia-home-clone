@@ -1,0 +1,90 @@
+/* Zdog Module Part 012 - RoundedRect
+   Format: Modular Fragment <= 220 lines */
+(function(t,e) {
+  if(typeof module=="object"&&module.exports) {
+    module.exports=e(require("./shape"))
+  }
+  else {
+    var r=t.Zdog;
+    r.RoundedRect=e(r.Shape)
+  }
+}
+)(this,function t(e) {
+  var r=e.subclass( {
+    width:1,height:1,cornerRadius:.25,closed:false
+  }
+  );
+  r.prototype.setPath=function() {
+    var t=this.width/2;
+    var e=this.height/2;
+    var r=Math.min(t,e);
+    var i=Math.min(this.cornerRadius,r);
+    var n=t-i;
+    var o=e-i;
+    var s=[ {
+      x:n,y:-e
+    }, {
+      arc:[ {
+        x:t,y:-e
+      }, {
+        x:t,y:-o
+      }
+      ]
+    }
+    ];
+    if(o) {
+      s.push( {
+        x:t,y:o
+      }
+      )
+    }
+    s.push( {
+      arc:[ {
+        x:t,y:e
+      }, {
+        x:n,y:e
+      }
+      ]
+    }
+    );
+    if(n) {
+      s.push( {
+        x:-n,y:e
+      }
+      )
+    }
+    s.push( {
+      arc:[ {
+        x:-t,y:e
+      }, {
+        x:-t,y:o
+      }
+      ]
+    }
+    );
+    if(o) {
+      s.push( {
+        x:-t,y:-o
+      }
+      )
+    }
+    s.push( {
+      arc:[ {
+        x:-t,y:-e
+      }, {
+        x:-n,y:-e
+      }
+      ]
+    }
+    );
+    if(n) {
+      s.push( {
+        x:n,y:-e
+      }
+      )
+    }
+    this.path=s
+  };
+  return r
+}
+);

@@ -1,0 +1,220 @@
+/* ─── NODIA START LOBBY v3.0 — lobby.css ─── */
+
+:root {
+  /* Paleta base */
+  --bg: #070708;
+  --bg-primary: #0a0a0f;
+  --bg-dark: #070708;
+  --text: #ffffff;
+  --text2: rgba(255,255,255,0.7);
+  --text3: rgba(255,255,255,0.4);
+  --gold: #C5A367;
+  --gold-rgb: 197, 163, 103;
+  --panel-bg: rgba(255,255,255,0.03);
+  --border: rgba(255,255,255,0.06);
+  --card-white: rgba(255,255,255,0.94);
+  /* Tipografía */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  /* Género activo (actualizado por JS) */
+  --genre-color: #3A7BD5;
+  --genre-color-alpha: rgba(58,123,213,0.2);
+  --genre-accent: #C9A84C;
+  /* Aurora dinámica */
+  --aurora-color-1: #0c0c1e;
+  --aurora-color-2: #070708;
+  --aurora-highlight: rgba(118, 101, 220, 0.34);
+  --aurora-highlight-soft: rgba(83, 183, 255, 0.18);
+  --genre-bg-solid: rgb(58,123,213);
+  --genre-bg-deep: rgba(58,123,213,0.78);
+  --genre-bg-night: #07111d;
+  --genre-bg-vignette: #0f1f31;
+  /* Transitions */
+  --transition-aurora: 1200ms ease-in-out;
+  --transition-card: 150ms ease-out;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  height: 100vh;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ── BACKGROUND ── */
+.bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.bg-canvas::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 16% 12%, rgba(255,255,255,0.06) 0%, transparent 34%),
+    radial-gradient(120% 100% at 18% 18%, var(--genre-bg-deep, rgba(58,123,213,0.76)) 0%, transparent 58%),
+    radial-gradient(120% 90% at 82% 86%, var(--genre-bg-vignette, #0f1f31) 0%, transparent 58%),
+    linear-gradient(145deg, var(--genre-bg-solid, rgb(58,123,213)) 0%, var(--genre-bg-night, #07111d) 70%);
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+body.theme-continue .bg-canvas::before { background: radial-gradient(circle at 20% 80%, rgba(var(--gold-rgb), 0.15) 0%, #070708 70%); }
+body.theme-new .bg-canvas::before { background: radial-gradient(circle at 20% 80%, rgba(55, 100, 220, 0.15) 0%, #070708 70%); }
+body.theme-idea .bg-canvas::before { background: radial-gradient(circle at 20% 80%, rgba(167, 148, 216, 0.15) 0%, #070708 70%); }
+
+body.show-templates .bg-canvas::before {
+  background:
+    radial-gradient(circle at 16% 12%, rgba(255,255,255,0.06) 0%, transparent 34%),
+    radial-gradient(120% 100% at 18% 18%, var(--genre-bg-deep, rgba(58,123,213,0.76)) 0%, transparent 58%),
+    radial-gradient(120% 90% at 82% 86%, var(--genre-bg-vignette, #0f1f31) 0%, transparent 58%),
+    linear-gradient(145deg, var(--genre-bg-solid, rgb(58,123,213)) 0%, var(--genre-bg-night, #07111d) 70%) !important;
+}
+
+.aurora-field {
+  position: absolute;
+  inset: -14%;
+  filter: blur(34px) saturate(1.12);
+  mix-blend-mode: screen;
+  opacity: 0.5;
+  transform: translateZ(0);
+}
+
+.aurora-band {
+  position: absolute;
+  width: 70vw;
+  height: 46vh;
+  border-radius: 50%;
+  will-change: transform, opacity, filter;
+}
+
+.aurora-band-a {
+  left: -10vw;
+  top: 48vh;
+  background:
+    radial-gradient(ellipse at 50% 50%, var(--aurora-highlight) 0%, var(--aurora-highlight-soft) 35%, transparent 70%);
+  animation: aurora-drift-a 16s ease-in-out infinite alternate;
+}
+
+.aurora-band-b {
+  right: -16vw;
+  top: 40vh;
+  background:
+    radial-gradient(ellipse at 52% 50%, var(--aurora-highlight-soft) 0%, rgba(83, 183, 255, 0.08) 36%, transparent 72%);
+  animation: aurora-drift-b 20s ease-in-out infinite alternate;
+}
+
+.aurora-band-c {
+  left: 18vw;
+  top: 56vh;
+  background:
+    radial-gradient(ellipse at 50% 50%, var(--aurora-highlight) 0%, var(--aurora-highlight-soft) 38%, transparent 74%);
+  animation: aurora-drift-c 18s ease-in-out infinite alternate;
+}
+
+.stars {
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  background-image:
+    radial-gradient(circle at 20% 28%, rgba(255,255,255,0.7) 0 1px, transparent 1px),
+    radial-gradient(circle at 76% 32%, rgba(255,255,255,0.55) 0 1px, transparent 1px),
+    radial-gradient(circle at 40% 68%, rgba(255,255,255,0.48) 0 1px, transparent 1px),
+    radial-gradient(circle at 62% 18%, rgba(255,255,255,0.35) 0 1px, transparent 1px);
+  background-size: 160px 160px, 230px 230px, 280px 280px, 340px 340px;
+  animation: stars-drift 34s linear infinite;
+}
+
+.noise { position: absolute; inset: 0; opacity: 0.03; background: url('../home_assets/noise.png'); pointer-events: none; }
+.particles-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.62;
+  filter: blur(0.15px);
+}
+
+@keyframes aurora-drift-a {
+  0% { transform: translate3d(-3vw, 0, 0) rotate(-5deg) scale(1); opacity: 0.4; }
+  100% { transform: translate3d(7vw, -2vh, 0) rotate(2deg) scale(1.08); opacity: 0.62; }
+}
+
+@keyframes aurora-drift-b {
+  0% { transform: translate3d(4vw, 0, 0) rotate(4deg) scale(0.96); opacity: 0.34; }
+  100% { transform: translate3d(-8vw, -1vh, 0) rotate(-3deg) scale(1.1); opacity: 0.56; }
+}
+
+@keyframes aurora-drift-c {
+  0% { transform: translate3d(0, 0, 0) rotate(-1deg) scale(0.95); opacity: 0.3; }
+  100% { transform: translate3d(6vw, -1.5vh, 0) rotate(3deg) scale(1.06); opacity: 0.52; }
+}
+
+@keyframes stars-drift {
+  from { background-position: 0 0, 0 0, 0 0, 0 0; }
+  to { background-position: 160px 32px, -230px 48px, 280px -40px, -340px 56px; }
+}
+
+/* ── LAYOUT ── */
+.shell {
+  position: absolute; inset: 0; margin: auto;
+  z-index: 1;
+  width: 100vw; height: 66.66vw;
+  max-height: 100vh; max-width: 150vh;
+  display: flex; flex-direction: column;
+  padding: 3vh 6vw;
+  overflow: hidden;
+}
+
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4vh; }
+.brand { display: flex; align-items: center; gap: 15px; }
+.brand-name { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; letter-spacing: 2px; }
+.brand-sub { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; opacity: 0.4; }
+
+.nav-list { display: flex; gap: 40px; list-style: none; position: relative; }
+.nav-list a { text-decoration: none; color: var(--text3); font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.2em; transition: color 0.3s; }
+.nav-list a.active { color: var(--text); }
+.nav-indicator { position: absolute; bottom: -8px; height: 2px; background: var(--gold); transition: all 0.5s cubic-bezier(0.2, 0, 0, 1); }
+
+/* ── VIEW LAYERS ── */
+.arena {
+  display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+  flex-grow: 1; gap: 2vh 6vw; align-items: center;
+  transition:
+    transform 0.56s cubic-bezier(0.22, 0.7, 0.1, 1),
+    opacity 0.5s ease,
+    filter 0.56s cubic-bezier(0.22, 0.7, 0.1, 1);
+  will-change: transform, opacity, filter;
+}
+
+.view-layer {
+  position: absolute; top: 12vh; left: 6vw; right: 6vw; bottom: 4vh;
+  display: flex; flex-direction: column;
+  z-index: 3; /* Ensure it paints above the arena when toggled */
+  transform: translateX(4.8vw) scale(0.986);
+  opacity: 0;
+  filter: blur(7px);
+  pointer-events: none;
+  visibility: hidden;
+  transition:
+    transform 0.62s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.5s ease,
+    filter 0.62s cubic-bezier(0.2, 0.8, 0.2, 1),
+    visibility 0s linear 0.62s;
+  will-change: transform, opacity, filter;
+}
+
+body.show-templates .arena {
+  transform: translateX(-4.2vw) scale(0.988);
+  opacity: 0;
+  filter: blur(6px);
+  pointer-events: none;
+  visibility: hidden;
+}
+body.show-templates .view-layer {
+  transform: translateX(0) scale(1);
+  opacity: 1;
+  filter: blur(0);
+  pointer-events: auto;
+  visibility: visible;
+  transition-delay: 0ms, 0ms, 0ms, 0ms;
+}
+
+/* CSS-only routing fallback (for embedded browsers where JS/hashchange can fail) */
+.route-anchor { position: fixed; top: 0; left: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+

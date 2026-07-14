@@ -1,0 +1,220 @@
+  opacity: 0.12 !important;
+}
+
+/* Responsive */
+@media (max-width: 1280px) {
+  #view-templates .templates-layout {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    overflow: auto !important;
+  }
+
+  #view-templates .genre-details,
+  #view-templates .genre-deck-wrapper {
+    max-width: 900px;
+    width: 100%;
+    margin-inline: auto;
+  }
+}
+
+/* ── FINAL OVERRIDES v9.1 (Plantillas: más aire y ritmo visual en panel izquierdo) ── */
+#view-templates .genre-details {
+  gap: 10px !important;
+}
+
+#view-templates .genre-info-box {
+  padding: 20px !important;
+  gap: 15px !important;
+}
+
+#view-templates .detail-character-line {
+  gap: 10px !important;
+  margin-bottom: 2px !important;
+}
+
+#view-templates .detail-character-block {
+  gap: 4px !important;
+}
+
+#view-templates .detail-character-label {
+  line-height: 1.28 !important;
+}
+
+#view-templates .detail-character-name {
+  line-height: 1.14 !important;
+}
+
+#view-templates .detail-character-note {
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
+  padding: 12px 14px !important;
+  line-height: 1.55 !important;
+}
+
+#view-templates .genre-meta-row {
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
+  row-gap: 10px !important;
+}
+
+#view-templates .genre-desc {
+  margin-top: 6px !important;
+  line-height: 1.7 !important;
+}
+
+#view-templates .genre-intel-grid {
+  margin-top: 4px !important;
+  gap: 14px !important;
+}
+
+#view-templates .genre-pillars-col,
+#view-templates .genre-sub-col {
+  padding: 12px !important;
+}
+
+#view-templates .intel-title {
+  margin-bottom: 10px !important;
+}
+
+#view-templates .genre-pillars-col .genre-deep-info {
+  gap: 10px !important;
+}
+
+#view-templates .genre-pillars-col .genre-deep-item {
+  padding: 10px 11px !important;
+}
+
+#view-templates .genre-pillars-col .genre-deep-item p {
+  line-height: 1.52 !important;
+}
+
+#view-templates .genre-sub-col .genre-tags-list {
+  gap: 9px !important;
+}
+
+#view-templates .subgenre-focus-card {
+  margin-top: 10px !important;
+}
+
+#view-templates .swipe-launch-row {
+  margin-top: 12px !important;
+}
+
+/* ── FINAL OVERRIDES v9.2 (Plantillas: CTA sin caja + copy limpio) ── */
+#view-templates .deck-action-module {
+  margin-top: 12px !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  gap: 9px !important;
+}
+
+#view-templates .deck-controls {
+  padding: 0 !important;
+}
+
+#view-templates .primary-btn-inline {
+  border: 1px solid rgba(255, 255, 255, 0.24) !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04)),
+    color-mix(in srgb, var(--genre-color, #C9A84C) 24%, rgba(8, 12, 22, 0.88)) !important;
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.34),
+    0 0 18px color-mix(in srgb, var(--genre-color, #C9A84C) 28%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+}
+
+#view-templates .template-cta-note {
+  display: none !important;
+}
+
+#view-templates .deck-status {
+  margin-top: 1px !important;
+}
+
+/* ── FINAL OVERRIDES v9.3 (Plantillas: flechas de navegación visibles) ── */
+#view-templates .nav-btn {
+  color: rgba(244, 248, 255, 0.96) !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03)),
+    rgba(8, 12, 22, 0.9) !important;
+}
+
+#view-templates .nav-btn svg {
+  display: block !important;
+  width: 22px !important;
+  height: 22px !important;
+  stroke: currentColor !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  opacity: 1 !important;
+}
+
+#view-templates .nav-btn:hover {
+  color: #ffffff !important;
+  border-color: color-mix(in srgb, var(--genre-color, #C9A84C) 56%, #fff 44%) !important;
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.38),
+    0 0 16px color-mix(in srgb, var(--genre-color, #C9A84C) 28%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16) !important;
+}
+
+/* ── FINAL OVERRIDES v9.4 (Plantillas: CTA principal alineado al sistema de botones) ── */
+#view-templates #btn-iniciar-base.primary-btn-inline {
+  height: 52px !important;
+  border-radius: 12px !important;
+  border: 1px solid color-mix(in srgb, var(--genre-color, #C9A84C) 58%, #fff 42%) !important;
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--genre-color, #C9A84C) 34%, rgba(255,255,255,0.2) 66%), rgba(255,255,255,0.08)) !important;
+  color: rgba(255, 255, 255, 0.98) !important;
+  letter-spacing: 0.08em !important;
+  font-weight: 700 !important;
+  box-shadow:
+    0 10px 24px rgba(0,0,0,0.32),
+    0 0 22px color-mix(in srgb, var(--genre-color, #C9A84C) 32%, transparent),
+    inset 0 1px 0 rgba(255,255,255,0.24) !important;
+}
+
+#view-templates #btn-iniciar-base.primary-btn-inline .btn-inline-icon {
+  opacity: 0.92 !important;
+}
+
+#view-templates #btn-iniciar-base.primary-btn-inline:hover {
+  transform: translateY(-1px) !important;
+  filter: brightness(1.06) !important;
+}
+
+/* ── FINAL OVERRIDES v9.5 (Plantillas: estética refinada del contador) ── */
+#view-templates .deck-status {
+  gap: 8px !important;
+}
+
+#view-templates .deck-counter-row {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 0 6px 2px !important;
+  position: relative !important;
+}
+
+#view-templates .deck-counter-row::after {
+  content: '' !important;
+  position: absolute !important;
+  left: -44px !important;
+  right: -44px !important;
+  bottom: -4px !important;
+  height: 1px !important;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.16) 20%,
+    color-mix(in srgb, var(--genre-color, #C9A84C) 42%, #fff 58%) 50%,
+    rgba(255, 255, 255, 0.16) 80%,
+    transparent 100%
+  ) !important;
+}
+
+#view-templates .deck-counter-icon {
+  width: 16px !important;
+  height: 16px !important;

@@ -1,0 +1,220 @@
+  padding: 1.45vh 1.15vw !important;
+  border-radius: 1.45vh !important;
+  gap: 0.9vw !important;
+  align-items: flex-start !important;
+}
+
+.p-title {
+  font-size: 2.05vh !important;
+  line-height: 1.06;
+}
+
+.p-desc {
+  font-size: 1.15vh !important;
+  opacity: 0.65 !important;
+}
+
+.p-content {
+  text-align: left;
+}
+
+/* Ocultar caja inferior en lobby; mostrarla solo cuando navegas a Ayuda */
+.q-worlds {
+  display: none !important;
+}
+
+body.mode-help .q-worlds {
+  display: flex !important;
+  grid-column: 1 / span 2 !important;
+  grid-row: 2 !important;
+}
+
+/* ── FINAL OVERRIDES v7.1 (plantillas info box restructuring) ── */
+.genre-info-box {
+  display: grid !important;
+  gap: 0.9vh !important;
+  padding: 1.2vh 1.2vh !important;
+}
+
+.genre-desc {
+  font-size: 1.16vh !important;
+  line-height: 1.56 !important;
+  margin: 0.25vh 0 0.45vh !important;
+  -webkit-line-clamp: unset !important;
+  display: block !important;
+  overflow: visible !important;
+}
+
+.genre-intel-grid {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 0.72vh;
+}
+
+.genre-pillars-col,
+.genre-sub-col {
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 1.08vh;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.015)),
+    rgba(8, 13, 22, 0.42);
+  padding: 0.68vh;
+}
+
+.intel-title {
+  margin: 0 0 0.52vh;
+  font-size: 0.9vh;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(237, 223, 185, 0.85);
+}
+
+.genre-pillars-col .genre-deep-info {
+  margin-top: 0 !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 0.52vh !important;
+}
+
+.genre-pillars-col .genre-deep-item {
+  border-radius: 0.82vh !important;
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-left: 1px solid rgba(255,255,255,0.1) !important;
+  padding: 0.48vh 0.56vh !important;
+}
+
+.genre-pillars-col .genre-deep-item .deep-label {
+  font-size: 0.8vh !important;
+}
+
+.genre-pillars-col .genre-deep-item p {
+  font-size: 0.94vh !important;
+  line-height: 1.34 !important;
+  display: block !important;
+  -webkit-line-clamp: unset !important;
+}
+
+.genre-sub-col .subgenres-wrap {
+  margin-top: 0 !important;
+}
+
+.genre-sub-col .genre-tags-list {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.42vh !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.genre-sub-col .genre-tag-chip {
+  padding: 0.4vh 0.72vh !important;
+  font-size: 0.9vh !important;
+  letter-spacing: 0.03em !important;
+  border-radius: 999px !important;
+}
+
+.subgenre-focus-card {
+  margin-top: 0.58vh;
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 0.95vh;
+  background: rgba(255,255,255,0.04);
+  padding: 0.62vh 0.68vh;
+  min-height: 7.7vh;
+  transition: border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.subgenre-focus-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5vh;
+  margin-bottom: 0.28vh;
+}
+
+.subgenre-focus-icon {
+  width: 1.8vh;
+  height: 1.8vh;
+  display: inline-grid;
+  place-items: center;
+  color: var(--gold);
+}
+
+.subgenre-focus-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.subgenre-focus-title {
+  margin: 0;
+  font-size: 1.02vh;
+  color: rgba(245, 249, 255, 0.94);
+  letter-spacing: 0.02em;
+}
+
+.subgenre-focus-text {
+  margin: 0;
+  font-size: 0.94vh;
+  line-height: 1.42;
+  color: rgba(217, 228, 251, 0.84);
+}
+
+.discovery-inline .tinder-trigger-compact {
+  min-width: 27vh !important;
+}
+
+.discovery-inline-left {
+  justify-content: flex-start !important;
+  margin-top: 0.72vh !important;
+}
+
+/* ── FINAL OVERRIDES v7.3 (género mucho más grande) ── */
+#view-templates .view-header #detail-genre-name {
+  font-size: clamp(7.2vh, 8.6vh, 10.4vh) !important;
+  line-height: 0.94 !important;
+  letter-spacing: 0.01em;
+  margin-bottom: 0.72vh;
+  text-wrap: balance;
+}
+
+#view-templates .view-header .view-sub {
+  margin-top: 0.2vh;
+}
+
+/* ── FINAL OVERRIDES v8.3 (command lobby operable) ── */
+.nav-list a {
+  letter-spacing: 0.14em;
+}
+
+.q-identity {
+  align-self: start;
+  justify-content: flex-start;
+  gap: 0.2vh;
+}
+
+.hero-project-line {
+  font-size: 1.18vh;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 0.22vh;
+}
+
+.hero-context-line {
+  font-size: 1.04vh;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(231, 214, 176, 0.9);
+  margin-bottom: 0.55vh;
+}
+
+.hero-genre-chip {
+  margin-bottom: 1vh;
+}
+
+.hero-title {
+  font-size: clamp(4.8vh, 5.2vh, 6.1vh);
+  margin-bottom: 1.15vh;
+}
+
+.hero-desc {
+  max-width: 48vh;

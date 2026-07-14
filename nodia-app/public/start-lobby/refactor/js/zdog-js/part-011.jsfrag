@@ -1,0 +1,33 @@
+/* Zdog Module Part 011 - Rect
+   Format: Modular Fragment <= 220 lines */
+(function(t,e) {
+  if(typeof module=="object"&&module.exports) {
+    module.exports=e(require("./shape"))
+  }
+  else {
+    var r=t.Zdog;
+    r.Rect=e(r.Shape)
+  }
+}
+)(this,function t(e) {
+  var r=e.subclass( {
+    width:1,height:1
+  }
+  );
+  r.prototype.setPath=function() {
+    var t=this.width/2;
+    var e=this.height/2;
+    this.path=[ {
+      x:-t,y:-e
+    }, {
+      x:t,y:-e
+    }, {
+      x:t,y:e
+    }, {
+      x:-t,y:e
+    }
+    ]
+  };
+  return r
+}
+);

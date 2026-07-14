@@ -1,0 +1,57 @@
+/* Zdog Module Part 002 - CanvasRenderer
+   Format: Modular Fragment <= 220 lines */
+(function(t,e) {
+  if(typeof module=="object"&&module.exports) {
+    module.exports=e()
+  }
+  else {
+    t.Zdog.CanvasRenderer=e()
+  }
+}
+)(this,function t() {
+  var n= {
+    isCanvas:true
+  };
+  n.begin=function(t) {
+    t.beginPath()
+  };
+  n.move=function(t,e,r) {
+    t.moveTo(r.x,r.y)
+  };
+  n.line=function(t,e,r) {
+    t.lineTo(r.x,r.y)
+  };
+  n.bezier=function(t,e,r,i,n) {
+    t.bezierCurveTo(r.x,r.y,i.x,i.y,n.x,n.y)
+  };
+  n.closePath=function(t) {
+    t.closePath()
+  };
+  n.setPath=function() {};n.renderPath=function(e,r,t,i) {
+    this.begin(e,r);
+    t.forEach(function(t) {
+      t.render(e,r,n)
+    }
+    );
+    if(i) {
+      this.closePath(e,r)
+    }
+  };
+  n.stroke=function(t,e,r,i,n) {
+    if(!r) {
+      return
+    }
+    t.strokeStyle=i;
+    t.lineWidth=n;
+    t.stroke()
+  };
+  n.fill=function(t,e,r,i) {
+    if(!r) {
+      return
+    }
+    t.fillStyle=i;
+    t.fill()
+  };
+  n.end=function() {};return n
+}
+);

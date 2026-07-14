@@ -1,0 +1,220 @@
+#view-templates .discovery-inline .tinder-trigger-compact:hover {
+  transform: translateY(-0.05vh);
+  background: linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04)) !important;
+  color: rgba(245, 248, 255, 0.95) !important;
+}
+
+#view-templates .swipe-launch-row {
+  margin-top: 0.7vh;
+}
+
+#view-templates .swipe-launch-row .discovery-inline-left {
+  margin-top: 0 !important;
+}
+
+/* ── FINAL OVERRIDES v8.0 (SVG orbs + dissolve transitions + cleaner counter + swipe focus) ── */
+body.show-templates .stars {
+  opacity: 0 !important;
+}
+
+body.show-templates .particles-canvas {
+  opacity: 0 !important;
+}
+
+.genre-symbol-field {
+  opacity: 0.96 !important;
+}
+
+.genre-symbol {
+  transition: opacity 220ms ease;
+}
+
+.genre-symbol.symbol-dissolve-out {
+  animation-name: ornament-dissolve-out !important;
+  animation-duration: 360ms !important;
+  animation-timing-function: cubic-bezier(0.3, 0, 0.2, 1) !important;
+  animation-fill-mode: both !important;
+}
+
+.genre-symbol.symbol-dissolve-in {
+  animation-name: ornament-float, ornament-dissolve-in !important;
+  animation-timing-function: ease-in-out, cubic-bezier(0.22, 0.7, 0.1, 1) !important;
+  animation-fill-mode: both, both !important;
+}
+
+@keyframes ornament-dissolve-out {
+  0% {
+    opacity: 0.28;
+    filter: blur(0px);
+    transform: scale(var(--ornament-scale)) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    filter: blur(4px);
+    transform: scale(calc(var(--ornament-scale) * 0.88)) translateY(-0.8vh);
+  }
+}
+
+@keyframes ornament-dissolve-in {
+  0% {
+    opacity: 0;
+    filter: blur(5px);
+    transform: scale(calc(var(--ornament-scale) * 0.82)) translateY(0.8vh);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(var(--ornament-scale)) translateY(0);
+  }
+}
+
+/* Contador sin píldora */
+#view-templates .deck-counter-row {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  gap: 0.55vh !important;
+  box-shadow: none !important;
+}
+
+#view-templates .deck-counter-icon {
+  width: 1.45vh !important;
+  height: 1.45vh !important;
+  color: rgba(255,255,255,0.72) !important;
+}
+
+#view-templates #deckCounter {
+  font-size: 1.34vh !important;
+  color: rgba(245,248,255,0.92) !important;
+  letter-spacing: 0.08em !important;
+}
+
+/* Más protagonismo al modo swipe */
+#view-templates .swipe-launch-row {
+  margin-top: 1.05vh !important;
+}
+
+#view-templates .discovery-inline .tinder-trigger-compact {
+  min-width: 26vh !important;
+  height: 4.3vh !important;
+  padding: 0.75vh 1.5vh !important;
+  font-size: 1vh !important;
+  letter-spacing: 0.09em !important;
+  border-radius: 1.2vh !important;
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--genre-color, #3A7BD5) 34%, rgba(255,255,255,0.2) 66%), rgba(255,255,255,0.08)) !important;
+  border: 1px solid color-mix(in srgb, var(--genre-color, #3A7BD5) 62%, white 38%) !important;
+  color: rgba(255,255,255,0.97) !important;
+  box-shadow:
+    0 10px 24px rgba(0,0,0,0.28),
+    0 0 22px color-mix(in srgb, var(--genre-color, #3A7BD5) 34%, transparent),
+    inset 0 1px 0 rgba(255,255,255,0.24) !important;
+}
+
+#view-templates .discovery-inline .tinder-trigger-compact:hover {
+  transform: translateY(-0.12vh) scale(1.02) !important;
+  filter: brightness(1.08);
+}
+
+/* ── FINAL OVERRIDES v8.1 (narrative clarity: arquetipo + uso práctico) ── */
+#view-templates .detail-character-line {
+  align-items: flex-start !important;
+  margin-bottom: 0.55vh !important;
+}
+
+#view-templates .detail-character-block {
+  display: grid;
+  gap: 0.2vh;
+}
+
+#view-templates .detail-character-label {
+  font-size: 0.82vh;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: rgba(232, 238, 255, 0.66);
+}
+
+#view-templates .detail-character-name {
+  font-size: 1.16vh !important;
+  text-transform: none !important;
+  letter-spacing: 0.02em !important;
+  color: rgba(248, 251, 255, 0.95) !important;
+}
+
+#view-templates .detail-character-note {
+  margin: 0 0 0.55vh 0;
+  font-size: 0.9vh;
+  line-height: 1.38;
+  color: rgba(214, 224, 246, 0.82);
+  padding: 0.5vh 0.7vh;
+  border-radius: 0.78vh;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(8, 12, 22, 0.42);
+}
+
+#view-templates .genre-pillars-col .genre-deep-info {
+  gap: 0.42vh !important;
+}
+
+#view-templates .genre-pillars-col .genre-deep-item p {
+  -webkit-line-clamp: 3 !important;
+  font-size: 1.02vh !important;
+}
+
+#view-templates #btn-iniciar-base span:last-child {
+  white-space: nowrap;
+}
+
+/* ── FINAL OVERRIDES v9.0 (Plantillas: product clarity + readability + CTA hierarchy) ── */
+#view-templates .templates-layout {
+  grid-template-columns: minmax(420px, 0.98fr) minmax(460px, 1.02fr) !important;
+  align-items: start !important;
+  gap: clamp(18px, 2.1vw, 38px) !important;
+}
+
+#view-templates .genre-details {
+  padding-top: 4px !important;
+}
+
+#view-templates .templates-breadcrumb {
+  margin-bottom: 8px !important;
+  font-size: 11px !important;
+  letter-spacing: 0.08em !important;
+  color: rgba(208, 220, 246, 0.7) !important;
+}
+
+#view-templates .view-header {
+  margin-bottom: 10px !important;
+}
+
+#view-templates .view-title,
+#view-templates .view-header #detail-genre-name {
+  font-size: clamp(60px, 5.2vw, 78px) !important;
+  line-height: 0.96 !important;
+  letter-spacing: 0.005em !important;
+  margin-bottom: 8px !important;
+}
+
+#view-templates .view-sub {
+  display: block !important;
+  margin-top: 0 !important;
+  font-size: 12px !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  color: rgba(232, 239, 255, 0.74) !important;
+}
+
+#view-templates .genre-info-box {
+  margin-top: 0 !important;
+  padding: 16px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  background:
+    linear-gradient(152deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02) 38%, rgba(255, 255, 255, 0.01) 100%),
+    linear-gradient(145deg, rgba(9, 14, 25, 0.88), rgba(9, 14, 25, 0.7)) !important;
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
+  gap: 12px !important;
+}

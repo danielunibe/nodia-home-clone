@@ -1,0 +1,225 @@
+let currentShowcaseGenreId = WORLDS[currentWorld]?.genreId || 'fantasia';
+let showcaseRotationTimer = null;
+let lastRouteHash = normalizeRouteHash(window.location.hash || '#lobby');
+let lastLobbyEntryAt = 0;
+const LOBBY_REENTRY_INTERVAL_MS = 30000;
+
+if (uiFx?.setupBootState) uiFx.setupBootState();
+
+// WebView-safe navigation: some embedded browsers don't reliably dispatch hashchange.
+navLinks.forEach((link) => {
+  link.addEventListener('click', (e) => {
+    const href = link.getAttribute('href') || '';
+    if (!href.startsWith('#')) return;
+    e.preventDefault();
+    if (window.location.hash !== href) window.location.hash = href;
+    handleInitialHash();
+  });
+});
+
+// Botones visuales de ventana: sin overlay modal ni estado cerrado para evitar bloqueos de interfaz.
+btnSystemMinimize?.addEventListener('click', (event) => event.preventDefault());
+btnSystemClose?.addEventListener('click', (event) => event.preventDefault());
+
+// Run once immediately (don't depend on window.load in embedded contexts).
+try { handleInitialHash(); } catch {}
+
+window.addEventListener('load', () => {
+  // Critical path: routing + deck must work even if eye-candy fails.
+  handleInitialHash();
+
+  try { renderGenreDeck(); } catch (e) { console.warn('[lobby] renderGenreDeck failed', e); }
+  try { initDeckControls(); } catch (e) { console.warn('[lobby] initDeckControls failed', e); }
+  try { initTinderEngine(); } catch (e) { console.warn('[lobby] initTinderEngine failed', e); } // from tinder-engine.js
+  try { updateGenreDetails(0); } catch (e) { console.warn('[lobby] updateGenreDetails failed', e); }
+
+  // Non-critical visuals (never block Plantillas)
+  try { initTrefoil(); } catch (e) { console.warn('[lobby] initTrefoil failed', e); }
+  try { initParticles(); } catch (e) { console.warn('[lobby] initParticles failed', e); }
+  try { window.NodiaGenreOrnaments?.init?.(); } catch (e) { console.warn('[lobby] init ornaments failed', e); }
+
+  // Estado base coherente del lobby
+  document.body.classList.add('theme-continue');
+  const defaultAction = document.querySelector('.act-btn-premium[data-action="continue"]');
+  if (defaultAction) defaultAction.classList.add('active');
+  switchWorld(currentWorld);
+  if (uiFx?.runIntroReveal) uiFx.runIntroReveal();
+});
+
+window.addEventListener('hashchange', handleInitialHash);
+
+function handleInitialHash() {
+  const hash = normalizeRouteHash(window.location.hash || '#lobby');
+  const wasLobby = lastRouteHash === '#lobby';
+  const isLobby = hash === '#lobby';
+  if (uiFx?.animateRouteChange) uiFx.animateRouteChange();
+  document.body.classList.toggle('mode-help', hash === '#ayuda');
+  document.body.classList.toggle('mode-settings', hash === '#ajustes');
+  const isTemplatesRoute = hash === '#plantillas' || hash === '#view-templates';
+  const activeLink = isTemplatesRoute
+    ? document.querySelector('.nav-list a[href="#plantillas"]')
+    : document.querySelector(`.nav-list a[href="${hash}"]`);
+  if (isTemplatesRoute) {
+    document.body.classList.add('show-templates');
+    renderGenreDeck({ reshuffle: true });
+    updateGenreDetails(currentGenreIndex);
+  }
+  else { document.body.classList.remove('show-templates'); }
+  if (activeLink) {
+    navLinks.forEach(l => l.classList.remove('active'));
+    activeLink.classList.add('active');
+    updateNavIndicator(activeLink);
+    if (hash === '#lobby') {
+      switchPanel('continue');
+      applyWorldHero();
+      const now = Date.now();
+      const enoughTimePassed = now - lastLobbyEntryAt >= LOBBY_REENTRY_INTERVAL_MS;
+      if (!wasLobby && enoughTimePassed) {
+        switchShowcaseGenre(1);
+        lastLobbyEntryAt = now;
+      }
+    } else if (hash === '#ayuda') {
+      switchPanel('ayuda');
+      applyWorldHero();
+    }
+  }
+  lastRouteHash = hash;
+}
+
+function updateNavIndicator(activeLink) {
+  if (!activeLink || !navIndicator) return;
+  navIndicator.style.width = `${activeLink.offsetWidth}px`;
+  navIndicator.style.left = `${activeLink.offsetLeft}px`;
+}
+
+function normalizeRouteHash(rawHash) {
+  return (rawHash || '#lobby').split('?')[0].replace(/\/+$/, '') || '#lobby';
+}
+
+function applyWorldHero() {
+  if (!heroTitleEl || !heroDescEl || !heroGenreChipEl || !Array.isArray(GENRES) || GENRES.length === 0) return;
+  const activeWorld = WORLDS[currentWorld] || WORLDS.active;
+  const genreId = currentShowcaseGenreId || activeWorld?.genreId || 'fantasia';
+  const worldGenre = GENRES.find((genre) => genre.id === genreId) || GENRES[0];
+  const copy = HERO_COPY_BY_GENRE[worldGenre.id] || HERO_COPY_BY_GENRE[genreVisualKey(worldGenre.id)];
+  if (!copy || !worldGenre) return;
+
+  heroTitleEl.classList.remove(...HERO_STYLE_CLASSES);
+  heroTitleEl.classList.remove('hero-genre-title');
+  void heroTitleEl.offsetWidth;
+  heroTitleEl.classList.add(copy.styleClass, 'hero-genre-title');
+
+  heroTitleEl.innerHTML = copy.title;
+  heroDescEl.textContent = copy.desc;
+  heroGenreChipEl.textContent = worldGenre.name;
+  if (heroLastPointEl) heroLastPointEl.textContent = `Último punto narrativo: ${activeWorld.lastPoint || extractStoryPoint(worldGenre.description)}`;
+  applyAuroraTheme(worldGenre);
+  if (uiFx?.animateHeroRefresh) uiFx.animateHeroRefresh();
+}
+
+function genreVisualKey(genreId) {
+  if (genreId === 'drama') return 'drama-magico';
+  return genreId;
+}
+
+function extractStoryPoint(text) {
+  const sentence = String(text || '').split('.').map((part) => part.trim()).find(Boolean);
+  if (!sentence) return 'Escena en progreso.';
+  return sentence;
+}
+
+function updateWorldContext(world) {
+  if (!world) return;
+  setShowcaseGenre(world.genreId || 'fantasia', { animate: false });
+  if (continueMetaEl) continueMetaEl.textContent = `${world.heroProject || 'Proyecto activo'} · ${world.lastEdited || 'Editado recientemente'}`;
+}
+
+function setOrbImageForGenre(genreId, animate = true) {
+  if (!lobbyOrbImg) return;
+  const rawSrc = LOBBY_AMBIENT_BY_GENRE[genreId] || LOBBY_AMBIENT_BY_GENRE.fantasia;
+  const nextSrc = resolveStartLobbyAssetUrl(rawSrc);
+  if (!animate) {
+    lobbyOrbImg.src = nextSrc;
+    lobbyOrbImg.alt = `Ambientación ${genreId}`;
+    return;
+  }
+
+  lobbyOrbImg.style.opacity = '0.12';
+  setTimeout(() => {
+    lobbyOrbImg.src = nextSrc;
+    lobbyOrbImg.alt = `Ambientación ${genreId}`;
+    lobbyOrbImg.style.opacity = '1';
+  }, 140);
+}
+
+function setShowcaseGenre(genreId, { animate = true } = {}) {
+  const genre = GENRES.find((item) => item.id === genreId);
+  const activeWorld = WORLDS[currentWorld] || WORLDS.active;
+  if (!genre) return;
+
+  currentShowcaseGenreId = genre.id;
+  setOrbImageForGenre(genre.id, animate);
+
+  if (lobbyOrbTitle) lobbyOrbTitle.textContent = genre.name;
+  if (lobbyOrbSub) lobbyOrbSub.textContent = `Arquetipo visual: ${genre.character?.name || 'NODIA'}`;
+  if (lobbyWorldSceneEl) lobbyWorldSceneEl.textContent = `Subgénero guía: ${genre.subgenres?.[0] || 'N/A'}`;
+  if (lobbyWorldStateEl) lobbyWorldStateEl.textContent = `Estado: ${activeWorld.status || 'Borrador en progreso'}`;
+  if (continueMetaEl) continueMetaEl.textContent = `${activeWorld.heroProject || 'Proyecto activo'} · ${genre.name}`;
+
+  applyWorldHero();
+}
+
+function switchShowcaseGenre(step = 1) {
+  if (!Array.isArray(GENRES) || GENRES.length === 0) return;
+  const currentIndex = Math.max(0, GENRES.findIndex((item) => item.id === currentShowcaseGenreId));
+  const nextIndex = (currentIndex + step + GENRES.length) % GENRES.length;
+  const nextGenre = GENRES[nextIndex];
+  if (!nextGenre) return;
+  setShowcaseGenre(nextGenre.id, { animate: true });
+}
+
+function startShowcaseRotation() {
+  if (showcaseRotationTimer) clearInterval(showcaseRotationTimer);
+}
+
+function restartShowcaseRotation() {
+  if (showcaseRotationTimer) clearInterval(showcaseRotationTimer);
+}
+
+// ── MAZO MANUAL v3.0 ──
+function createShuffledDeck() {
+  const copy = [...GENRES];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function renderGenreDeck({ reshuffle = false } = {}) {
+  const deckEl = document.getElementById('genre-deck');
+  if (!deckEl) return;
+
+  if (!Array.isArray(deckGenres) || deckGenres.length === 0 || reshuffle) {
+    deckGenres = createShuffledDeck();
+    currentGenreIndex = 0;
+  }
+
+  deckEl.innerHTML = '';
+
+  deckGenres.forEach((genre, index) => {
+    // Usar buildCard del tinder-engine si existe, si no, fallback inline
+    let card;
+    if (typeof buildCard === 'function') {
+      card = buildCard(genre, { showBio: false, showTags: false });
+    } else {
+      card = document.createElement('div');
+      card.className = 'genre-card';
+      card.dataset.genreId = genre.id;
+      const artwork = genre.artwork
+        ? `<div class="card-artwork"><img src="${resolveStartLobbyAssetUrl(genre.artwork)}" alt="${genre.character?.name || genre.name}"></div>`
+        : `<div class="card-artwork art-fallback-neutral"></div>`;
+      card.innerHTML = `${artwork}<div class="card-gradient"></div><div class="card-content"><h2 class="card-genre-name">${genre.name}</h2></div>`;
+    }
+    card.dataset.index = index;
+    card.style.zIndex = deckGenres.length - index;

@@ -1,0 +1,115 @@
+/* Zdog Module Part 016 - Cylinder
+   Format: Modular Fragment <= 220 lines */
+(function(t,e) {
+  if(typeof module=="object"&&module.exports) {
+    module.exports=e(require("./boilerplate"),require("./path-command"),require("./shape"),require("./group"),require("./ellipse"))
+  }
+  else {
+    var r=t.Zdog;
+    r.Cylinder=e(r,r.PathCommand,r.Shape,r.Group,r.Ellipse)
+  }
+}
+)(this,function t(e,r,i,n,o) {
+  function s() {
+  }
+  var a=n.subclass( {
+    color:"#333",updateSort:true
+  }
+  );
+  a.prototype.create=function() {
+    n.prototype.create.apply(this,arguments);
+    this.pathCommands=[new r("move",[ {
+    }
+    ]),new r("line",[ {
+    }
+    ])]
+  };
+  a.prototype.render=function(t,e) {
+    this.renderCylinderSurface(t,e);
+    n.prototype.render.apply(this,arguments)
+  };
+  a.prototype.renderCylinderSurface=function(t,e) {
+    if(!this.visible) {
+      return
+    }
+    var r=this.getRenderElement(t,e);
+    var i=this.frontBase;
+    var n=this.rearBase;
+    var o=i.renderNormal.magnitude();
+    var s=i.diameter*o+i.getLineWidth();
+    this.pathCommands[0].renderPoints[0].set(i.renderOrigin);
+    this.pathCommands[1].renderPoints[0].set(n.renderOrigin);
+    if(e.isCanvas) {
+      t.lineCap="butt"
+    }
+    e.renderPath(t,r,this.pathCommands);
+    e.stroke(t,r,true,this.color,s);
+    e.end(t,r);
+    if(e.isCanvas) {
+      t.lineCap="round"
+    }
+  };
+  var h="http://www.w3.org/2000/svg";
+  a.prototype.getRenderElement=function(t,e) {
+    if(!e.isSvg) {
+      return
+    }
+    if(!this.svgElement) {
+      this.svgElement=document.createElementNS(h,"path")
+    }
+    return this.svgElement
+  };
+  a.prototype.copyGraph=s;
+  var u=o.subclass();
+  u.prototype.copyGraph=s;
+  var p=i.subclass( {
+    diameter:1,length:1,frontFace:undefined,fill:true
+  }
+  );
+  var d=e.TAU;
+  p.prototype.create=function() {
+    i.prototype.create.apply(this,arguments);
+    this.group=new a( {
+      addTo:this,color:this.color,visible:this.visible
+    }
+    );
+    var t=this.length/2;
+    var e=this.backface||true;
+    this.frontBase=this.group.frontBase=new o( {
+      addTo:this.group,diameter:this.diameter,translate: {
+        z:t
+      }, rotate: {
+        y:d/2
+      }, color:this.color,stroke:this.stroke,fill:this.fill,backface:this.frontFace||e,visible:this.visible
+    }
+    );
+    this.rearBase=this.group.rearBase=this.frontBase.copy( {
+      translate: {
+        z:-t
+      }, rotate: {
+        y:0
+      }, backface:e
+    }
+    )
+  };
+  p.prototype.render=function() {};var c=["stroke","fill","color","visible"];
+  c.forEach(function(e) {
+    var r="_"+e;
+    Object.defineProperty(p.prototype,e, {
+      get:function() {
+        return this[r]
+      }, set:function(t) {
+        this[r]=t;
+        if(this.frontBase) {
+          this.frontBase[e]=t;
+          this.rearBase[e]=t;
+          this.group[e]=t
+        }
+      }
+    }
+    )
+  }
+  );
+  return p
+}
+);

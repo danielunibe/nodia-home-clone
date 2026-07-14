@@ -1,0 +1,229 @@
+const worlds = {
+  ethyria: { title: "PROYECTO ACTIVO", subtitle: "Mundo narrativo interactivo · Escena inicial", last: "Escena inicial", next: "Revisar motivación central", progress: 65, visualClass: "world-ethyria" },
+  nuevo: { title: "NUEVO MUNDO", subtitle: "Castillo épico de día · Inicio de aventura", last: "Sin iniciar", next: "Definir premisa", progress: 5, visualClass: "world-nuevo" },
+  idea: { title: "IDEA RÁPIDA", subtitle: "Chispa creativa · Captura al vuelo", last: "Boceto pendiente", next: "Expandir a escena", progress: 15, visualClass: "world-idea" }
+};
+const heroByWorld = {
+  ethyria: { title: "Retoma tu historia justo donde la dejaste.", subtitle: "Revisa tus proyectos guardados y continúa con la mejor ruta narrativa." },
+  nuevo: { title: "Hoy nace un mundo nuevo.", subtitle: "Define premisa, tono y dirección para construir una historia memorable." },
+  idea: { title: "Una idea breve puede convertirse en saga.", subtitle: "Captura el impulso creativo y conviértelo en escena, nodo y arco." }
+};
+
+const buttons = document.querySelectorAll(".world-option");
+const projectCards = document.querySelectorAll(".project-card");
+const worldVisual = document.getElementById("worldVisual");
+const heroTitle = document.getElementById("heroTitle");
+const heroSubtitle = document.getElementById("heroSubtitle");
+const heroCopyLock = document.getElementById("heroCopyLock");
+const innerStars = document.getElementById("innerStars");
+const daySparkles = document.getElementById("daySparkles");
+const savedProjectsPanel = document.getElementById("savedProjectsPanel");
+const rings = document.getElementById("rings");
+const pineScene = document.getElementById("pineScene");
+
+let currentWorld = "ethyria";
+const introWithProject = [
+  "La historia te está esperando donde la dejaste.",
+  "Cada capítulo guarda una decisión pendiente.",
+  "Hoy puedes convertir conflicto en destino.",
+  "Tu mundo sigue vivo: dale el siguiente pulso.",
+  "Regresa al punto donde la trama respira fuerte.",
+];
+const introStart = [
+  "Había una vez... y la pluma decidió abrir un mundo.",
+  "En un castillo muy lejano... nació una promesa narrativa.",
+  "Toda leyenda comienza con una primera escena.",
+  "Hoy puede nacer el universo que nadie ha contado.",
+  "Empieza pequeño: una escena puede encender una saga.",
+];
+
+function updateHeroCopy(key) {
+  const copy = heroByWorld[key] ?? heroByWorld.ethyria;
+  if (heroTitle) heroTitle.textContent = copy.title;
+  if (heroSubtitle) heroSubtitle.textContent = copy.subtitle;
+}
+
+function animateFairyTextSwap(nextKey) {
+  if (!heroCopyLock) {
+    updateHeroCopy(nextKey);
+    return;
+  }
+  heroCopyLock.classList.remove("fairy-in");
+  heroCopyLock.classList.add("fairy-out");
+
+  window.setTimeout(() => {
+    updateHeroCopy(nextKey);
+    heroCopyLock.classList.remove("fairy-out");
+    heroCopyLock.classList.add("fairy-in");
+  }, 170);
+}
+
+function updatePanels(key) {
+  if (!savedProjectsPanel) return;
+  savedProjectsPanel.style.display = key === "ethyria" ? "block" : "none";
+}
+
+function seedInnerStars() {
+  if (!innerStars) return;
+  if (innerStars.children.length > 0) return;
+  const stars = Array.from({ length: 36 }, (_, index) => ({
+    id: index,
+    left: `${6 + Math.random() * 88}%`,
+    top: `${6 + Math.random() * 52}%`,
+    delay: `${Math.random() * -6}s`,
+    duration: `${6 + Math.random() * 8}s`,
+    size: `${0.8 + Math.random() * 1.8}px`,
+    poly: index % 4 === 0,
+  }));
+  stars.forEach((star) => {
+    const node = document.createElement("span");
+    if (star.poly) node.classList.add("poly-star");
+    node.style.left = star.left;
+    node.style.top = star.top;
+    node.style.width = star.size;
+    node.style.height = star.size;
+    node.style.animationDelay = star.delay;
+    node.style.animationDuration = star.duration;
+    innerStars.appendChild(node);
+  });
+}
+
+function seedDaySparkles() {
+  if (!daySparkles) return;
+  if (daySparkles.children.length > 0) return;
+  const sparkles = Array.from({ length: 22 }, (_, index) => ({
+    left: `${8 + ((index * 31) % 84)}%`,
+    top: `${9 + ((index * 37) % 36)}%`,
+    size: `${1.1 + (index % 3) * 0.55}px`,
+    opacity: 0.18 + (index % 5) * 0.08,
+  }));
+  sparkles.forEach((sparkle) => {
+    const el = document.createElement("span");
+    el.style.left = sparkle.left;
+    el.style.top = sparkle.top;
+    el.style.width = sparkle.size;
+    el.style.height = sparkle.size;
+    el.style.opacity = `${sparkle.opacity}`;
+    daySparkles.appendChild(el);
+  });
+}
+
+function makeRow(prefix, count, startX, stepX, y, baseScale, fill, opacity, variants) {
+  return Array.from({ length: count }, (_, index) => ({
+    id: `${prefix}-${String(index + 1).padStart(2, "0")}`,
+    x: startX + index * stepX + ((index % 2 === 0 ? -1 : 1) * ((index % 3) * 8)),
+    y: y + ((index % 3) - 1) * 14,
+    scale: baseScale + (index % 4) * 0.1,
+    fill,
+    opacity,
+    flip: index % 2 === 1,
+    variant: variants[index % variants.length],
+  }));
+}
+
+function pinePath(variant) {
+  const shapes = {
+    tall: "M0 -392 C-18 -338 -42 -302 -76 -272 C-54 -276 -36 -270 -20 -254 C-48 -218 -82 -188 -122 -166 C-88 -170 -60 -160 -34 -138 C-70 -108 -108 -80 -154 -58 C-104 -62 -66 -48 -22 -18 C-10 -10 10 -10 22 -18 C66 -48 104 -62 154 -58 C108 -80 70 -108 34 -138 C60 -160 88 -170 122 -166 C82 -188 48 -218 20 -254 C36 -270 54 -276 76 -272 C42 -302 18 -338 0 -392 Z",
+    wide: "M0 -350 C-30 -310 -68 -278 -118 -252 C-82 -258 -54 -250 -28 -232 C-68 -198 -112 -170 -166 -150 C-118 -154 -82 -144 -46 -120 C-94 -92 -146 -66 -206 -46 C-138 -52 -88 -38 -30 -14 C-12 -7 12 -7 30 -14 C88 -38 138 -52 206 -46 C146 -66 94 -92 46 -120 C82 -144 118 -154 166 -150 C112 -170 68 -198 28 -232 C54 -250 82 -258 118 -252 C68 -278 30 -310 0 -350 Z",
+    thin: "M0 -430 C-14 -362 -36 -318 -66 -286 C-46 -288 -32 -280 -16 -264 C-42 -226 -70 -194 -108 -170 C-76 -174 -52 -162 -30 -138 C-60 -104 -94 -76 -134 -54 C-90 -58 -58 -44 -20 -16 C-8 -8 8 -8 20 -16 C58 -44 90 -58 134 -54 C94 -76 60 -104 30 -138 C52 -162 76 -174 108 -170 C70 -194 42 -226 16 -264 C32 -280 46 -288 66 -286 C36 -318 14 -362 0 -430 Z",
+    heavy: "M0 -368 C-34 -322 -78 -286 -134 -258 C-92 -264 -58 -256 -30 -238 C-76 -206 -126 -178 -188 -158 C-134 -160 -92 -148 -52 -124 C-106 -96 -164 -70 -232 -50 C-154 -54 -96 -40 -32 -14 C-14 -7 14 -7 32 -14 C96 -40 154 -54 232 -50 C164 -70 106 -96 52 -124 C92 -148 134 -160 188 -158 C126 -178 76 -206 30 -238 C58 -256 92 -264 134 -258 C78 -286 34 -322 0 -368 Z",
+  };
+  return shapes[variant] ?? shapes.tall;
+}
+
+function appendPine(parent, pine) {
+  const ns = "http://www.w3.org/2000/svg";
+  const g = document.createElementNS(ns, "g");
+  g.setAttribute("transform", `translate(${pine.x} ${pine.y}) scale(${pine.flip ? -pine.scale : pine.scale} ${pine.scale})`);
+  g.setAttribute("opacity", `${pine.opacity ?? 1}`);
+
+  const trunk = document.createElementNS(ns, "path");
+  trunk.setAttribute("d", "M-10 0 C-9 -70 -7 -136 0 -196 C8 -136 10 -70 10 0 Z");
+  trunk.setAttribute("fill", "#2a1711");
+  trunk.setAttribute("opacity", "0.72");
+  g.appendChild(trunk);
+
+  const crown = document.createElementNS(ns, "path");
+  crown.setAttribute("d", pinePath(pine.variant));
+  crown.setAttribute("fill", pine.fill);
+  g.appendChild(crown);
+
+  parent.appendChild(g);
+}
+
+function seedPineWorld() {
+  if (!pineScene) return;
+  const bg = pineScene.querySelector("#backgroundPines");
+  const rear = pineScene.querySelector("#rearPines");
+  const mid = pineScene.querySelector("#middlePines");
+  const front = pineScene.querySelector("#frontPines");
+  if (!bg || !rear || !mid || !front) return;
+  if (bg.childNodes.length > 0) return;
+
+  const backgroundPines = makeRow("background", 15, -160, 86, 770, 2.2, "#25483f", 0.52, ["thin", "tall", "wide", "heavy"]);
+  const rearPines = makeRow("rear", 14, -125, 92, 850, 1.9, "#17352f", 0.72, ["tall", "wide", "thin"]);
+  const middlePines = makeRow("middle", 13, -110, 100, 930, 1.62, "#0d2522", 0.9, ["wide", "heavy", "tall", "thin"]);
+  const frontPines = [
+    { id: "front-01", x: -135, y: 1095, scale: 2.55, fill: "#020909", variant: "heavy" },
+    { id: "front-02", x: 54, y: 1075, scale: 1.9, fill: "#031010", variant: "wide" },
+    { id: "front-03", x: 210, y: 1100, scale: 1.52, fill: "#041514", variant: "tall", opacity: 0.96 },
+    { id: "front-04", x: 795, y: 1100, scale: 1.54, fill: "#041514", variant: "tall", opacity: 0.96, flip: true },
+    { id: "front-05", x: 950, y: 1075, scale: 1.96, fill: "#031010", variant: "wide", flip: true },
+    { id: "front-06", x: 1135, y: 1095, scale: 2.6, fill: "#020909", variant: "heavy", flip: true },
+  ];
+
+  backgroundPines.forEach((p) => appendPine(bg, p));
+  rearPines.forEach((p) => appendPine(rear, p));
+  middlePines.forEach((p) => appendPine(mid, p));
+  frontPines.forEach((p) => appendPine(front, p));
+}
+
+function selectWorld(key) {
+  if (!worlds[key] || key === currentWorld) return;
+
+  currentWorld = key;
+
+  buttons.forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.world === key);
+  });
+  projectCards.forEach((card) => {
+    card.classList.toggle("active", card.dataset.world === key && !card.classList.contains("new"));
+  });
+
+  worldVisual.classList.add("changing");
+  rings.classList.add("pulse");
+  document.body.setAttribute("data-world", key);
+
+  window.setTimeout(() => {
+    const data = worlds[key];
+
+    worldVisual.classList.remove("world-ethyria", "world-nuevo", "world-idea");
+    worldVisual.classList.add(data.visualClass);
+
+    updatePanels(key);
+    animateFairyTextSwap(key);
+
+    window.requestAnimationFrame(() => {
+      worldVisual.classList.remove("changing");
+    });
+  }, 260);
+
+  window.setTimeout(() => {
+    rings.classList.remove("pulse");
+  }, 800);
+}
+
+buttons.forEach((btn) => {
+  btn.addEventListener("click", () => selectWorld(btn.dataset.world));
+});
+
+projectCards.forEach((card) => {
+  card.addEventListener("click", () => selectWorld(card.dataset.world));
+});
+
+document.body.setAttribute("data-world", currentWorld);
+seedInnerStars();
+seedDaySparkles();
+seedPineWorld();
+updateHeroCopy(currentWorld);
+updatePanels(currentWorld);

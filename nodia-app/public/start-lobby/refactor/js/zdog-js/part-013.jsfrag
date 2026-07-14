@@ -1,0 +1,69 @@
+/* Zdog Module Part 013 - Ellipse
+   Format: Modular Fragment <= 220 lines */
+(function(t,e) {
+  if(typeof module=="object"&&module.exports) {
+    module.exports=e(require("./shape"))
+  }
+  else {
+    var r=t.Zdog;
+    r.Ellipse=e(r.Shape)
+  }
+}
+)(this,function t(e) {
+  var r=e.subclass( {
+    diameter:1,width:undefined,height:undefined,quarters:4,closed:false
+  }
+  );
+  r.prototype.setPath=function() {
+    var t=this.width!=undefined?this.width:this.diameter;
+    var e=this.height!=undefined?this.height:this.diameter;
+    var r=t/2;
+    var i=e/2;
+    this.path=[ {
+      x:0,y:-i
+    }, {
+      arc:[ {
+        x:r,y:-i
+      }, {
+        x:r,y:0
+      }
+      ]
+    }
+    ];
+    if(this.quarters>1) {
+      this.path.push( {
+        arc:[ {
+          x:r,y:i
+        }, {
+          x:0,y:i
+        }
+        ]
+      }
+      )
+    }
+    if(this.quarters>2) {
+      this.path.push( {
+        arc:[ {
+          x:-r,y:i
+        }, {
+          x:-r,y:0
+        }
+        ]
+      }
+      )
+    }
+    if(this.quarters>3) {
+      this.path.push( {
+        arc:[ {
+          x:-r,y:-i
+        }, {
+          x:0,y:-i
+        }
+        ]
+      }
+      )
+    }
+  };
+  return r
+}
+);

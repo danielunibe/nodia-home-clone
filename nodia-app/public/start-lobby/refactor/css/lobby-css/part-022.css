@@ -1,0 +1,48 @@
+  color: rgba(247, 251, 255, 0.88) !important;
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--genre-color, #C9A84C) 32%, transparent)) !important;
+}
+
+#view-templates #deckCounter {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.085em !important;
+  color: rgba(247, 251, 255, 0.97) !important;
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.14),
+    0 0 14px color-mix(in srgb, var(--genre-color, #C9A84C) 26%, transparent) !important;
+}
+
+/* ── FINAL OVERRIDES v9.6 (Plantillas: píldoras con iconografía SVG) ── */
+#view-templates .genre-meta-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  padding: 6px 10px !important;
+}
+
+#view-templates .genre-meta-pill .meta-pill-icon {
+  width: 14px !important;
+  height: 14px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: color-mix(in srgb, var(--genre-color, #C9A84C) 60%, #fff 40%) !important;
+  opacity: 0.95 !important;
+}
+
+#view-templates .genre-meta-pill .meta-pill-icon svg {
+  width: 100% !important;
+  height: 100% !important;
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 1.9 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+#view-templates .genre-meta-pill .meta-pill-value {
+  font-size: 12px !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: rgba(245, 249, 255, 0.95) !important;
+}

@@ -1,0 +1,158 @@
+/* Refactor manifest for lobby.css.
+   Auto-split into <= 220 line components. */
+
+@import url("./refactor/css/lobby-css/part-001.css");
+
+@import url("./refactor/css/lobby-css/part-002.css");
+
+@import url("./refactor/css/lobby-css/part-003.css");
+
+@import url("./refactor/css/lobby-css/part-004.css");
+
+@import url("./refactor/css/lobby-css/part-005.css");
+
+@import url("./refactor/css/lobby-css/part-006.css");
+
+@import url("./refactor/css/lobby-css/part-007.css");
+
+@import url("./refactor/css/lobby-css/part-008.css");
+
+@import url("./refactor/css/lobby-css/part-009.css");
+
+@import url("./refactor/css/lobby-css/part-010.css");
+
+@import url("./refactor/css/lobby-css/part-011.css");
+
+@import url("./refactor/css/lobby-css/part-012.css");
+
+@import url("./refactor/css/lobby-css/part-013.css");
+
+@import url("./refactor/css/lobby-css/part-014.css");
+
+@import url("./refactor/css/lobby-css/part-015.css");
+
+@import url("./refactor/css/lobby-css/part-016.css");
+
+@import url("./refactor/css/lobby-css/part-017.css");
+
+@import url("./refactor/css/lobby-css/part-018.css");
+
+@import url("./refactor/css/lobby-css/part-019.css");
+
+@import url("./refactor/css/lobby-css/part-020.css");
+
+@import url("./refactor/css/lobby-css/part-021.css");
+
+@import url("./refactor/css/lobby-css/part-022.css");
+
+/* ── FINAL OVERRIDES v9.7 (Lobby: relación de aspecto + bloque inferior ordenado) ── */
+.q-portal {
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 0.52vh !important;
+}
+
+.lobby-orb-wrap {
+  width: min(34vh, 100%) !important;
+}
+
+.lobby-orb {
+  width: 100% !important;
+  aspect-ratio: 4 / 5 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  border-radius: 1.35vh !important;
+  background:
+    radial-gradient(140% 90% at 50% 100%, rgba(0,0,0,0.35), transparent 58%),
+    rgba(7, 12, 21, 0.84) !important;
+}
+
+.lobby-orb img#lobbyOrbImg {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  transform: none !important;
+  padding: 0.8vh !important;
+}
+
+.lobby-orb-caption,
+.lobby-orb-title,
+.lobby-orb-sub,
+.lobby-world-intel,
+.lobby-world-actions,
+.lobby-orb-controls {
+  width: min(34vh, 100%) !important;
+}
+
+.lobby-world-intel {
+  margin-top: 0.56vh !important;
+  gap: 0.38vh !important;
+}
+
+.lobby-world-actions {
+  margin-top: 0.62vh !important;
+  gap: 0.58vh !important;
+}
+
+.world-action-btn {
+  min-height: 3.4vh !important;
+}
+
+.lobby-orb-controls {
+  margin-top: 0.58vh !important;
+  display: flex !important;
+  gap: 0.6vh !important;
+}
+
+/* Limpieza de inicio: ocultar líneas de contexto no solicitadas */
+#heroProjectLine,
+#heroContextLine {
+  display: none !important;
+}
+
+#view-templates .templates-breadcrumb,
+#view-templates .view-sub {
+  display: none !important;
+}
+
+/* Plantillas: arquetipo fuera de caja + estética dinámica */
+#view-templates .genre-archetype-strip {
+  display: grid !important;
+  gap: 8px !important;
+  margin-top: 4px !important;
+  margin-bottom: 10px !important;
+  padding: 10px 12px !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+    rgba(8, 13, 24, 0.5) !important;
+  box-shadow:
+    0 10px 22px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.14) !important;
+}
+
+#view-templates .genre-archetype-strip .detail-character-note {
+  margin: 0 !important;
+  background: rgba(8, 12, 22, 0.34) !important;
+  border-color: rgba(255,255,255,0.14) !important;
+}
+
+#view-templates .genre-archetype-strip .genre-meta-row {
+  margin: 0 !important;
+}
+
+#view-templates .genre-archetype-strip .genre-meta-pill {
+  backdrop-filter: blur(6px);
+}
+
+#view-templates .genre-archetype-strip .detail-icon {
+  animation: archetypePulse 4.8s ease-in-out infinite;
+}
+
+@keyframes archetypePulse {
+  0%, 100% { transform: translateY(0); filter: brightness(1); }
+  50% { transform: translateY(-1px); filter: brightness(1.15); }
+}
+

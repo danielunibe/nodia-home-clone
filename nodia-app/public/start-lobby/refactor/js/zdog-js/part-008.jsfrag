@@ -1,0 +1,76 @@
+/* Zdog Module Part 008 - PathCommand
+   Format: Modular Fragment <= 220 lines */
+(function(t,e) {
+  if(typeof module=="object"&&module.exports) {
+    module.exports=e(require("./vector"))
+  }
+  else {
+    var r=t.Zdog;
+    r.PathCommand=e(r.Vector)
+  }
+}
+)(this,function t(i) {
+  function e(t,e,r) {
+    this.method=t;
+    this.points=e.map(n);
+    this.renderPoints=e.map(o);
+    this.previousPoint=r;
+    this.endRenderPoint=this.renderPoints[this.renderPoints.length-1];
+    if(t=="arc") {
+      this.controlPoints=[new i,new i]
+    }
+  }
+  function n(t) {
+    if(t instanceof i) {
+      return t
+    }
+    else {
+      return new i(t)
+    }
+  }
+  function o(t) {
+    return new i(t)
+  }
+  e.prototype.reset=function() {
+    var i=this.points;
+    this.renderPoints.forEach(function(t,e) {
+      var r=i[e];
+      t.set(r)
+    }
+    )
+  };
+  e.prototype.transform=function(e,r,i) {
+    this.renderPoints.forEach(function(t) {
+      t.transform(e,r,i)
+    }
+    )
+  };
+  e.prototype.render=function(t,e,r) {
+    return this[this.method](t,e,r)
+  };
+  e.prototype.move=function(t,e,r) {
+    return r.move(t,e,this.renderPoints[0])
+  };
+  e.prototype.line=function(t,e,r) {
+    return r.line(t,e,this.renderPoints[0])
+  };
+  e.prototype.bezier=function(t,e,r) {
+    var i=this.renderPoints[0];
+    var n=this.renderPoints[1];
+    var o=this.renderPoints[2];
+    return r.bezier(t,e,i,n,o)
+  };
+  var h=9/16;
+  e.prototype.arc=function(t,e,r) {
+    var i=this.previousPoint;
+    var n=this.renderPoints[0];
+    var o=this.renderPoints[1];
+    var s=this.controlPoints[0];
+    var a=this.controlPoints[1];
+    s.set(i).lerp(n,h);
+    a.set(o).lerp(n,h);
+    return r.bezier(t,e,s,a,o)
+  };
+  return e
+}
+);

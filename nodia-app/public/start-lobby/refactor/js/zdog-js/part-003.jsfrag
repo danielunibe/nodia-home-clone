@@ -1,0 +1,63 @@
+/* Zdog Module Part 003 - SvgRenderer
+   Format: Modular Fragment <= 220 lines */
+(function(t,e) {
+  if(typeof module=="object"&&module.exports) {
+    module.exports=e()
+  }
+  else {
+    t.Zdog.SvgRenderer=e()
+  }
+}
+)(this,function t() {
+  var o= {
+    isSvg:true
+  };
+  var e=o.round=function(t) {
+    return Math.round(t*1e3)/1e3
+  };
+  function s(t) {
+    return e(t.x)+","+e(t.y)+" "
+  }
+  o.begin=function() {};o.move=function(t,e,r) {
+    return"M"+s(r)
+  };
+  o.line=function(t,e,r) {
+    return"L"+s(r)
+  };
+  o.bezier=function(t,e,r,i,n) {
+    return"C"+s(r)+s(i)+s(n)
+  };
+  o.closePath=function() {
+    return"Z"
+  };
+  o.setPath=function(t,e,r) {
+    e.setAttribute("d",r)
+  };
+  o.renderPath=function(e,r,t,i) {
+    var n="";
+    t.forEach(function(t) {
+      n+=t.render(e,r,o)
+    }
+    );
+    if(i) {
+      n+=this.closePath(e,r)
+    }
+    this.setPath(e,r,n)
+  };
+  o.stroke=function(t,e,r,i,n) {
+    if(!r) {
+      return
+    }
+    e.setAttribute("stroke",i);
+    e.setAttribute("stroke-width",n)
+  };
+  o.fill=function(t,e,r,i) {
+    var n=r?i:"none";
+    e.setAttribute("fill",n)
+  };
+  o.end=function(t,e) {
+    t.appendChild(e)
+  };
+  return o
+}
+);

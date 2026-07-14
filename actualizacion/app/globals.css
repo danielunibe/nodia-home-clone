@@ -1,0 +1,325 @@
+@import "tailwindcss";
+
+*, *::before, *::after {
+  outline: none !important;
+}
+
+:root {
+  --bg: #151619;
+  --canvas: #1f2023;
+  --text: #e6e6e6;
+  --text-2: #8a8f98;
+  --text-3: #c2c6ce;
+  --lime: #c4ff00;
+  --border: rgba(255, 255, 255, 0.08); /* Estándar unificado */
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* Mejora de Fondo: Cuadrícula Técnica Geométrica Sutil */
+body::before {
+  display: none;
+}
+
+/* Base Glassmorphism Unificada */
+.glass-surface {
+  background: #1b1c1f;
+}
+
+@theme {
+  --animate-ios-flash: iosGlowFlash 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-glow: fadeInGlow 0.5s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  --animate-swap: swapIcons 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes iosGlowFlash {
+  0% { opacity: 0.8; transform: scale(0.2); filter: blur(4px); }
+  50% { opacity: 1; filter: blur(12px); }
+  100% { opacity: 0; transform: scale(2.5); filter: blur(20px); }
+}
+
+@keyframes fadeInGlow {
+  from { opacity: 0; transform: scale(0.8) translateY(10px); }
+  to { opacity: 0.7; transform: scale(1) translateY(0); }
+}
+
+@keyframes swapIcons {
+  0% { opacity: 0; transform: translateY(-8px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.canvas-wrap {
+  width: 100vw;
+  height: 100vh;
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: var(--bg);
+}
+
+.canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--canvas);
+  border-radius: 32px;
+  overflow: hidden;
+}
+
+/* Update dot pattern to support grid transition */
+.canvas::before {
+  content: "";
+  position: absolute;
+  inset: -100%;
+
+  /* Gradiente dual para puntos y cuadrícula */
+  background-image:
+    radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, var(--dot-opacity, 0.08)) var(--dot-size, 1.5px),
+      transparent var(--dot-size, 1.5px)
+    ),
+    linear-gradient(
+      to right,
+      rgba(255, 255, 255, var(--grid-opacity, 0)) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, var(--grid-opacity, 0)) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    calc(28px * var(--zoom, 1)) calc(28px * var(--zoom, 1)),
+    calc(var(--grid-size, 40px) * var(--zoom, 1))
+      calc(var(--grid-size, 40px) * var(--zoom, 1)),
+    calc(var(--grid-size, 40px) * var(--zoom, 1))
+      calc(var(--grid-size, 40px) * var(--zoom, 1));
+
+  /* Para compensar inset: -100% we shift the background origin to the center so we maintain (0,0) stability */
+  background-position:
+    calc(50% + var(--pan-x, 0px)) calc(50% + var(--pan-y, 0px)),
+    calc(50% + var(--pan-x, 0px)) calc(50% + var(--pan-y, 0px)),
+    calc(50% + var(--pan-x, 0px)) calc(50% + var(--pan-y, 0px));
+
+  opacity: 1;
+  pointer-events: none;
+  /* Always repeated dot grid without fading borders */
+  transition: --grid-opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), --dot-opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  transform-style: preserve-3d;
+}
+
+.canvas[data-grid-type="grid"]::before {
+  --grid-hue: var(--grid-hue-dynamic, 220);
+  --grid-gap: calc(var(--grid-gap-dynamic, 12px) * var(--zoom, 1));
+  --grid-opac: var(--grid-opacity-dynamic, 0.35);
+  
+  --grid-minor: hsl(var(--grid-hue) 60% 80% / calc(var(--grid-opac) * 0.25)); /* Lighter for dark theme */
+  --grid-major: hsl(var(--grid-hue) 60% 80% / calc(var(--grid-opac) * 0.6));
+  --grid-cross: hsl(var(--grid-hue) 60% 80% / var(--grid-opac));
+  
+  --paper-lines-y: linear-gradient(var(--grid-minor) 0px 1px, transparent 1px var(--grid-gap));
+  --paper-lines-x: linear-gradient(to right, var(--grid-minor) 0px 1px, transparent 1px var(--grid-gap));
+  --paper-lines-y-major: linear-gradient(var(--grid-major) 0px 1px, transparent 1px calc(var(--grid-gap) * 5));
+  --paper-lines-x-major: linear-gradient(to right, var(--grid-major) 0px 1px, transparent 1px calc(var(--grid-gap) * 5));
+  --paper-cross-y: linear-gradient(var(--grid-cross) 0px 1px, transparent 1px calc(var(--grid-gap) * 5));
+  --paper-cross-x: linear-gradient(to right, var(--grid-cross) 0px 1px, transparent 1px calc(var(--grid-gap) * 5));
+  
+  /* we will just make it transparent in the center to highlight cross if we want, but mask might be complex, let's keep it simple major/minor + crosses */
+  --paper-cross-mask: radial-gradient(circle at center, transparent calc(var(--grid-gap)/2), transparent calc(var(--grid-gap)/2) 100%);
+  
+  background-image: 
+      var(--paper-lines-y), 
+      var(--paper-lines-x),
+      var(--paper-lines-y-major), 
+      var(--paper-lines-x-major), 
+      var(--paper-cross-mask),
+      var(--paper-cross-y), 
+      var(--paper-cross-x);
+
+  background-size:
+      var(--grid-gap) var(--grid-gap), 
+      var(--grid-gap) var(--grid-gap), 
+      calc(var(--grid-gap) * 5) calc(var(--grid-gap) * 5),
+      calc(var(--grid-gap) * 5) calc(var(--grid-gap) * 5),
+      calc(var(--grid-gap) * 5) calc(var(--grid-gap) * 5),
+      calc(var(--grid-gap) * 5) calc(var(--grid-gap) * 5),
+      calc(var(--grid-gap) * 5) calc(var(--grid-gap) * 5);
+
+  background-repeat: repeat;
+  
+  background-position: 
+      calc(50% + var(--pan-x, 0px)) calc(50% + var(--pan-y, 0px)),
+      calc(50% + var(--pan-x, 0px)) calc(50% + var(--pan-y, 0px)),
+      calc(50% + var(--pan-x, 0px)) calc(50% + var(--pan-y, 0px)),
+      calc(50% + var(--pan-x, 0px)) calc(50% + var(--pan-y, 0px)),
+      calc(50% + var(--pan-x, 0px) - var(--grid-gap) * 2.5) calc(50% + var(--pan-y, 0px) - var(--grid-gap) * 2.5),
+      calc(50% + var(--pan-x, 0px)) calc(50% + var(--pan-y, 0px)),
+      calc(50% + var(--pan-x, 0px)) calc(50% + var(--pan-y, 0px));
+
+  opacity: 1; /* control over grid container is done by mask */
+}
+
+.canvas.view-3d::before {
+  transform: perspective(1000px) rotateX(60deg) rotateZ(30deg) scale(0.8);
+}
+
+.canvas.view-orto::before {
+  transform: rotateX(45deg) rotateZ(45deg) scale(0.75);
+}
+
+.canvas.view-canvas::before {
+  transform: perspective(1200px) rotateX(45deg) rotateZ(0deg) scale(0.85);
+}
+
+@property --grid-opacity {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: true;
+}
+
+@property --dot-opacity {
+  syntax: "<number>";
+  initial-value: 0.08;
+  inherits: true;
+}
+
+/* Transformaciones según vista */
+.viewport-transform {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* Let clicks pass to the inner layers */
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.viewport-transform.view-3d {
+  transform: perspective(1000px) rotateX(60deg) rotateZ(30deg) scale(0.8);
+}
+
+.viewport-transform.view-orto {
+  transform: rotateX(45deg) rotateZ(45deg) scale(0.75);
+}
+
+.viewport-transform.view-canvas {
+  transform: perspective(1200px) rotateX(45deg) rotateZ(0deg) scale(0.85);
+}
+
+.viewport-transform.view-top_2d {
+  transform: none; /* just standard top-down view, but specifically labelled */
+}
+
+.viewport-transform.view-2d {
+  transform: none;
+}
+
+/* Room HUD */
+@keyframes slideInHUD {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.canvas::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+@theme {
+  --animate-ios-flash: iosGlowFlash 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-glow: fadeInGlow 0.5s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  --animate-swap: swapIcons 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  --animate-flow-line: flowLine 2s linear infinite;
+  --animate-dash: dash 3s linear infinite;
+  --animate-fade-up: fadeUp 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  --animate-slide-in-hud: slideInHUD 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes flowLine {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@keyframes iosGlowFlash {
+  0% { opacity: 0.8; transform: scale(0.2); filter: blur(4px); }
+  50% { opacity: 1; filter: blur(12px); }
+  100% { opacity: 0; transform: scale(2.5); filter: blur(20px); }
+}
+
+@keyframes fadeInGlow {
+  from { opacity: 0; transform: scale(0.8) translateY(10px); }
+  to { opacity: 0.7; transform: scale(1) translateY(0); }
+}
+
+@keyframes swapIcons {
+  0% { opacity: 0; transform: translateY(-8px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.dynamic-btn {
+  transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.dynamic-btn:hover {
+  color: var(--icon-color) !important;
+  transform: translateY(-4px) scale(1.08);
+}
+.dynamic-btn:active {
+  transform: translateY(0px) scale(0.95);
+}
+
+/* Hide scrollbars globally for a premium, custom interface */
+::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+* {
+  -ms-overflow-style: none !important;  /* IE/Edge */
+  scrollbar-width: none !important;      /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+

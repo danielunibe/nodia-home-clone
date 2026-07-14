@@ -1,0 +1,30 @@
+﻿[
+    {
+        "index":  1,
+        "mime":  "png",
+        "file":  "home_img_001.png",
+        "publicPath":  "/home_assets/home_img_001.png",
+        "bytes":  246402
+    },
+    {
+        "index":  2,
+        "mime":  "png",
+        "file":  "home_img_002.png",
+        "publicPath":  "/home_assets/home_img_002.png",
+        "bytes":  246402
+    },
+    {
+        "index":  3,
+        "mime":  "png",
+        "file":  "home_img_003.png",
+        "publicPath":  "/home_assets/home_img_003.png",
+        "bytes":  699352
+    },
+    {
+        "index":  4,
+        "mime":  "png",
+        "file":  "home_img_004.png",
+        "publicPath":  "/home_assets/home_img_004.png",
+        "bytes":  616641
+    }
+]

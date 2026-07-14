@@ -1,0 +1,220 @@
+      conflict: 'Supervivencia del grupo frente a pérdida progresiva.',
+      promise: 'Intensidad, estrategia y memoria del trauma.'
+    },
+    'post-apocaliptico': {
+      core: 'Reconstrucción de sentido tras el colapso del sistema.',
+      conflict: 'Escasez, poder local y nuevas reglas de convivencia.',
+      promise: 'Supervivencia con reflexión social y emocional.'
+    },
+    superheroes: {
+      core: 'Poder extraordinario enfrentado a fragilidad humana.',
+      conflict: 'Identidad secreta, responsabilidad y daño colateral.',
+      promise: 'Espectáculo con dilema moral contemporáneo.'
+    },
+    musical: {
+      core: 'La música expresa lo que el diálogo no alcanza.',
+      conflict: 'Deseo interno versus máscara social.',
+      promise: 'Ritmo dramático, emoción elevada y momentos icónicos.'
+    },
+    deportivo: {
+      core: 'Disciplina, equipo y crecimiento bajo metas competitivas.',
+      conflict: 'Talento versus constancia, ego versus cooperación.',
+      promise: 'Superación, momentum y recompensa emocional.'
+    }
+  };
+  const fallback = {
+    core: 'Historia con identidad temática clara.',
+    useCase: 'Un dilema que obligue al personaje a cambiar.',
+    promise: 'Una experiencia narrativa consistente y memorable.',
+    avoid: 'Evita clichés sin conflicto emocional y decisiones sin consecuencias.'
+  };
+  const resolved = info[genreId] || fallback;
+  if (!resolved.useCase && resolved.conflict) resolved.useCase = resolved.conflict;
+  if (!resolved.avoid) resolved.avoid = 'Evita escenas decorativas sin decisión narrativa ni evolución del personaje.';
+  return resolved;
+}
+
+function simplifyCharacterName(name) {
+  const text = String(name || '').trim();
+  if (!text) return '';
+  return text
+    .replace(/\s{2,}/g, ' ')
+    .replace(/([A-Za-zÁÉÍÓÚÑáéíóúñ]+)\s+\1$/i, '$1');
+}
+
+function getSubgenreGuide(genreId, subgenre) {
+  const guides = {
+    fantasia: {
+      'Alta Fantasía': 'Construye un mundo propio con geografía, linajes, religión y conflicto histórico. Funciona mejor cuando la magia afecta cultura, política y destino de civilizaciones.',
+      'Dark Fantasy': 'Combina lo fantástico con horror moral. Los héroes pagan costos reales y las decisiones suelen tener consecuencias ambiguas o dolorosas.',
+      'Urbana': 'Introduce magia en ciudades contemporáneas. El choque entre vida cotidiana y reglas ocultas es el motor dramático principal.',
+      'Realismo Épico': 'Gran escala narrativa sin perder humanidad. Prioriza decisiones políticas, logística y efecto social de cada acto heroico.',
+      'Sword & Sorcery': 'Aventura directa, ritmo alto y tensión física. Reliquias, duelos, exploración y supervivencia inmediata impulsan la trama.'
+    },
+    'ciencia-ficcion': {
+      Cyberpunk: 'Alta tecnología con desigualdad estructural. El conflicto nace de corporaciones, vigilancia y cuerpos/identidades mediadas por sistemas.',
+      'Space Opera': 'Escala interestelar, facciones y geopolítica cósmica. Ideal para alianzas cambiantes, traición y guerra de largo alcance.',
+      'Hard Sci-Fi': 'Rigor científico como columna del relato. Las limitaciones físicas y técnicas guían la tensión y la solución de problemas.',
+      Solarpunk: 'Futuros sostenibles y cooperativos donde el reto es social, ético y de gobernanza. Menos cinismo, más diseño de convivencia.',
+      Distopía: 'Sistema opresivo normalizado. El arco central suele girar entre adaptación, resistencia y ruptura del orden impuesto.'
+    },
+    terror: {
+      'Horror Cósmico': 'Miedo existencial ante fuerzas incomprensibles. El terror surge al descubrir que la realidad humana es mínima e insuficiente.',
+      Slasher: 'Peligro físico cercano y persecución sostenida. El ritmo y la geografía del espacio escénico son clave para la ansiedad.',
+      Psicológico: 'Ambigüedad entre mente y realidad. El lector duda constantemente de lo que ve, recuerda o interpreta el protagonista.',
+      'Body Horror': 'Transformación o degradación corporal como trauma narrativo. Funciona cuando conecta con identidad, culpa o pérdida de control.',
+      'Folk Horror': 'Tradición, territorio y rito comunitario como amenaza. El entorno cultural pesa más que el monstruo explícito.'
+    },
+    noir: {
+      'Neo-Noir': 'Actualiza el noir clásico con contexto moderno: corrupción sistémica, vigilancia y desgaste emocional.',
+      Hardboiled: 'Voz seca, protagonista áspero y moral gris. Investigación dura con ritmo directo y tensión callejera.',
+      Procedural: 'Seguimiento metódico de pistas, protocolos y evidencia. El interés está en el proceso y su costo humano.',
+      'Thriller Psicológico': 'Manipulación, paranoia y lectura de intenciones. Cada escena agrega duda sobre verdad, memoria y culpa.',
+      Espionaje: 'Lealtades divididas, secretos y operaciones encubiertas. El conflicto central suele ser identidad versus deber.'
+    },
+    'drama-magico': {
+      Mágico: 'Integra símbolos y fenómenos sutiles para hacer visible una herida emocional sin romper la intimidad del drama.',
+      Melodrama: 'Emoción intensa y vínculos en crisis. Requiere personajes con necesidades claras y contradicciones humanas.',
+      'Slice of Life': 'Pequeños gestos cotidianos con alto valor emocional. La magia aparece como subtexto de lo íntimo.',
+      Tragedia: 'Arco de caída con lógica inevitable. El personaje enfrenta una verdad que no puede sostener sin perder algo esencial.',
+      'Realismo Sucio': 'Narrativa directa, concreta y sin ornamento excesivo. Prioriza conflicto doméstico, precariedad y microfracturas afectivas.',
+      'Drama Familiar': 'Herencia emocional, secretos y reparación de lazos. La tensión nace del pasado no resuelto.'
+    },
+    drama: {
+      Mágico: 'Integra símbolos y fenómenos sutiles para hacer visible una herida emocional sin romper la intimidad del drama.',
+      Melodrama: 'Emoción intensa y vínculos en crisis. Requiere personajes con necesidades claras y contradicciones humanas.',
+      'Slice of Life': 'Pequeños gestos cotidianos con alto valor emocional. La magia aparece como subtexto de lo íntimo.',
+      Tragedia: 'Arco de caída con lógica inevitable. El personaje enfrenta una verdad que no puede sostener sin perder algo esencial.',
+      'Realismo Sucio': 'Narrativa directa, concreta y sin ornamento excesivo. Prioriza conflicto doméstico, precariedad y microfracturas afectivas.',
+      'Drama Familiar': 'Herencia emocional, secretos y reparación de lazos. La tensión nace del pasado no resuelto.'
+    },
+    epico: {
+      'Ficción Histórica': 'Reconstrucción de época con rigor cultural y político. El detalle contextual fortalece credibilidad y escala.',
+      Biopic: 'Vida de una figura clave enfocada en decisiones de alto impacto. Importa tanto el logro como su precio personal.',
+      Peplum: 'Épica de antigüedad clásica: imperio, honor, guerra y espectáculo moral. Ideal para conflictos de poder y legado.',
+      Mito: 'Arquetipos y símbolos como estructura narrativa. La historia comunica verdad emocional más que realismo literal.',
+      Epopeya: 'Viaje de gran escala con transformación individual y colectiva. Cada acto debe ampliar mundo, riesgo y trascendencia.'
+    },
+    aventura: {
+      Exploración: 'Descubrimiento progresivo de territorios, culturas o secretos; cada etapa debe cambiar el plan inicial.',
+      'Treasure Hunt': 'Búsqueda por pistas y reliquias, con rivales activos y giros de ruta constantes.',
+      'Supervivencia de Ruta': 'Trayecto hostil con recursos limitados donde logística y decisiones tácticas sostienen la tensión.',
+      'Road Quest': 'Viaje por etapas con objetivos intermedios; cada parada redefine alianzas y prioridades.',
+      'Aventura Histórica': 'Exploración en contexto de época con rigor cultural y conflicto de poder local.'
+    },
+    accion: {
+      Survival: 'Escenario hostil con recursos limitados. La tensión nace de decisiones rápidas bajo fatiga y presión constante.',
+      'Capa y Espada': 'Duelo estilizado, agilidad y honor personal. Combina aventura romántica con conflicto físico elegante.',
+      Heist: 'Planificación, ejecución y colapso del plan. El placer narrativo está en estrategia, improvisación y traición.',
+      'Artes Marciales': 'Combate como lenguaje de carácter. Cada enfrentamiento debe expresar filosofía, disciplina o trauma.',
+      'Heroic Bloodshed': 'Acción emocionalmente extrema, lealtad y sacrificio. La violencia funciona como clímax moral.'
+    },
+    comedia: {
+      'Sátira': 'Crítica social o política mediante exageración inteligente. La risa revela contradicciones del sistema.',
+      'Humor Negro': 'Ríe desde lo incómodo o tabú sin banalizarlo. Útil para hablar de dolor con distancia crítica.',
+      Slapstick: 'Comedia física de timing preciso. El cuerpo y el espacio producen el chiste antes que el diálogo.',
+      'Comedia de Enredo': 'Malentendidos encadenados y ritmo de caos controlado. Funciona con objetivos cruzados y secretos.',
+      Parodia: 'Imita códigos de otro género para resignificarlos. Ideal para desmontar clichés con afecto y precisión.'
+    },
+    romance: {
+      RomCom: 'Tensión romántica con humor relacional. El encanto está en química, conflicto cotidiano y evolución emocional.',
+      'Slow Burn': 'Construcción gradual de vínculo con alta carga de subtexto. Cada escena suma cercanía o distancia con intención.',
+      'Dark Romance': 'Deseo, poder y límites en tensión ética. Requiere claridad de consentimiento y consecuencias emocionales.',
+      'Enemies to Lovers': 'Rivalidad inicial que revela compatibilidad profunda. Necesita fricción creíble y cambio progresivo.',
+      Histórico: 'Romance atravesado por normas de época y clase social. El contexto limita decisiones y eleva la tensión.'
+    },
+    western: {
+      'Spaghetti Western': 'Estética áspera, antihéroe y justicia personal. El tono suele ser seco, irónico y fatalista.',
+      'Weird West': 'Frontera + elemento fantástico/horror/sci-fi. La rareza funciona mejor cuando respeta códigos western.',
+      'Neo-Western': 'Traslada el conflicto de frontera al presente: ley, territorio y violencia estructural contemporánea.',
+      Frontier: 'Colonización, supervivencia y orden frágil. El entorno físico impone ética y estrategia.',
+      Revisionista: 'Relectura crítica del western clásico: cuestiona mitos de heroísmo, progreso y civilización.'
+    },
+    belico: {
+      Trincheras: 'Guerra de desgaste y proximidad al trauma. El foco está en resistencia, miedo y fatiga prolongada.',
+      Táctico: 'Decisiones estratégicas en tiempo real. La claridad de objetivos y costos define el drama.',
+      'Drama de Guerra': 'Impacto humano del conflicto en soldados y civiles. Prioriza duelo, memoria y vínculo.',
+      'Anti-bélico': 'Desmonta la glorificación de la guerra mostrando su daño moral, físico y social.',
+      'Operaciones Especiales': 'Misiones de alto riesgo con recursos limitados. Suspenso, sigilo y lealtad bajo presión.'
+    },
+    'post-apocaliptico': {
+      Survivalista: 'Reconstrucción de rutinas básicas: agua, alimento, refugio, confianza. La logística también es trama.',
+      'Eco-Ficción': 'Relación entre colapso ambiental y recomposición social. Plantea qué modelo de vida merece continuar.',
+      Zombie: 'Amenaza masiva + dilemas de comunidad. El verdadero conflicto suele ser humano y ético.',
+      Wasteland: 'Territorio hostil, facciones y ley de escasez. Ideal para viajes, trueque, deuda y poder local.',
+      'Caída de la Sociedad': 'Momento de ruptura sistémica y transición al nuevo orden. Tensión entre memoria y adaptación.'
+    },
+    superheroes: {
+      Vigilante: 'Justicia por fuera del sistema. El eje dramático es la frontera entre reparación y abuso de poder.',
+      'Épica Cósmica': 'Escala universal con amenazas mayores al individuo. Mantén ancla emocional para no perder cercanía.',
+      Deconstrucción: 'Cuestiona mitos del héroe clásico: propaganda, trauma, responsabilidad y daño colateral.',
+      Origen: 'Nacimiento del héroe a través de error, pérdida o hallazgo. Define valores y límites desde el inicio.',
+      Crossover: 'Cruce de personajes/facciones con agendas distintas. El reto es equilibrio de voces y objetivos.'
+    },
+    musical: {
+      Broadway: 'Estructura teatral con números que avanzan conflicto y carácter. Canción = decisión dramática.',
+      'Ópera Rock': 'Narrativa intensa y estilizada guiada por energía musical. Útil para identidades en choque.',
+      Jukebox: 'Canciones preexistentes recontextualizadas. La selección debe dialogar con arco emocional y tema.',
+      'Cine Musical': 'Lenguaje audiovisual + partitura narrativa. Coreografía y puesta en escena cuentan historia.',
+      Diegético: 'La música existe dentro del mundo narrativo. Refuerza realismo del personaje y su entorno.'
+    },
+    deportivo: {
+      'Drama de Redención': 'Caída y regreso del atleta. El arco exige costo, disciplina y transformación real.',
+      Competición: 'Rivalidad y preparación hacia un objetivo concreto. Ritmo, táctica y presión sostienen la tensión.',
+      Torneo: 'Progresión por fases con escalada de dificultad. Cada ronda debe redefinir estrategia y autoestima.',
+      Underdog: 'Protagonista subestimado frente a sistema adverso. El triunfo es técnico, mental y colectivo.',
+      'Biografía Deportiva': 'Vida de atleta con contexto social e histórico. Importa tanto la cancha como el afuera.'
+    }
+  };
+
+  const byGenre = guides[genreId] || {};
+  if (byGenre[subgenre]) return byGenre[subgenre];
+  return `${subgenre}: variante de ${genreId.replace(/-/g, ' ')} para explorar conflicto, tono y ritmo desde otra perspectiva narrativa.`;
+}
+
+function applyAuroraTheme(genre) {
+  if (!genre) return;
+  if (window.NodiaAuroraThemeComponent?.apply) {
+    window.NodiaAuroraThemeComponent.apply(genre);
+    return;
+  }
+
+  // Fallback antifallas si el componente no cargó.
+  try {
+    window.NodiaGenreOrnaments?.setGenre?.(genre.id);
+  } catch (error) {
+    console.warn('[lobby] set ornaments failed', error);
+  }
+
+}
+
+// ── NAVIGATION & PREMIUM ACTIONS ──
+// (navLinks click handler is registered above in a WebView-safe way)
+actionBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    actionBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    THEME_CLASSES.forEach(themeClass => document.body.classList.remove(themeClass));
+    document.body.classList.add(`theme-${btn.dataset.action}`);
+    switchPanel(btn.dataset.action);
+    applyWorldHero();
+  });
+});
+
+function switchPanel(actionId) {
+  if (uiFx?.switchPanelWithTransition) {
+    const handled = uiFx.switchPanelWithTransition('.options-panel', actionId);
+    if (handled) return;
+  }
+  optionsPanels.forEach((panel) => panel.classList.remove('active'));
+  document.getElementById(`panel-${actionId}`)?.classList.add('active');
+}
+
+function switchWorld(worldId) {
+  const world = WORLDS[worldId];
+  if (!world) return;
+  currentWorld = worldId;
+  if (portalImg) portalImg.src = world.img;
+  if (worldName) worldName.textContent = world.name;
+  if (worldSub) worldSub.innerHTML = world.subtitle;
+  updateWorldContext(world);

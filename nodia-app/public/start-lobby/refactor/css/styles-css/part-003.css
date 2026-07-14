@@ -1,0 +1,220 @@
+}
+
+.template-pill:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: var(--hover);
+  color: var(--text);
+}
+
+.saved-projects {
+  margin-top: 22px;
+  padding: 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  background: linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  box-shadow: 0 16px 34px rgba(0,0,0,0.28);
+}
+.saved-projects-bottom {
+  position: absolute;
+  top: 520px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 760px;
+  margin-top: 0;
+}
+
+.project-shelf {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  max-width: 760px;
+}
+
+.project-card {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  padding: 16px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255,255,255,0.02));
+  color: #d6d1c8;
+  cursor: pointer;
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.32);
+  min-height: 106px;
+}
+
+.project-card strong {
+  font-size: 15px;
+  font-weight: 600;
+  color: #f0ede7;
+}
+
+.project-card span {
+  font-size: 12.5px;
+  color: #9f998f;
+}
+.project-card em {
+  margin-top: 6px;
+  font-style: normal;
+  font-size: 11px;
+  color: #b9b4a8;
+  opacity: 0.86;
+}
+.project-card::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.35);
+}
+
+.project-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.project-card.active {
+  border-color: rgba(201, 166, 107, 0.6);
+  background: linear-gradient(160deg, rgba(201, 166, 107, 0.22), rgba(201, 166, 107, 0.08));
+  box-shadow: 0 14px 34px rgba(166,130,66,0.24);
+}
+
+.project-card.new {
+  border-style: dashed;
+}
+
+/* Right visual */
+
+.right {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 20px;
+  min-height: 780px;
+}
+
+.world-stage {
+  position: relative;
+  display: grid;
+  width: 500px;
+  height: 500px;
+  place-items: center;
+  flex-shrink: 0;
+  isolation: isolate;
+}
+
+.rings {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.ring {
+  position: absolute;
+  border: 1px solid;
+  border-radius: 50%;
+}
+
+.ring::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow:
+    0 0 12px rgba(201, 166, 107, 0.8),
+    0 0 24px rgba(201, 166, 107, 0.4);
+  transform: translateX(-50%);
+}
+
+.ring-1 {
+  width: 380px;
+  height: 380px;
+  border-color: rgba(201, 166, 107, 0.22);
+  animation: spin 140s linear infinite;
+}
+
+.ring-2 {
+  width: 440px;
+  height: 440px;
+  border-color: rgba(201, 166, 107, 0.14);
+  animation: spin-reverse 110s linear infinite;
+}
+
+.ring-2::before {
+  top: -2px;
+  width: 4px;
+  height: 4px;
+  opacity: 0.8;
+  background: var(--gold-light);
+}
+
+.ring-3 {
+  width: 500px;
+  height: 500px;
+  border-color: rgba(201, 166, 107, 0.08);
+  animation: spin 180s linear infinite;
+}
+
+.ring-3::before {
+  top: -1.5px;
+  width: 3px;
+  height: 3px;
+  opacity: 0.6;
+}
+
+.rings.pulse .ring-1 {
+  animation-duration: 120s;
+}
+
+.rings.pulse .ring-2 {
+  animation-duration: 100s;
+}
+
+.rings.pulse .ring-3 {
+  animation-duration: 140s;
+}
+
+/* CSS-only replacement for base64 images */
+
+.world-circle {
+  position: relative;
+  width: 340px;
+  height: 340px;
+  overflow: hidden;
+  border: 1px solid rgba(201, 166, 107, 0.18);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 45%, #1a1510 0%, #0f0c08 40%, #050507 100%);
+  box-shadow:
+    inset 0 0 80px rgba(0, 0, 0, 0.9),
+    inset 0 0 40px rgba(0, 0, 0, 0.6),
+    0 0 120px rgba(201, 166, 107, 0.08),
+    0 40px 80px rgba(0, 0, 0, 0.7);
+  transition:
+    opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.world-circle::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: 6;
+  border-radius: 50%;
+  padding: 2px;
+  background: conic-gradient(

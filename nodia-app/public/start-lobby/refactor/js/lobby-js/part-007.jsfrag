@@ -1,0 +1,220 @@
+          sliderControl('Tamaño de texto'),
+          sliderControl('Separación de líneas'),
+          switchControl('Alto contraste'),
+          switchControl('Reducir movimiento')
+        ]
+      },
+      {
+        title: 'Interacción',
+        controls: [
+          switchControl('Navegación por teclado'),
+          switchControl('Descripciones extendidas'),
+          switchControl('Modo concentración')
+        ]
+      }
+    ]
+  },
+  shortcuts: {
+    kicker: 'Atajos',
+    title: 'Administra comandos para flujo rápido',
+    copy: 'Centraliza atajos clave de Poe, Nodos, Arco y acciones globales.',
+    previewTitle: 'Perfil de productividad',
+    previewCopy: 'Atajos consistentes para escribir, navegar y revisar sin cambiar de contexto.',
+    previewNote: 'Exporta configuración de atajos para replicar tu flujo en otros equipos.',
+    groups: [
+      {
+        title: 'Acciones principales',
+        controls: [
+          shortcutControl('Nuevo proyecto', 'Ctrl + N'),
+          shortcutControl('Buscar acción', 'Ctrl + P'),
+          shortcutControl('Guardar', 'Ctrl + S')
+        ]
+      },
+      {
+        title: 'Módulos de trabajo',
+        controls: [
+          shortcutControl('Abrir Poe', 'Ctrl + Shift + P'),
+          shortcutControl('Abrir Nodos', 'Ctrl + Shift + N'),
+          shortcutControl('Abrir Arco', 'Ctrl + Shift + A')
+        ]
+      }
+    ]
+  },
+  advanced: {
+    kicker: 'Avanzado',
+    title: 'Control técnico para entornos exigentes',
+    copy: 'Rendimiento, caché y diagnóstico para mantener estabilidad del sistema narrativo.',
+    previewTitle: 'Modo rendimiento',
+    previewCopy: 'Reduce efectos, precarga activo y prioriza fluidez en hardware limitado.',
+    previewNote: 'Usa limpieza de caché visual cuando notes inconsistencias de tema o transición.',
+    groups: [
+      {
+        title: 'Rendimiento',
+        controls: [
+          switchControl('Modo bajo rendimiento'),
+          switchControl('Precargar proyecto activo'),
+          switchControl('Logs de diagnóstico')
+        ]
+      },
+      {
+        title: 'Mantenimiento',
+        controls: [
+          switchControl('Limpiar caché visual al reiniciar'),
+          switchControl('Habilitar modo desarrollador'),
+          switchControl('Exportar diagnóstico')
+        ]
+      }
+    ]
+  }
+};
+
+function selectControl(label, options) {
+  return { type: 'select', label, options };
+}
+
+function sliderControl(label) {
+  return { type: 'slider', label };
+}
+
+function switchControl(label) {
+  return { type: 'switch', label };
+}
+
+function pillControl(label, values) {
+  return { type: 'pill', label, values };
+}
+
+function shortcutControl(label, key) {
+  return { type: 'shortcut', label, key };
+}
+
+function renderControl(control) {
+  if (control.type === 'select') {
+    return `
+      <div class="settings-control-row">
+        <span class="settings-control-label">${control.label}</span>
+        <select class="settings-select">
+          ${control.options.map((option, index) => `<option ${index === 0 ? 'selected' : ''}>${option}</option>`).join('')}
+        </select>
+      </div>
+    `;
+  }
+
+  if (control.type === 'slider') {
+    return `
+      <div class="settings-control-row">
+        <span class="settings-control-label">${control.label}</span>
+        <input class="settings-slider" type="range" min="0" max="100" value="60">
+      </div>
+    `;
+  }
+
+  if (control.type === 'switch') {
+    return `
+      <div class="settings-control-row">
+        <span class="settings-control-label">${control.label}</span>
+        <input class="settings-switch" type="checkbox" checked>
+      </div>
+    `;
+  }
+
+  if (control.type === 'pill') {
+    return `
+      <div class="settings-control-row">
+        <span class="settings-control-label">${control.label}</span>
+        <div class="settings-pill-group">
+          ${control.values.map((value) => `<span class="settings-pill">${value}</span>`).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  if (control.type === 'shortcut') {
+    return `
+      <div class="settings-control-row">
+        <span class="settings-control-label">${control.label}</span>
+        <span class="settings-pill">${control.key}</span>
+      </div>
+    `;
+  }
+
+  return '';
+}
+
+function renderSettingsSection(sectionId) {
+  const section = SETTINGS_SECTION_MODEL[sectionId] || SETTINGS_SECTION_MODEL.appearance;
+  if (!section) return;
+
+  if (settingsSectionKicker) settingsSectionKicker.textContent = section.kicker;
+  if (settingsSectionTitle) settingsSectionTitle.textContent = section.title;
+  if (settingsSectionCopy) settingsSectionCopy.textContent = section.copy;
+  if (settingsPreviewTitle) settingsPreviewTitle.textContent = section.previewTitle;
+  if (settingsPreviewCopy) settingsPreviewCopy.textContent = section.previewCopy;
+  if (settingsPreviewNote) settingsPreviewNote.textContent = section.previewNote;
+
+  if (settingsGroups) {
+    settingsGroups.innerHTML = section.groups.map((group) => `
+      <article class="settings-group-card">
+        <h4 class="settings-group-title">${group.title}</h4>
+        ${group.controls.map(renderControl).join('')}
+      </article>
+    `).join('');
+  }
+
+  settingsNavBtns.forEach((button) => {
+    button.classList.toggle('active', button.dataset.settingsSection === sectionId);
+  });
+}
+
+function initSettingsView() {
+  if (!settingsNav) return;
+  settingsNav.addEventListener('click', (event) => {
+    const button = event.target.closest('.settings-nav-btn');
+    if (!button) return;
+    renderSettingsSection(button.dataset.settingsSection || 'appearance');
+  });
+  renderSettingsSection('appearance');
+}
+
+initSettingsView();
+
+function hexToAlpha(hex, alpha) {
+  if (!hex || typeof hex !== 'string' || !hex.startsWith('#') || hex.length !== 7) return `rgba(197,163,103,${alpha})`;
+  const r = parseInt(hex.substring(1, 3), 16);
+  const g = parseInt(hex.substring(3, 5), 16);
+  const b = parseInt(hex.substring(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function hexToRgbObject(hex) {
+  if (!hex || typeof hex !== 'string' || !hex.startsWith('#') || hex.length !== 7) return { r: 58, g: 123, b: 213 };
+  return {
+    r: parseInt(hex.substring(1, 3), 16),
+    g: parseInt(hex.substring(3, 5), 16),
+    b: parseInt(hex.substring(5, 7), 16)
+  };
+}
+
+function clampRGB(value) {
+  return Math.max(0, Math.min(255, Math.round(value)));
+}
+
+function shiftHex(hex, amount) {
+  const { r, g, b } = hexToRgbObject(hex);
+  const rr = clampRGB(r + amount);
+  const gg = clampRGB(g + amount);
+  const bb = clampRGB(b + amount);
+  return `rgb(${rr}, ${gg}, ${bb})`;
+}
+
+function buildGenrePalette(baseHex, accentHex) {
+  const base = hexToRgbObject(baseHex);
+  const accent = hexToRgbObject(accentHex || baseHex);
+  const mix = (a, b, ratio) => clampRGB(a + (b - a) * ratio);
+
+  // Siempre mantenemos base oscura para legibilidad AAA.
+  const solid = `rgb(${mix(base.r, 8, 0.72)}, ${mix(base.g, 10, 0.72)}, ${mix(base.b, 18, 0.72)})`;
+  const deep = `rgb(${mix(accent.r, 16, 0.78)}, ${mix(accent.g, 18, 0.78)}, ${mix(accent.b, 28, 0.78)})`;
+  const night = `rgb(${mix(base.r, 6, 0.86)}, ${mix(base.g, 8, 0.86)}, ${mix(base.b, 14, 0.86)})`;
+  const vignette = `rgb(${mix(base.r, 4, 0.9)}, ${mix(base.g, 5, 0.9)}, ${mix(base.b, 10, 0.9)})`;
+

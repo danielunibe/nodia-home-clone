@@ -1,0 +1,132 @@
+/* Zdog Module Part 004 - Vector
+   Format: Modular Fragment <= 220 lines */
+(function(t,e) {
+  if(typeof module=="object"&&module.exports) {
+    module.exports=e(require("./boilerplate"))
+  }
+  else {
+    var r=t.Zdog;
+    r.Vector=e(r)
+  }
+}
+)(this,function t(r) {
+  function e(t) {
+    this.set(t)
+  }
+  var h=r.TAU;
+  e.prototype.set=function(t) {
+    this.x=t&&t.x||0;
+    this.y=t&&t.y||0;
+    this.z=t&&t.z||0;
+    return this
+  };
+  e.prototype.write=function(t) {
+    if(!t) {
+      return this
+    }
+    this.x=t.x!=undefined?t.x:this.x;
+    this.y=t.y!=undefined?t.y:this.y;
+    this.z=t.z!=undefined?t.z:this.z;
+    return this
+  };
+  e.prototype.rotate=function(t) {
+    if(!t) {
+      return
+    }
+    this.rotateZ(t.z);
+    this.rotateY(t.y);
+    this.rotateX(t.x);
+    return this
+  };
+  e.prototype.rotateZ=function(t) {
+    i(this,t,"x","y")
+  };
+  e.prototype.rotateX=function(t) {
+    i(this,t,"y","z")
+  };
+  e.prototype.rotateY=function(t) {
+    i(this,t,"x","z")
+  };
+  function i(t,e,r,i) {
+    if(!e||e%h===0) {
+      return
+    }
+    var n=Math.cos(e);
+    var o=Math.sin(e);
+    var s=t[r];
+    var a=t[i];
+    t[r]=s*n-a*o;
+    t[i]=a*n+s*o
+  }
+  e.prototype.isSame=function(t) {
+    if(!t) {
+      return false
+    }
+    return this.x===t.x&&this.y===t.y&&this.z===t.z
+  };
+  e.prototype.add=function(t) {
+    if(!t) {
+      return this
+    }
+    this.x+=t.x||0;
+    this.y+=t.y||0;
+    this.z+=t.z||0;
+    return this
+  };
+  e.prototype.subtract=function(t) {
+    if(!t) {
+      return this
+    }
+    this.x-=t.x||0;
+    this.y-=t.y||0;
+    this.z-=t.z||0;
+    return this
+  };
+  e.prototype.multiply=function(t) {
+    if(t==undefined) {
+      return this
+    }
+    if(typeof t=="number") {
+      this.x*=t;
+      this.y*=t;
+      this.z*=t
+    }
+    else {
+      this.x*=t.x!=undefined?t.x:1;
+      this.y*=t.y!=undefined?t.y:1;
+      this.z*=t.z!=undefined?t.z:1
+    }
+    return this
+  };
+  e.prototype.transform=function(t,e,r) {
+    this.multiply(r);
+    this.rotate(e);
+    this.add(t);
+    return this
+  };
+  e.prototype.lerp=function(t,e) {
+    this.x=r.lerp(this.x,t.x||0,e);
+    this.y=r.lerp(this.y,t.y||0,e);
+    this.z=r.lerp(this.z,t.z||0,e);
+    return this
+  };
+  e.prototype.magnitude=function() {
+    var t=this.x*this.x+this.y*this.y+this.z*this.z;
+    return n(t)
+  };
+  function n(t) {
+    if(Math.abs(t-1)<1e-8) {
+      return 1
+    }
+    return Math.sqrt(t)
+  }
+  e.prototype.magnitude2d=function() {
+    var t=this.x*this.x+this.y*this.y;
+    return n(t)
+  };
+  e.prototype.copy=function() {
+    return new e(this)
+  };
+  return e
+}
+);

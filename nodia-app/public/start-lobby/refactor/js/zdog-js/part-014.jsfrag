@@ -1,0 +1,34 @@
+/* Zdog Module Part 014 - Polygon
+   Format: Modular Fragment <= 220 lines */
+(function(t,e) {
+  if(typeof module=="object"&&module.exports) {
+    module.exports=e(require("./boilerplate"),require("./shape"))
+  }
+  else {
+    var r=t.Zdog;
+    r.Polygon=e(r,r.Shape)
+  }
+}
+)(this,function t(e,r) {
+  var i=r.subclass( {
+    sides:3,radius:.5
+  }
+  );
+  var n=e.TAU;
+  i.prototype.setPath=function() {
+    this.path=[];
+    for(var t=0;
+    t<this.sides;
+    t++) {
+      var e=t/this.sides*n-n/4;
+      var r=Math.cos(e)*this.radius;
+      var i=Math.sin(e)*this.radius;
+      this.path.push( {
+        x:r,y:i
+      }
+      )
+    }
+  };
+  return i
+}
+);

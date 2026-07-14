@@ -1,0 +1,15 @@
+/* Refactor manifest for styles.css.
+   Auto-split into <= 220 line components. */
+
+@import url("./refactor/css/styles-css/part-001.css");
+
+@import url("./refactor/css/styles-css/part-002.css");
+
+@import url("./refactor/css/styles-css/part-003.css");
+
+@import url("./refactor/css/styles-css/part-004.css");
+
+@import url("./refactor/css/styles-css/part-005.css");
+
+@import url("./refactor/css/styles-css/part-006.css");
+

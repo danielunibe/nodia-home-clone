@@ -1,0 +1,220 @@
+
+.genre-card:hover .card-artwork-spatial .depth-front,
+.genre-card.tilted .card-artwork-spatial .depth-front {
+  filter: saturate(1.18) contrast(1.1) brightness(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-artwork-spatial .depth-layer,
+  .card-artwork-spatial .depth-specular {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── FINAL OVERRIDES v5.6 (tinder info readability) ── */
+.tinder-mode-card .card-content {
+  min-height: 18% !important;
+  padding: 0 1.5vh 1.5vh !important;
+  z-index: 8 !important;
+}
+
+.tinder-mode-card .card-character-title {
+  font-size: clamp(2.1vh, 2.4vh, 2.9vh) !important;
+}
+
+.tinder-mode-card .card-bio-box {
+  left: 1.2vh !important;
+  right: 1.2vh !important;
+  top: 1.2vh !important;
+  bottom: auto !important;
+  padding: 1vh 1.1vh !important;
+  border-radius: 1.1vh !important;
+  background: linear-gradient(150deg, rgba(6,9,16,0.72), rgba(8,12,22,0.58)) !important;
+  border: 1px solid rgba(255,255,255,0.14) !important;
+  box-shadow:
+    0 10px 20px rgba(0,0,0,0.24),
+    inset 0 0 0 1px rgba(255,255,255,0.04);
+  backdrop-filter: blur(8px);
+}
+
+.card-bio-head {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 0.6vh;
+}
+
+.bio-subgenre-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4vh;
+  padding: 0.38vh 0.74vh;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  font-size: 0.86vh;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: rgba(255,255,255,0.92);
+}
+
+.tinder-mode-card .card-bio-text {
+  font-size: 1.02vh !important;
+  line-height: 1.42 !important;
+  color: rgba(255,255,255,0.92) !important;
+  font-style: normal !important;
+  margin-bottom: 0.54vh !important;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tinder-mode-card .card-bio-meta {
+  font-size: 0.8vh !important;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.76) !important;
+}
+
+/* ── FINAL OVERRIDES v5.7 (flat art + centered label/name) ── */
+
+.card-artwork-flat {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(8, 10, 18, 0.18), rgba(8, 10, 18, 0.54));
+}
+
+.card-image-flat {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transform: none !important;
+  filter: none !important;
+}
+
+.card-artwork-spatial .depth-layer,
+.card-artwork-spatial .depth-specular,
+.card-artwork-spatial .depth-fog {
+  display: none !important;
+}
+
+.card-content {
+  min-height: 27% !important;
+  padding: 0 1.6vh 1.7vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 0.52vh !important;
+}
+
+.card-category-line {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5vh;
+  padding: 0.36vh 0.8vh;
+  border-radius: 999px;
+  background: rgba(8, 12, 20, 0.52);
+  border: 1px solid rgba(255,255,255,0.16);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+  z-index: 9;
+}
+
+.card-category-seal {
+  width: 1.45vh;
+  height: 1.45vh;
+  display: inline-grid;
+  place-items: center;
+  color: var(--genre-accent, #C9A84C);
+  opacity: 0.95;
+}
+
+.card-category-seal svg {
+  width: 100%;
+  height: 100%;
+}
+
+.card-category-text {
+  font-size: 0.92vh;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: rgba(255,255,255,0.9);
+  font-weight: 700;
+}
+
+.card-character-title {
+  margin-top: 0 !important;
+  text-align: center !important;
+}
+
+.card-seal {
+  opacity: 0.1 !important;
+  transition: opacity 220ms ease-out, filter 220ms ease-out !important;
+}
+
+.genre-card:hover .card-seal,
+.genre-card.tilted .card-seal {
+  opacity: 0.26 !important;
+}
+
+.card-holo-grid {
+  opacity: 0.06 !important;
+  transition: opacity 220ms ease-out, filter 220ms ease-out !important;
+}
+
+.genre-card:hover .card-holo-grid {
+  opacity: 0.18 !important;
+  filter: saturate(1.12) brightness(1.08);
+}
+
+/* ── FINAL OVERRIDES v5.8 (requested hologram + seal layering) ── */
+.genre-card {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out;
+  background: var(--card-bg, #1a1a2e);
+}
+
+.genre-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 219, 112, 0.15) 45%,
+    rgba(255, 140, 0, 0.1) 50%,
+    rgba(100, 220, 255, 0.1) 55%,
+    transparent 60%
+  );
+  background-size: 200% 200%;
+  background-position: var(--foil-x, 50%) var(--foil-y, 50%);
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  mix-blend-mode: color-dodge;
+  pointer-events: none;
+}
+
+.genre-card:hover::before {
+  opacity: 1;
+}
+
+.card-seal {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+  opacity: 0.12 !important;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.genre-card:hover .card-seal,
+.genre-card.tilted .card-seal {

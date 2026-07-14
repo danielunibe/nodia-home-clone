@@ -1,0 +1,220 @@
+}
+
+.meta-pill:first-child {
+  border-color: rgba(201, 166, 107, 0.25);
+  background: rgba(201, 166, 107, 0.12);
+  color: var(--gold-light);
+}
+
+.greeting {
+  color: var(--text-2);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.greeting strong {
+  display: block;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.gold-line {
+  width: 56px;
+  height: 2px;
+  margin: 18px 0 32px;
+  opacity: 0.8;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.hero-title {
+  margin-bottom: 18px;
+  color: #f2efe9;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(44px, 4.5vw, 58px);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.5px;
+}
+.hero-copy-lock {
+  height: 250px;
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+  position: relative;
+}
+.hero-copy-lock::after {
+  content: "";
+  position: absolute;
+  inset: 16% -8% 0 -8%;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(180px 80px at 22% 35%, rgba(255, 230, 180, 0.22), transparent 70%),
+    radial-gradient(220px 90px at 66% 42%, rgba(198, 158, 255, 0.2), transparent 72%),
+    radial-gradient(140px 64px at 48% 68%, rgba(167, 218, 255, 0.15), transparent 70%);
+  filter: blur(10px);
+}
+
+.hero-copy-lock.fairy-out .hero-title,
+.hero-copy-lock.fairy-out .hero-sub {
+  animation: fairy-smoke-out 170ms ease-in forwards;
+}
+.hero-copy-lock.fairy-out::after {
+  animation: fairy-mist-bloom 170ms ease-out forwards;
+}
+
+.hero-copy-lock.fairy-in .hero-title,
+.hero-copy-lock.fairy-in .hero-sub {
+  animation: fairy-smoke-in 280ms cubic-bezier(0.22, 0.7, 0.1, 1) forwards;
+}
+.hero-copy-lock.fairy-in::after {
+  animation: fairy-mist-fade 320ms ease-out forwards;
+}
+
+.hero-sub {
+  max-width: 520px;
+  color: var(--text-2);
+  font-size: 16px;
+  line-height: 1.65;
+  min-height: 110px;
+}
+
+.world-actions {
+  display: flex;
+  max-width: 520px;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.world-option {
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 16px;
+  overflow: hidden;
+  padding: 22px 22px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--card);
+  backdrop-filter: blur(16px);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.world-option::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(400px 100px at left, rgba(255, 255, 255, 0.05), transparent);
+  transition: opacity 0.3s ease;
+}
+
+.world-option:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: var(--hover);
+}
+
+.world-option:hover::before {
+  opacity: 1;
+}
+
+.world-option.active {
+  border-color: var(--gold);
+  background: var(--gold);
+  box-shadow:
+    0 8px 30px rgba(201, 166, 107, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: none;
+}
+
+.option-icon {
+  z-index: 1;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+}
+
+.world-option.active .option-icon {
+  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.option-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: var(--text-2);
+  stroke-width: 1.5;
+}
+
+.world-option.active .option-icon svg {
+  stroke: #1a140c;
+}
+
+.option-text {
+  z-index: 1;
+  flex: 1;
+}
+
+.option-title {
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+
+.world-option.active .option-title {
+  color: #0d0a06;
+}
+
+.option-sub {
+  margin-top: 3px;
+  color: var(--text-2);
+  font-size: 14px;
+}
+
+.world-option.active .option-sub {
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.templates {
+  margin-top: 26px;
+}
+
+.templates-label {
+  margin-bottom: 12px;
+  color: var(--text-3);
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.template-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.template-pill {
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  backdrop-filter: blur(8px);
+  color: #b8b2a8;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;

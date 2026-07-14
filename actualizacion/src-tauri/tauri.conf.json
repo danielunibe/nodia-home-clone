@@ -1,0 +1,68 @@
+{
+  "build": {
+    "beforeBuildCommand": "npm run build",
+    "beforeDevCommand": "npm run dev",
+    "devPath": "http://localhost:3000",
+    "distDir": "../dist"
+  },
+  "package": {
+    "productName": "Nodia",
+    "version": "1.0.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "fs": {
+        "all": true,
+        "scope": ["$APP_DATA/*", "$DOCUMENTS/*"]
+      },
+      "protocol": {
+        "asset": true,
+        "assetScope": ["**"]
+      },
+      "shell": {
+        "all": true,
+        "open": true,
+        "sidecar": true
+      }
+    },
+    "bundle": {
+      "active": true,
+      "category": "DeveloperTool",
+      "copyright": "",
+      "externalBin": ["llama_cpp_sidecar"],
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "identifier": "com.nodia.app",
+      "longDescription": "",
+      "publisher": "Nodia Dev Team",
+      "resources": [],
+      "shortDescription": "",
+      "targets": "all",
+      "windows": {
+        "certificateThumbprint": null,
+        "digestAlgorithm": "sha256",
+        "timestampServer": ""
+      }
+    },
+    "security": {
+      "csp": "default-src 'self'; img-src 'self' https://picsum.photos; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://generativelanguage.googleapis.com"
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "height": 720,
+        "resizable": true,
+        "title": "Nodia // Narrative Engine",
+        "width": 1280,
+        "transparent": true,
+        "decorations": false
+      }
+    ]
+  }
+}

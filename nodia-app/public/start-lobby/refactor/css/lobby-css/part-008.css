@@ -1,0 +1,220 @@
+
+/* ── FINAL OVERRIDES v6.2 (minimal categories + centered heading + colored panel) ── */
+.templates-layout {
+  align-items: start !important;
+}
+
+.view-header {
+  margin-top: 0.9vh;
+  margin-bottom: 0.5vh;
+}
+
+.view-title {
+  text-align: center !important;
+  margin-bottom: 0.9vh !important;
+}
+
+.genre-info-box {
+  background: var(--genre-panel-bg, linear-gradient(152deg, rgba(8, 12, 20, 0.76), rgba(8, 12, 20, 0.54))) !important;
+  border: 1px solid var(--genre-panel-stroke, rgba(255,255,255,0.14)) !important;
+  box-shadow:
+    0 16px 38px rgba(0,0,0,0.24),
+    0 0 0 1px rgba(255,255,255,0.04) inset,
+    0 0 32px var(--genre-panel-glow, rgba(58,123,213,0.14)) !important;
+}
+
+.genre-meta-row {
+  gap: 0.45vh !important;
+}
+
+.genre-meta-pill {
+  background: rgba(8, 12, 20, 0.44) !important;
+  border-color: rgba(255,255,255,0.15) !important;
+  backdrop-filter: blur(4px);
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+
+.genre-meta-pill:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--genre-color, #C5A367) 60%, white 40%) !important;
+  background: rgba(10, 16, 28, 0.74) !important;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+}
+
+.genre-info-box:has(.genre-meta-pill:hover) .genre-desc,
+.genre-info-box:has(.genre-meta-pill:hover) .subgenres-wrap,
+.genre-info-box:has(.genre-meta-pill:hover) .genre-deep-info {
+  filter: blur(1.4px) saturate(0.92);
+  opacity: 0.7;
+  transition: filter 180ms ease, opacity 180ms ease;
+}
+
+.genre-tag-chip {
+  background: rgba(255,255,255,0.03) !important;
+  border-color: rgba(255,255,255,0.12) !important;
+  color: rgba(242, 246, 255, 0.82) !important;
+  box-shadow: none !important;
+}
+
+.genre-tag-chip:hover {
+  background: rgba(255,255,255,0.07) !important;
+  border-color: color-mix(in srgb, var(--genre-color, #C5A367) 50%, white 50%) !important;
+  color: rgba(255,255,255,0.96) !important;
+}
+
+.deck-controls {
+  margin-top: 1.4vh !important;
+  gap: 1.25vh !important;
+}
+
+.nav-btn {
+  width: 6.4vh !important;
+  height: 6.4vh !important;
+  border-radius: 1.3vh !important;
+  background: rgba(10, 14, 24, 0.72) !important;
+  border: 1px solid rgba(255,255,255,0.16) !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3) !important;
+}
+
+.nav-btn:hover {
+  transform: translateY(-1px) scale(1.03) !important;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.34), 0 0 18px var(--genre-color-alpha, rgba(58,123,213,0.22)) !important;
+}
+
+.primary-btn-inline {
+  height: 6.2vh !important;
+  border-radius: 1.2vh !important;
+  font-size: 1vh !important;
+  letter-spacing: 0.09em !important;
+  text-transform: uppercase;
+  background: linear-gradient(140deg, rgba(10, 14, 24, 0.86), rgba(10, 14, 24, 0.64)) !important;
+  border: 1px solid color-mix(in srgb, var(--genre-color, #C5A367) 45%, white 55%) !important;
+  color: rgba(245,248,255,0.94) !important;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,255,255,0.06) !important;
+}
+
+.primary-btn-inline:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--genre-color, #C5A367) 64%, white 36%) !important;
+  box-shadow: 0 14px 24px rgba(0,0,0,0.34), 0 0 22px var(--genre-color-alpha, rgba(58,123,213,0.24)) !important;
+}
+
+/* ── FINAL OVERRIDES v6.3 (space usage + cleaner info hierarchy) ── */
+.view-header {
+  margin-top: 0.35vh !important;
+  margin-bottom: 0.25vh !important;
+}
+
+.view-title {
+  font-size: clamp(4.1vh, 4.6vh, 5.3vh) !important;
+  margin-bottom: 0.45vh !important;
+}
+
+.genre-info-box {
+  grid-template-rows: auto auto auto auto auto 1fr !important;
+  gap: 0.68vh !important;
+  padding: 1.15vh 1.25vh !important;
+}
+
+.genre-desc {
+  -webkit-line-clamp: 3 !important;
+  margin-bottom: 0.16vh !important;
+}
+
+.sub-label {
+  margin-bottom: 0.45vh !important;
+}
+
+.genre-tags-list {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 0.45vh 0.45vh !important;
+}
+
+.genre-tag-chip {
+  min-height: 3.05vh;
+  padding: 0.46vh 0.62vh !important;
+  font-size: 0.9vh !important;
+  line-height: 1.18;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.genre-tag-chip::after {
+  width: clamp(24vh, 26vh, 30vh) !important;
+}
+
+.genre-deep-info {
+  margin-top: 0.35vh !important;
+  gap: 0.44vh !important;
+}
+
+.genre-deep-item {
+  padding: 0.18vh 0.14vh 0.18vh 0.72vh !important;
+}
+
+.genre-deep-item p {
+  font-size: 1.02vh !important;
+  -webkit-line-clamp: 2 !important;
+}
+
+.discovery-box-left {
+  display: none !important;
+}
+
+.discovery-inline {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.68vh;
+}
+
+.tinder-trigger-compact {
+  width: fit-content !important;
+  margin-top: 0 !important;
+  padding: 0.86vh 1.2vh !important;
+  font-size: 0.94vh !important;
+  letter-spacing: 0.08em !important;
+  border-radius: 999px !important;
+  border-color: rgba(255,255,255,0.2) !important;
+  color: rgba(236,242,255,0.88) !important;
+  background: rgba(8,12,20,0.44) !important;
+}
+
+.tinder-trigger-compact:hover {
+  border-color: color-mix(in srgb, var(--genre-color, #C5A367) 60%, white 40%) !important;
+  background: rgba(10,16,28,0.7) !important;
+}
+
+/* ── FINAL OVERRIDES v6.4 (aurora espacial fluida + halo tipográfico) ── */
+.bg-canvas::before {
+  background:
+    radial-gradient(120% 100% at 18% 12%, color-mix(in srgb, var(--genre-bg-deep, rgba(58,123,213,0.2)) 86%, #02040a 14%) 0%, transparent 62%),
+    radial-gradient(120% 100% at 84% 88%, color-mix(in srgb, var(--genre-bg-vignette, #0f1f31) 82%, #01040a 18%) 0%, transparent 66%),
+    linear-gradient(158deg, #050915 0%, #070b16 44%, var(--genre-bg-night, #070d18) 100%) !important;
+  filter: saturate(1.08) contrast(1.04) brightness(0.96) !important;
+}
+
+.aurora-field {
+  filter: blur(52px) saturate(1.18) !important;
+  opacity: 0.68 !important;
+}
+
+.aurora-band-a,
+.aurora-band-b,
+.aurora-band-c {
+  mix-blend-mode: screen;
+  opacity: 0.56 !important;
+}
+
+.aurora-band-a {
+  animation: aurora-cosmic-a 20s ease-in-out infinite alternate !important;
+}
+
+.aurora-band-b {
+  animation: aurora-cosmic-b 24s ease-in-out infinite alternate !important;
+}
+
+.aurora-band-c {
+  animation: aurora-cosmic-c 22s ease-in-out infinite alternate !important;

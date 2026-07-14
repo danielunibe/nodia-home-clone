@@ -1,0 +1,227 @@
+const WORLDS = {
+  active: {
+    id: 'active',
+    name: 'PROYECTO AURORA',
+    subtitle: 'Continuar narración reciente',
+    img: '../home_assets/home_img_001.png',
+    genreId: 'deportivo',
+    genreLabel: 'Deportivo / Drama de superación',
+    heroProject: 'Proyecto Aurora',
+    lastPoint: 'Entrenamiento, caída y regreso.',
+    lastScene: 'Entrenamiento previo a la caída',
+    status: 'Borrador inicial · 3 nodos abiertos',
+    lastEdited: 'Editado hace 12 min'
+  },
+  boreal: {
+    id: 'boreal',
+    name: 'PROYECTO BOREAL',
+    subtitle: 'Explorar variantes de capítulo',
+    img: '../home_assets/home_img_002.png',
+    genreId: 'fantasia',
+    genreLabel: 'Fantasía / Aventura clásica',
+    heroProject: 'Proyecto Boreal',
+    lastPoint: 'Juramento, reliquia y frontera desconocida.',
+    lastScene: 'Primera travesía al valle de hielo',
+    status: 'Segundo borrador · 5 nodos conectados',
+    lastEdited: 'Editado hace 43 min'
+  }
+};
+
+const LOBBY_AMBIENT_BY_GENRE = {
+  fantasia: './assets/lobby-ambient/01_fantasia_ambiente_lowpoly_1x1.png',
+  'ciencia-ficcion': './assets/lobby-ambient/02_ciencia_ficcion_ambiente_lowpoly_1x1.png',
+  terror: './assets/lobby-ambient/03_terror_ambiente_lowpoly_1x1.png',
+  noir: './assets/lobby-ambient/04_noir_misterio_ambiente_lowpoly_1x1.png',
+  drama: './assets/lobby-ambient/05_drama_ambiente_lowpoly_1x1.png',
+  epico: './assets/lobby-ambient/06_epico_ambiente_lowpoly_1x1.png',
+  accion: './assets/lobby-ambient/07_accion_ambiente_lowpoly_1x1.png',
+  comedia: './assets/lobby-ambient/08_comedia_ambiente_lowpoly_1x1.png',
+  romance: './assets/lobby-ambient/09_romance_ambiente_lowpoly_1x1.png',
+  western: './assets/lobby-ambient/10_western_ambiente_lowpoly_1x1.png',
+  belico: './assets/lobby-ambient/11_belico_ambiente_lowpoly_1x1.png',
+  'post-apocaliptico': './assets/lobby-ambient/12_post_apocaliptico_ambiente_lowpoly_1x1.png',
+  superheroes: './assets/lobby-ambient/13_superheroes_ambiente_lowpoly_1x1.png',
+  musical: './assets/lobby-ambient/14_musical_ambiente_lowpoly_1x1.png',
+  deportivo: './assets/lobby-ambient/15_deportivo_ambiente_lowpoly_1x1.png',
+  aventura: './assets/lobby-ambient/16_aventura_ambiente_lowpoly_1x1.png'
+};
+
+// GENRES ahora viene de genres.js
+// BIOGRAPHIES y bioManager vienen de biographies.js
+// buildCard() e initTinderEngine() vienen de tinder-engine.js
+
+const portalImg = document.getElementById('portalImg');
+const worldName = document.getElementById('worldName');
+const worldSub = document.getElementById('worldSub');
+const navLinks = document.querySelectorAll('.nav-list a');
+const navIndicator = document.querySelector('.nav-indicator');
+const actionBtns = document.querySelectorAll('.act-btn-premium');
+const optionsPanels = document.querySelectorAll('.options-panel');
+const settingsNav = document.getElementById('settingsNav');
+const settingsNavBtns = document.querySelectorAll('.settings-nav-btn');
+const settingsSectionKicker = document.getElementById('settingsSectionKicker');
+const settingsSectionTitle = document.getElementById('settingsSectionTitle');
+const settingsSectionCopy = document.getElementById('settingsSectionCopy');
+const settingsGroups = document.getElementById('settingsGroups');
+const settingsPreviewTitle = document.getElementById('settingsPreviewTitle');
+const settingsPreviewCopy = document.getElementById('settingsPreviewCopy');
+const settingsPreviewNote = document.getElementById('settingsPreviewNote');
+const btnSystemMinimize = document.getElementById('btnSystemMinimize');
+const btnSystemClose = document.getElementById('btnSystemClose');
+const heroTitleEl = document.getElementById('heroTitle');
+const heroDescEl = document.getElementById('heroDesc');
+const heroGenreChipEl = document.getElementById('heroGenreChip');
+const heroProjectLineEl = document.getElementById('heroProjectLine');
+const heroContextLineEl = document.getElementById('heroContextLine');
+const heroLastPointEl = document.getElementById('heroLastPoint');
+const lobbyOrbImg = document.getElementById('lobbyOrbImg');
+const lobbyOrbTitle = document.getElementById('lobbyOrbTitle');
+const lobbyOrbSub = document.getElementById('lobbyOrbSub');
+const lobbyWorldSceneEl = document.getElementById('lobbyWorldScene');
+const lobbyWorldStateEl = document.getElementById('lobbyWorldState');
+const continueMetaEl = document.getElementById('continueMeta');
+const uiFx = window.NodiaUIEffects || null;
+const THEME_CLASSES = ['theme-continue', 'theme-new', 'theme-idea'];
+const HERO_STYLE_CLASSES = [
+  'hero-style-fantasia',
+  'hero-style-ciencia-ficcion',
+  'hero-style-terror',
+  'hero-style-noir',
+  'hero-style-drama-magico',
+  'hero-style-drama',
+  'hero-style-epico',
+  'hero-style-aventura',
+  'hero-style-accion',
+  'hero-style-comedia',
+  'hero-style-romance',
+  'hero-style-western',
+  'hero-style-belico',
+  'hero-style-post-apocaliptico',
+  'hero-style-superheroes',
+  'hero-style-musical',
+  'hero-style-deportivo'
+];
+const GENRE_TITLE_THEME_CLASSES = [
+  'genre-theme-fantasia',
+  'genre-theme-ciencia-ficcion',
+  'genre-theme-terror',
+  'genre-theme-noir',
+  'genre-theme-drama-magico',
+  'genre-theme-drama',
+  'genre-theme-epico',
+  'genre-theme-aventura',
+  'genre-theme-accion',
+  'genre-theme-comedia',
+  'genre-theme-romance',
+  'genre-theme-western',
+  'genre-theme-belico',
+  'genre-theme-post-apocaliptico',
+  'genre-theme-superheroes',
+  'genre-theme-musical',
+  'genre-theme-deportivo'
+];
+
+function resolveStartLobbyAssetUrl(rawPath) {
+  const path = String(rawPath || '').trim();
+  if (!path) return path;
+  if (/^https?:\/\//i.test(path)) return path;
+  return path;
+}
+
+const META_PILL_ICONS = {
+  age: `<span class="meta-pill-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.2-6.5 7-6.5s7 2.9 7 6.5"/></svg></span>`,
+  subgenres: `<span class="meta-pill-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.5 7.5h9"/><path d="M4.5 12h15"/><path d="M4.5 16.5h11"/><circle cx="16.5" cy="7.5" r="1.5"/><circle cx="20" cy="12" r="1.5"/><circle cx="17.5" cy="16.5" r="1.5"/></svg></span>`,
+  tone: `<span class="meta-pill-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M6 9c2.2 0 2.2-3 4.4-3S12.6 9 14.8 9 17 6 19.2 6"/><path d="M6 15c2.2 0 2.2-3 4.4-3s2.2 3 4.4 3 2.2-3 4.4-3"/></svg></span>`
+};
+
+const HERO_COPY_BY_GENRE = {
+  fantasia: {
+    title: 'El mapa se abre<br>cuando decides cruzarlo.',
+    desc: 'Un juramento, una reliquia y una puerta antigua te esperan en el primer acto.',
+    styleClass: 'hero-style-fantasia'
+  },
+  'ciencia-ficcion': {
+    title: 'Toda órbita inicia<br>con una hipótesis.',
+    desc: 'Tu mundo responde a una pregunta: ¿qué cambia en la humanidad cuando cambia la tecnología?',
+    styleClass: 'hero-style-ciencia-ficcion'
+  },
+  terror: {
+    title: 'Algo te observa<br>desde la escena uno.',
+    desc: 'El silencio también cuenta historia: decide qué no se ve y qué no se puede olvidar.',
+    styleClass: 'hero-style-terror'
+  },
+  noir: {
+    title: 'Cada pista tiene precio,<br>cada verdad también.',
+    desc: 'Sombras, culpa y una decisión moral al borde del amanecer.',
+    styleClass: 'hero-style-noir'
+  },
+  'drama-magico': {
+    title: 'Lo imposible florece<br>en lo cotidiano.',
+    desc: 'La emoción guía la magia: una herida íntima puede transformar todo el mundo.',
+    styleClass: 'hero-style-drama-magico'
+  },
+  drama: {
+    title: 'El corazón decide<br>lo que la razón evita.',
+    desc: 'Drama humano con fricción emocional sostenida; lo mágico vive como subcategoría.',
+    styleClass: 'hero-style-drama-magico'
+  },
+  epico: {
+    title: 'Hoy escribes el gesto<br>que cambia una era.',
+    desc: 'Civilizaciones, legado y decisiones con peso de leyenda.',
+    styleClass: 'hero-style-epico'
+  },
+  aventura: {
+    title: 'Toda ruta abierta<br>cobra una decisión.',
+    desc: 'Exploración, riesgo y descubrimiento: el viaje transforma al protagonista.',
+    styleClass: 'hero-style-epico'
+  },
+  accion: {
+    title: 'El ritmo decide<br>quién llega al final.',
+    desc: 'Empieza con una urgencia clara: movimiento, riesgo y consecuencia inmediata.',
+    styleClass: 'hero-style-accion'
+  },
+  comedia: {
+    title: 'Donde todo falla,<br>empieza la risa.',
+    desc: 'Haz de lo absurdo una verdad incómoda con corazón.',
+    styleClass: 'hero-style-comedia'
+  },
+  romance: {
+    title: 'Dos voces, una distancia,<br>mil posibilidades.',
+    desc: 'Construye tensión emocional antes del primer “te creo”.',
+    styleClass: 'hero-style-romance'
+  },
+  western: {
+    title: 'El horizonte no perdona<br>las dudas.',
+    desc: 'Frontera, honor y polvo: elige tu código antes del duelo.',
+    styleClass: 'hero-style-western'
+  },
+  belico: {
+    title: 'La estrategia salva,<br>la memoria pesa.',
+    desc: 'Define objetivo, costo y cicatriz: toda victoria tiene factura.',
+    styleClass: 'hero-style-belico'
+  },
+  'post-apocaliptico': {
+    title: 'Después del fin,<br>empieza la elección.',
+    desc: '¿Qué reconstruyes primero: la ley, el alimento o la esperanza?',
+    styleClass: 'hero-style-post-apocaliptico'
+  },
+  superheroes: {
+    title: 'Un poder nuevo exige<br>una verdad nueva.',
+    desc: 'Diseña el conflicto entre identidad pública y herida privada.',
+    styleClass: 'hero-style-superheroes'
+  },
+  musical: {
+    title: 'Cuando hablar no alcanza,<br>la historia canta.',
+    desc: 'Marca un pulso emocional: verso, silencio y clímax en escena.',
+    styleClass: 'hero-style-musical'
+  },
+  deportivo: {
+    title: 'El marcador cambia,<br>la disciplina define.',
+    desc: 'Entrenamiento, caída y regreso: arco completo de superación.',
+    styleClass: 'hero-style-deportivo'
+  }
+};
+
+let currentWorld = 'active';
+let currentGenreIndex = 0;
+let deckGenres = [];

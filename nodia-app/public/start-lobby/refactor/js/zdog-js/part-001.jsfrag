@@ -1,0 +1,51 @@
+/* Zdog Module Part 001 - Boilerplate / Core
+   Format: Modular Fragment <= 220 lines */
+(function(t,e) {
+  if(typeof module=="object"&&module.exports) {
+    module.exports=e()
+  }
+  else {
+    t.Zdog=e()
+  }
+}
+)(this,function t() {
+  var e= {};e.TAU=Math.PI*2;
+  e.extend=function(t,e) {
+    for(var r in e) {
+      t[r]=e[r]
+    }
+    return t
+  };
+  e.lerp=function(t,e,r) {
+    return(e-t)*r+t
+  };
+  e.modulo=function(t,e) {
+    return(t%e+e)%e
+  };
+  var s= {
+    2:function(t) {
+      return t*t
+    }, 3:function(t) {
+      return t*t*t
+    }, 4:function(t) {
+      return t*t*t*t
+    }, 5:function(t) {
+      return t*t*t*t*t
+    }
+  };
+  e.easeInOut=function(t,e) {
+    if(e==1) {
+      return t
+    }
+    t=Math.max(0,Math.min(1,t));
+    var r=t<.5;
+    var i=r?t:1-t;
+    i/=.5;
+    var n=s[e]||s[2];
+    var o=n(i);
+    o/=2;
+    return r?o:1-o
+  };
+  return e
+}
+);

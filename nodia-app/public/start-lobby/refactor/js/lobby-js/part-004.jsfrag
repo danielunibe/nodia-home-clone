@@ -1,0 +1,220 @@
+  const subFocusIcon = document.getElementById('subgenreFocusIcon');
+  const subFocusCard = document.getElementById('subgenreFocusCard');
+  const tagsList = document.getElementById('genre-tags');
+  if (tagsList) {
+    tagsList.querySelectorAll('.genre-tag-chip').forEach((chip) => {
+      chip.classList.toggle('is-active', chip === activeChip);
+    });
+  }
+  if (subFocusTitle) subFocusTitle.textContent = subgenre || 'Subgénero';
+  if (subFocusText) subFocusText.textContent = guide || '';
+  if (subFocusIcon) subFocusIcon.innerHTML = genre?.seal ? genre.seal : '✦';
+  if (subFocusCard) {
+    subFocusCard.style.borderColor = hexToAlpha(genre?.dominantColor || '#C5A367', 0.4);
+    subFocusCard.style.boxShadow = `0 10px 24px rgba(0,0,0,0.24), 0 0 16px ${hexToAlpha(genre?.dominantColor || '#C5A367', 0.18)}`;
+  }
+}
+
+function getGenreToneLabel(genreId) {
+  const toneMap = {
+    fantasia: 'Asombro',
+    'ciencia-ficcion': 'Exploración',
+    terror: 'Tensión',
+    noir: 'Ambigüedad',
+    'drama-magico': 'Emoción íntima',
+    drama: 'Emoción íntima',
+    epico: 'Grandeza',
+    aventura: 'Exploración',
+    accion: 'Adrenalina',
+    comedia: 'Ironía',
+    romance: 'Vulnerabilidad',
+    western: 'Frontera moral',
+    belico: 'Resistencia',
+    'post-apocaliptico': 'Supervivencia',
+    superheroes: 'Responsabilidad',
+    musical: 'Expresión',
+    deportivo: 'Superación'
+  };
+  return toneMap[genreId] || 'Narrativo';
+}
+
+function getGenreMotorLabel(genreId) {
+  const map = {
+    fantasia: 'Descubrimiento',
+    'ciencia-ficcion': 'Hipótesis',
+    terror: 'Amenaza latente',
+    noir: 'Investigación',
+    'drama-magico': 'Vínculo íntimo',
+    drama: 'Vínculo íntimo',
+    epico: 'Legado',
+    aventura: 'Viaje',
+    accion: 'Urgencia',
+    comedia: 'Contradicción',
+    romance: 'Deseo',
+    western: 'Código moral',
+    belico: 'Supervivencia',
+    'post-apocaliptico': 'Reconstrucción',
+    superheroes: 'Responsabilidad',
+    musical: 'Catarsis',
+    deportivo: 'Disciplina'
+  };
+  return map[genreId] || 'Narrativo';
+}
+
+function getGenreConflictLabel(genreId) {
+  const map = {
+    fantasia: 'Poder y costo',
+    'ciencia-ficcion': 'Ética y control',
+    terror: 'Percepción y miedo',
+    noir: 'Culpa y verdad',
+    'drama-magico': 'Duelo y memoria',
+    drama: 'Duelo y memoria',
+    epico: 'Destino y deber',
+    aventura: 'Riesgo y meta',
+    accion: 'Tiempo y peligro',
+    comedia: 'Ridículo y verdad',
+    romance: 'Vulnerabilidad y vínculo',
+    western: 'Ley y frontera',
+    belico: 'Estrategia y pérdida',
+    'post-apocaliptico': 'Escasez y comunidad',
+    superheroes: 'Poder e identidad',
+    musical: 'Emoción y voz',
+    deportivo: 'Caída y regreso'
+  };
+  return map[genreId] || 'Tensión central';
+}
+
+function getGenreRiskLabel(genreId) {
+  const map = {
+    fantasia: 'Lore sin consecuencia',
+    'ciencia-ficcion': 'Idea sin drama',
+    terror: 'Susto sin herida',
+    noir: 'Atmósfera sin costo',
+    'drama-magico': 'Símbolo sin conflicto',
+    drama: 'Símbolo sin conflicto',
+    epico: 'Escala sin personaje',
+    aventura: 'Ruta sin transformación',
+    accion: 'Movimiento sin stakes',
+    comedia: 'Chiste sin dirección',
+    romance: 'Química sin arco',
+    western: 'Mito sin dilema',
+    belico: 'Acción sin humanidad',
+    'post-apocaliptico': 'Ruina sin propósito',
+    superheroes: 'Poder sin consecuencia',
+    musical: 'Número sin avance',
+    deportivo: 'Partido sin arco'
+  };
+  return map[genreId] || 'Ruido narrativo';
+}
+
+function getGenreArchetypeNote(genreId) {
+  const notes = {
+    fantasia: 'Arquetipo guía para explorar asombro, destino y costo del poder.',
+    'ciencia-ficcion': 'Arquetipo guía para explorar futuro, ética y cambio social.',
+    terror: 'Arquetipo guía para explorar vulnerabilidad, miedo y percepción.',
+    noir: 'Arquetipo guía para explorar verdad, culpa y ambigüedad moral.',
+    'drama-magico': 'Arquetipo guía para explorar vínculos íntimos y símbolos cotidianos.',
+    drama: 'Arquetipo guía para explorar vínculos íntimos y símbolos cotidianos.',
+    epico: 'Arquetipo guía para explorar legado, escala y decisiones históricas.',
+    aventura: 'Arquetipo guía para explorar descubrimiento, riesgo y transformación por viaje.',
+    accion: 'Arquetipo guía para explorar urgencia, riesgo y acción con propósito.',
+    comedia: 'Arquetipo guía para explorar contradicción humana con ritmo e ironía.',
+    romance: 'Arquetipo guía para explorar deseo, vulnerabilidad y transformación afectiva.',
+    western: 'Arquetipo guía para explorar frontera moral, ley y territorio.',
+    belico: 'Arquetipo guía para explorar sacrificio, estrategia y costo humano.',
+    'post-apocaliptico': 'Arquetipo guía para explorar supervivencia y reconstrucción comunitaria.',
+    superheroes: 'Arquetipo guía para explorar poder, responsabilidad e identidad.',
+    musical: 'Arquetipo guía para explorar emoción, voz y catarsis escénica.',
+    deportivo: 'Arquetipo guía para explorar disciplina, rivalidad y superación.'
+  };
+  return `${notes[genreId] || 'Arquetipo guía para explorar el tono del género.'} No impone protagonista.`;
+}
+
+function getGenreLongDescription(genre) {
+  if (!genre || !genre.id) return '';
+  const paragraphs = {
+    fantasia: 'La fantasía funciona mejor cuando el mundo tiene reglas claras, consecuencias reales y una emoción central que guía cada decisión del protagonista. No se trata solo de magia o criaturas míticas, sino de cómo un personaje cambia al enfrentarse a lo imposible, al costo del poder y a la responsabilidad de elegir entre destino y voluntad.',
+    'ciencia-ficcion': 'La ciencia ficción plantea una hipótesis poderosa y luego la lleva al límite humano: identidad, ética, control y futuro colectivo. Cada avance tecnológico debería generar una pregunta dramática concreta para tus personajes, de modo que el lector no solo vea un mundo nuevo, sino que sienta el impacto de vivir dentro de ese sistema.',
+    terror: 'El terror narrativo más efectivo construye tensión con precisión: sugiere, dosifica y deja que la imaginación del lector complete lo que no se muestra. El objetivo no es solo asustar, sino revelar una herida profunda del personaje y obligarlo a mirar aquello que prefería negar, hasta que la amenaza externa y el conflicto interno se vuelven uno.',
+    noir: 'El noir se apoya en la ambigüedad moral, en verdades incompletas y en personajes que intentan sobrevivir dentro de estructuras corruptas. Tu historia crece cuando cada pista tiene precio, cada alianza es frágil y cada decisión deja una pérdida, creando una atmósfera donde incluso ganar puede sentirse como una forma elegante de caer.',
+    'drama-magico': 'El drama mágico une lo cotidiano con lo extraordinario para hablar de vínculos, duelo, memoria y deseo sin perder intimidad. La magia aquí no es un espectáculo, es un lenguaje emocional: aparece para hacer visible lo que duele, lo que falta o lo que todavía puede sanar dentro de la vida común del personaje.',
+    drama: 'El drama se centra en conflicto humano, vínculos, pérdida, deseo y decisiones emocionales con consecuencias reales. El matiz mágico puede existir como subcategoría para amplificar símbolos, pero el núcleo siempre es la verdad emocional del personaje.',
+    epico: 'Lo épico necesita escala, pero también dirección emocional: una historia grande solo funciona cuando el conflicto colectivo atraviesa de verdad la vida privada del protagonista. Imperios, guerras o leyendas se vuelven memorables cuando cada capítulo deja claro qué está en juego para el mundo, para el grupo y para el corazón del héroe.',
+    aventura: 'La aventura prospera cuando cada tramo del viaje obliga a elegir entre seguridad y descubrimiento. Funciona con objetivos concretos, obstáculos escalonados y escenarios que transforman al protagonista mientras avanza hacia una meta que vale el riesgo.',
+    accion: 'En acción, el ritmo no significa caos: significa claridad de objetivo, presión creciente y consecuencias inmediatas por cada movimiento. Una buena secuencia no solo impresiona, también cuenta carácter; muestra quién es tu protagonista cuando no hay tiempo para pensar y cada segundo obliga a elegir entre riesgo, sacrificio y supervivencia.',
+    comedia: 'La comedia sólida transforma contradicciones humanas en escenas con timing, contraste y verdad emocional. No se limita al chiste aislado: construye una mirada del mundo donde el error, el ridículo y la incomodidad revelan algo auténtico del personaje, logrando que la risa conviva con una lectura más profunda sobre relaciones y expectativas.',
+    romance: 'El romance crece cuando el deseo y la vulnerabilidad avanzan al mismo tiempo, con obstáculos que realmente ponen en riesgo la conexión. Más que “juntar” personajes, este género invita a diseñar una evolución emocional creíble: miradas, silencios, dudas y decisiones que cambian su forma de amar y de verse a sí mismos.',
+    western: 'El western convierte el territorio en dilema moral: frontera, ley frágil y códigos personales en conflicto constante. Funciona muy bien cuando el protagonista debe decidir quién quiere ser en un entorno donde la justicia oficial no alcanza, y cada gesto —una promesa, un duelo, una deuda— tiene peso histórico y humano.',
+    belico: 'La narrativa bélica gana fuerza cuando evita glorificar el combate y se centra en su costo humano, psicológico y ético. Tus mejores escenas nacerán de decisiones imposibles bajo presión, de vínculos puestos al límite y de la pregunta clave: qué queda de una persona después de sobrevivir a lo que jamás debió normalizarse.',
+    'post-apocaliptico': 'El post-apocalipsis no trata solo del colapso, sino de la reconstrucción: qué valores sobreviven, quién define las nuevas reglas y qué memoria se conserva. La tensión principal aparece cuando recursos escasos, poder local y esperanza chocan entre sí, obligando al personaje a elegir qué mundo merece levantarse otra vez.',
+    superheroes: 'Los superhéroes funcionan mejor cuando el poder amplifica conflictos humanos reales: culpa, identidad, responsabilidad y pertenencia. Más allá del espectáculo, este género pide decisiones con impacto social y personal, donde cada acto heroico también abra preguntas sobre límites, justicia y el precio íntimo de convertirse en símbolo.',
+    musical: 'El musical transforma emociones en acción escénica: cuando la palabra ya no alcanza, la canción empuja la historia hacia su siguiente verdad. Para que funcione, cada número debe tener propósito narrativo, cambiar relaciones o revelar conflicto interno, construyendo una experiencia donde forma, ritmo y sentimiento avanzan juntos.',
+    deportivo: 'El género deportivo cuenta superación con estructura: entrenamiento, derrota, ajuste, disciplina y regreso bajo presión real. Más que resultados, importa el proceso del personaje frente al equipo, la identidad y la constancia; así cada partido deja de ser solo competencia y se convierte en una metáfora clara de crecimiento personal.'
+  };
+  return paragraphs[genre.id] || genre.description || genre.desc || '';
+}
+
+function getGenreDeepInfo(genreId) {
+  const info = {
+    fantasia: {
+      core: 'Construcción de mundo con reglas mágicas coherentes y sentido de maravilla.',
+      conflict: 'Destino personal versus precio del poder o del linaje.',
+      promise: 'Exploración épica, símbolos míticos y transformación del héroe.'
+    },
+    'ciencia-ficcion': {
+      core: 'Idea científica como motor del drama humano y social.',
+      conflict: 'Progreso tecnológico frente a ética, identidad y control.',
+      promise: 'Preguntas de futuro con tensión intelectual y emocional.'
+    },
+    terror: {
+      core: 'Uso del miedo como lenguaje para revelar lo inconfesable.',
+      conflict: 'Supervivencia psicológica ante fuerzas que no se entienden.',
+      promise: 'Tensión constante, atmósfera y catarsis oscura.'
+    },
+    noir: {
+      core: 'Ambigüedad moral y verdad fragmentada en un entorno corrupto.',
+      conflict: 'Lealtad, culpa y traición entre personajes quebrados.',
+      promise: 'Intriga elegante, tono adulto y decisiones grises.'
+    },
+    'drama-magico': {
+      core: 'Lo fantástico al servicio de emociones íntimas y vínculos humanos.',
+      conflict: 'Pérdida, reconciliación y deseo de sentido en lo cotidiano.',
+      promise: 'Sensibilidad poética con impacto emocional profundo.'
+    },
+    drama: {
+      core: 'Conflicto emocional profundo, vínculos en crisis y verdad humana.',
+      conflict: 'Pérdida, reconciliación y decisiones que redefinen identidad.',
+      promise: 'Catarsis, profundidad psicológica y evolución de personaje.'
+    },
+    epico: {
+      core: 'Historias de gran escala con legado histórico o mítico.',
+      conflict: 'Sacrificio individual frente al destino colectivo.',
+      promise: 'Magnitud, honor y clímax memorables.'
+    },
+    aventura: {
+      core: 'Movimiento constante con foco en exploración y aprendizaje.',
+      conflict: 'Riesgo externo versus límites internos del protagonista.',
+      promise: 'Ritmo dinámico, descubrimiento y transformación por viaje.'
+    },
+    accion: {
+      core: 'Ritmo alto donde cada escena empuja causa y consecuencia.',
+      conflict: 'Tomar decisiones bajo presión extrema.',
+      promise: 'Adrenalina, urgencia y progresión clara de objetivos.'
+    },
+    comedia: {
+      core: 'Humor como herramienta para exponer contradicciones humanas.',
+      conflict: 'Choque entre expectativas sociales y realidad absurda.',
+      promise: 'Risa con subtexto y personajes carismáticos.'
+    },
+    romance: {
+      core: 'Evolución afectiva y vulnerabilidad como centro narrativo.',
+      conflict: 'Deseo versus miedo, orgullo o heridas pasadas.',
+      promise: 'Tensión emocional, intimidad y resolución significativa.'
+    },
+    western: {
+      core: 'Frontera como espacio de ley inestable y elección moral.',
+      conflict: 'Justicia personal contra orden impuesto.',
+      promise: 'Duelo ético, atmósfera áspera y carácter.'
+    },
+    belico: {
+      core: 'La guerra vista desde su costo humano, no solo táctico.',

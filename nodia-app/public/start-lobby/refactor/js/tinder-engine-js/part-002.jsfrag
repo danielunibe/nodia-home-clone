@@ -1,0 +1,230 @@
+}
+
+function beginSelectionRound(resetRound) {
+  if (resetRound) {
+    TINDER_STATE.round = 1;
+    TINDER_STATE.deck = shuffleArray([...TINDER_STATE.pool]);
+  } else {
+    TINDER_STATE.round += 1;
+    TINDER_STATE.deck = shuffleArray([...TINDER_STATE.kept]);
+  }
+
+  TINDER_STATE.kept = [];
+  TINDER_STATE.decisions = [];
+  TINDER_STATE.currentIndex = 0;
+  TINDER_STATE.targetKeep = getTargetKeep(TINDER_STATE.round, TINDER_STATE.deck.length);
+  TINDER_STATE.phase = Math.min(TINDER_STATE.round, 3);
+  TINDER_STATE.lastSwipe = null;
+  enableUndo(false);
+
+  hideAllTinderScreens();
+  const deckScreen = document.getElementById('tinder-deck-screen');
+  if (deckScreen) deckScreen.style.display = 'flex';
+
+  updatePhaseUI();
+  renderCurrentDeck();
+  updateTinderSideHud();
+}
+
+function getTargetKeep(round, total) {
+  if (round >= 3) return 1;
+  return Math.max(1, Math.ceil(total / 2));
+}
+
+function renderCurrentDeck() {
+  if (!tinderDeckEl) return;
+  tinderDeckEl.innerHTML = '';
+  const remaining = TINDER_STATE.deck.slice(TINDER_STATE.currentIndex);
+  remaining.forEach((genre, index) => {
+    const card = buildCard(genre, { showBio: true, showTags: false, compact: false });
+    card.classList.add('tinder-swipe-card');
+    card.style.zIndex = String(remaining.length - index);
+    tinderDeckEl.appendChild(card);
+  });
+
+  stackDeck();
+  attachTopCardDrag();
+  const active = TINDER_STATE.deck[TINDER_STATE.currentIndex];
+  if (active) syncAuroraToGenre(active);
+  updateTinderSideHud();
+}
+
+function stackDeck() {
+  const cards = tinderDeckEl?.querySelectorAll('.genre-card') || [];
+  cards.forEach((card, index) => {
+    card.style.pointerEvents = index === 0 ? 'auto' : 'none';
+    card.style.opacity = index <= 2 ? '1' : '0';
+    card.style.transition = 'transform 0.36s cubic-bezier(0.2, 0, 0, 1), filter 0.36s ease, opacity 0.25s ease';
+    if (index === 0) {
+      card.style.transform = 'scale(1) translateY(0)';
+      card.style.filter = 'brightness(1)';
+    } else if (index === 1) {
+      card.style.transform = 'scale(0.96) translateY(12px)';
+      card.style.filter = 'brightness(0.72)';
+    } else if (index === 2) {
+      card.style.transform = 'scale(0.92) translateY(24px)';
+      card.style.filter = 'brightness(0.52)';
+    }
+  });
+}
+
+function attachTopCardDrag() {
+  const topCard = tinderDeckEl?.querySelector('.genre-card');
+  if (!topCard || topCard.dataset.dragReady === '1') return;
+  topCard.dataset.dragReady = '1';
+  initCardDrag(topCard, (direction) => {
+    void handleSwipe(direction);
+  });
+}
+
+function buildCard(genre, { showBio = false, showTags = true, compact = false } = {}) {
+  const cardMeta = resolveCardMeta(genre);
+  const card = document.createElement('div');
+  card.className = 'genre-card';
+  card.classList.add(`genre-kind-${genre.id}`);
+  card.dataset.genreId = genre.id;
+  card.style.setProperty('--genre-dominant', genre.dominantColor);
+  card.style.setProperty('--genre-accent', genre.accentColor);
+  card.style.setProperty('--genre-color-alpha', hexToAlpha(genre.dominantColor, 0.3));
+  card.style.setProperty('--character-title-color', genre.accentColor || '#F7E8CD');
+  if (showBio) card.classList.add('tinder-mode-card');
+
+  const artEl = document.createElement('div');
+  artEl.className = genre.artwork ? 'card-artwork card-artwork-flat' : 'card-artwork-placeholder';
+  if (genre.artwork) {
+    const img = document.createElement('img');
+    img.src = resolveArtworkUrl(genre.artwork);
+    img.alt = genre.character.name;
+    img.className = 'card-image-flat';
+    img.decoding = 'async';
+    img.loading = 'eager';
+    img.onerror = () => {
+      artEl.innerHTML = '';
+      artEl.classList.add('art-fallback-neutral');
+    };
+    artEl.appendChild(img);
+  } else {
+    artEl.classList.add('art-fallback-neutral');
+  }
+  card.appendChild(artEl);
+
+  const frameEl = document.createElement('div');
+  frameEl.className = 'card-tabletop-frame';
+  card.appendChild(frameEl);
+
+  const holoGridEl = document.createElement('div');
+  holoGridEl.className = 'card-holo-grid';
+  card.appendChild(holoGridEl);
+
+  const sealEl = document.createElement('div');
+  sealEl.className = 'card-seal';
+  sealEl.innerHTML = genre.seal || '';
+  card.appendChild(sealEl);
+
+  const matchLabel = document.createElement('div');
+  matchLabel.className = 'swipe-label-match';
+  matchLabel.textContent = 'MATCH';
+  card.appendChild(matchLabel);
+
+  const nopeLabel = document.createElement('div');
+  nopeLabel.className = 'swipe-label-nope';
+  nopeLabel.textContent = 'NOPE';
+  card.appendChild(nopeLabel);
+
+  if (showBio) {
+    const profile = getOrCreateCardProfile(genre);
+    const profileEl = document.createElement('div');
+    profileEl.className = 'tinder-card-profile';
+    profileEl.innerHTML = `
+      <div class="profile-identity">
+        <div class="profile-name-wrap">
+          <span class="profile-name">${escapeHtml(cardMeta.characterDisplay)}</span>
+          <span class="profile-age">${escapeHtml(profile.age)}</span>
+        </div>
+        <span class="profile-seal">${genre.seal || ''}</span>
+      </div>
+      <div class="profile-genre">${escapeHtml(genre.name)}</div>
+      <div class="profile-subgenres">
+        ${profile.subgenres.map((sub) => `<span class="profile-subgenre-tag">${escapeHtml(sub)}</span>`).join('')}
+      </div>
+      <div class="profile-divider"></div>
+      <p class="profile-bio">${escapeHtml(profile.bio.text)}</p>
+      <button type="button" class="profile-bio-expand">Ver más</button>
+      <div class="profile-tones">
+        ${profile.tones.map((tone) => `<span class="profile-tone-chip">${escapeHtml(tone)}</span>`).join('')}
+      </div>
+    `;
+    const bioEl = profileEl.querySelector('.profile-bio');
+    const expandBtn = profileEl.querySelector('.profile-bio-expand');
+    expandBtn?.addEventListener('click', () => {
+      if (!bioEl) return;
+      const expanded = bioEl.classList.toggle('expanded');
+      expandBtn.textContent = expanded ? 'Ver menos' : 'Ver más';
+    });
+    card.appendChild(profileEl);
+  } else {
+    const contentEl = document.createElement('div');
+    contentEl.className = 'card-content';
+
+    if (showTags && !compact) {
+      const tagsEl = document.createElement('div');
+      tagsEl.className = 'card-subgenre-tags';
+      (genre.subgenres || []).forEach((sub) => {
+        const tag = document.createElement('span');
+        tag.className = 'subgenre-tag';
+        tag.textContent = sub;
+        tagsEl.appendChild(tag);
+      });
+      contentEl.appendChild(tagsEl);
+    }
+
+    contentEl.innerHTML += `
+      <div class="card-category-line">
+        <span class="card-category-seal card-category-seal--art">${getCategoryLineSealSvg(genre)}</span>
+        <span class="card-category-text">${cardMeta.genreDisplay}</span>
+      </div>
+      <h2 class="card-character-title genre-font-${genre.id}">${cardMeta.characterDisplay}</h2>
+    `;
+    card.appendChild(contentEl);
+  }
+
+  initHolographicCard(card);
+  return card;
+}
+
+function resolveArtworkUrl(rawPath) {
+  if (typeof resolveStartLobbyAssetUrl === 'function') {
+    return resolveStartLobbyAssetUrl(rawPath);
+  }
+  const path = String(rawPath || '').trim();
+  if (!path) return path;
+  if (/^https?:\/\//i.test(path)) return path;
+  return path;
+}
+
+function getOrCreateCardProfile(genre) {
+  const key = `${TINDER_STATE.round}:${genre.id}`;
+  const cached = TINDER_STATE.profileCache.get(key);
+  if (cached) return cached;
+
+  const bio = bioManager.getBio(genre.id);
+  const subgenres = pickProfileSubgenres(genre);
+  const tones = [
+    normalizeToneLabel(bio.tone),
+    ...(TINDER_PROFILE_TONES[genre.id] || []).slice(0, 2)
+  ].filter(Boolean);
+  const uniqueTones = [...new Set(tones)].slice(0, 3);
+
+  const profile = {
+    bio,
+    age: normalizeProfileAge(bio.age),
+    subgenres,
+    tones: uniqueTones
+  };
+  TINDER_STATE.profileCache.set(key, profile);
+  return profile;
+}
+
+function pickProfileSubgenres(genre) {
+  const list = Array.isArray(genre?.subgenres) ? [...genre.subgenres] : [];
+  if (!list.length) return ['Subgénero principal'];

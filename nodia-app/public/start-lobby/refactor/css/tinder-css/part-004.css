@@ -1,0 +1,220 @@
+.tinder-overlay .genre-card .card-character-title {
+  display: none !important;
+}
+
+/* Mantener feedback de swipe, pero limpio */
+.tinder-overlay .genre-card .card-decision-label {
+  font-size: 2.1vh !important;
+  border-width: 2px !important;
+  padding: 0.62vh 1.35vh !important;
+  opacity: 0;
+}
+
+.tinder-controls {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 3.6vh !important;
+  padding: 1.8vh 0 0.8vh !important;
+}
+
+.btn-pass {
+  width: 7.6vh !important;
+  height: 7.6vh !important;
+}
+
+.btn-match {
+  width: 9.1vh !important;
+  height: 9.1vh !important;
+}
+
+/* ── FINAL OVERRIDES v4.0 (Tinder v2: El Perfil Habla) ── */
+.tinder-header {
+  padding: 2.4vh 3.2vw !important;
+}
+
+.tinder-phase-wrap {
+  display: grid;
+  justify-items: center;
+  gap: 0.55vh;
+}
+
+.keyboard-hints {
+  margin-top: 0.22vh;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55vh;
+  font-size: 0.88vh;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.keyboard-hints kbd {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.45vh;
+  padding: 0.18vh 0.44vh;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.84vh;
+  font-family: inherit;
+}
+
+.tinder-phase-label {
+  font-size: 1vh !important;
+  letter-spacing: 0.16em !important;
+}
+
+.tinder-phase-title {
+  font-size: 1.7vh !important;
+  margin-bottom: 0 !important;
+}
+
+.tinder-progress-bar {
+  width: min(58vh, 86vw) !important;
+  display: grid !important;
+  gap: 0.4vh !important;
+}
+
+.progress-phase-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8vh;
+  font-size: 0.9vh;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.phase-number {
+  color: var(--gold, #C9A84C);
+  font-weight: 700;
+}
+
+.phase-separator { color: rgba(255, 255, 255, 0.26); }
+
+.phase-name { color: rgba(255, 255, 255, 0.58); }
+
+.progress-objective {
+  text-align: center;
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: 1.35vh;
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.progress-dual-track {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1.1vh;
+}
+
+.track-accepted,
+.track-rejected {
+  position: relative;
+  flex: 1;
+  height: 0.5vh;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: visible;
+}
+
+.track-fill {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: var(--fill, 0%);
+  border-radius: 999px;
+  transition: width 0.36s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.track-fill--accepted {
+  right: 0;
+  background: linear-gradient(to right, #34C759, #30D158);
+  box-shadow: 0 0 12px rgba(52, 199, 89, 0.56);
+}
+
+.track-fill--rejected {
+  left: 0;
+  background: linear-gradient(to right, #FF3B30, #FF453A);
+  box-shadow: 0 0 12px rgba(255, 59, 48, 0.42);
+}
+
+.track-current {
+  color: var(--gold, #C9A84C);
+  font-size: 1.2vh;
+  line-height: 1;
+}
+
+.track-label {
+  position: absolute;
+  top: -1.58vh;
+  font-size: 0.84vh;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+}
+
+.track-label--accepted { right: 0; color: #34C759; }
+.track-label--rejected { left: 0; color: #FF3B30; }
+
+.progress-dots {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.44vh;
+  min-height: 1.25vh;
+}
+
+.progress-dot {
+  width: 0.86vh !important;
+  height: 0.86vh !important;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: none !important;
+  box-shadow: none !important;
+  transform: scale(1);
+}
+
+.progress-dot--pending { background: rgba(255, 255, 255, 0.14); }
+.progress-dot--current {
+  background: var(--gold, #C9A84C);
+  transform: scale(1.32);
+  box-shadow: 0 0 8px rgba(201, 168, 76, 0.62);
+}
+.progress-dot--accepted {
+  background: #34C759;
+  box-shadow: 0 0 6px rgba(52, 199, 89, 0.44);
+}
+.progress-dot--rejected {
+  background: #FF3B30;
+  opacity: 0.62;
+  transform: scale(0.86);
+}
+
+.tinder-deck {
+  width: clamp(34vh, 38vh, 44vh) !important;
+  height: calc(clamp(34vh, 38vh, 44vh) * 4/3) !important;
+}
+
+.tinder-overlay .genre-card {
+  overflow: hidden;
+}
+
+.tinder-overlay .genre-card .card-content,
+.tinder-overlay .genre-card .card-bio-box,
+.tinder-overlay .genre-card .card-subgenre-tags,
+.tinder-overlay .genre-card .card-category-line,
+.tinder-overlay .genre-card .card-character-title,
+.tinder-overlay .genre-card .card-decision-label {
+  display: none !important;
+}
+
+.tinder-card-profile {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 16;
+  padding: 2vh 1.9vh 2.1vh;
+  display: grid;
+  gap: 0.78vh;
+  background: linear-gradient(

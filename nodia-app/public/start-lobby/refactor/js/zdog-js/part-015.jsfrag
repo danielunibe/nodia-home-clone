@@ -1,0 +1,74 @@
+/* Zdog Module Part 015 - Hemisphere
+   Format: Modular Fragment <= 220 lines */
+(function(t,e) {
+  if(typeof module=="object"&&module.exports) {
+    module.exports=e(require("./boilerplate"),require("./vector"),require("./anchor"),require("./ellipse"))
+  }
+  else {
+    var r=t.Zdog;
+    r.Hemisphere=e(r,r.Vector,r.Anchor,r.Ellipse)
+  }
+}
+)(this,function t(e,r,i,n) {
+  var o=n.subclass( {
+    fill:true
+  }
+  );
+  var u=e.TAU;
+  o.prototype.create=function() {
+    n.prototype.create.apply(this,arguments);
+    this.apex=new i( {
+      addTo:this,translate: {
+        z:this.diameter/2
+      }
+    }
+    );
+    this.renderCentroid=new r
+  };
+  o.prototype.updateSortValue=function() {
+    this.renderCentroid.set(this.renderOrigin).lerp(this.apex.renderOrigin,3/8);
+    this.sortValue=this.renderCentroid.z
+  };
+  o.prototype.render=function(t,e) {
+    this.renderDome(t,e);
+    n.prototype.render.apply(this,arguments)
+  };
+  o.prototype.renderDome=function(t,e) {
+    if(!this.visible) {
+      return
+    }
+    var r=this.getDomeRenderElement(t,e);
+    var i=Math.atan2(this.renderNormal.y,this.renderNormal.x);
+    var n=this.diameter/2*this.renderNormal.magnitude();
+    var o=this.renderOrigin.x;
+    var s=this.renderOrigin.y;
+    if(e.isCanvas) {
+      var a=i+u/4;
+      var h=i-u/4;
+      t.beginPath();
+      t.arc(o,s,n,a,h)
+    }
+    else if(e.isSvg) {
+      i=(i-u/4)/u*360;
+      this.domeSvgElement.setAttribute("d","M "+-n+",0 A "+n+","+n+" 0 0 1 "+n+",0");
+      this.domeSvgElement.setAttribute("transform","translate("+o+","+s+" ) rotate("+i+")")
+    }
+    e.stroke(t,r,this.stroke,this.color,this.getLineWidth());
+    e.fill(t,r,this.fill,this.color);
+    e.end(t,r)
+  };
+  var s="http://www.w3.org/2000/svg";
+  o.prototype.getDomeRenderElement=function(t,e) {
+    if(!e.isSvg) {
+      return
+    }
+    if(!this.domeSvgElement) {
+      this.domeSvgElement=document.createElementNS(s,"path");
+      this.domeSvgElement.setAttribute("stroke-linecap","round");
+      this.domeSvgElement.setAttribute("stroke-linejoin","round")
+    }
+    return this.domeSvgElement
+  };
+  return o
+}
+);

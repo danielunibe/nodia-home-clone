@@ -1,0 +1,220 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #050507;
+  --text: #e8e6e1;
+  --text-2: #9a958e;
+  --text-3: #7a7266;
+  --gold: #c9a66b;
+  --gold-light: #e0c38e;
+  --card: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.08);
+  --hover: rgba(255, 255, 255, 0.06);
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 700px at 50% -20%, rgba(110, 65, 165, 0.28), transparent 60%),
+    radial-gradient(700px 500px at 85% 15%, rgba(201, 166, 107, 0.09), transparent 65%),
+    radial-gradient(800px 600px at 15% 85%, rgba(70, 45, 120, 0.18), transparent 60%),
+    radial-gradient(ellipse at center, #0a080d 0%, #050507 70%);
+  transition: background 0.6s cubic-bezier(0.2, 0, 0, 1);
+}
+
+body[data-world="ethyria"]::before {
+  background:
+    radial-gradient(900px 700px at 50% -20%, rgba(110, 65, 165, 0.28), transparent 60%),
+    radial-gradient(700px 500px at 85% 15%, rgba(201, 166, 107, 0.09), transparent 65%),
+    radial-gradient(800px 600px at 15% 85%, rgba(70, 45, 120, 0.18), transparent 60%),
+    radial-gradient(ellipse at center, #0a080d 0%, #050507 70%);
+}
+
+body[data-world="nuevo"]::before {
+  background:
+    radial-gradient(900px 700px at 50% -20%, rgba(62, 130, 190, 0.24), transparent 60%),
+    radial-gradient(700px 500px at 85% 15%, rgba(120, 194, 220, 0.13), transparent 65%),
+    radial-gradient(800px 600px at 12% 82%, rgba(30, 95, 125, 0.2), transparent 62%),
+    radial-gradient(ellipse at center, #05101a 0%, #05090d 70%);
+}
+
+body[data-world="idea"]::before {
+  background:
+    radial-gradient(900px 700px at 50% -20%, rgba(188, 84, 128, 0.22), transparent 60%),
+    radial-gradient(700px 500px at 85% 15%, rgba(235, 148, 98, 0.15), transparent 65%),
+    radial-gradient(780px 560px at 15% 85%, rgba(120, 42, 68, 0.22), transparent 60%),
+    radial-gradient(ellipse at center, #140910 0%, #0a060a 72%);
+}
+
+button,
+a {
+  font: inherit;
+}
+
+.stars {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    radial-gradient(1px 1px at 15% 20%, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(1px 1px at 35% 15%, rgba(255, 255, 255, 0.2), transparent),
+    radial-gradient(1px 1px at 65% 25%, rgba(255, 255, 255, 0.25), transparent),
+    radial-gradient(1px 1px at 80% 40%, rgba(255, 255, 255, 0.2), transparent),
+    radial-gradient(1px 1px at 25% 60%, rgba(255, 255, 255, 0.15), transparent),
+    radial-gradient(1px 1px at 75% 70%, rgba(255, 255, 255, 0.2), transparent),
+    radial-gradient(1px 1px at 45% 85%, rgba(255, 255, 255, 0.25), transparent),
+    radial-gradient(1px 1px at 90% 20%, rgba(201, 166, 107, 0.4), transparent),
+    radial-gradient(1px 1px at 10% 80%, rgba(201, 166, 107, 0.3), transparent);
+  transition: opacity 0.45s ease, filter 0.45s ease;
+}
+
+body[data-world="ethyria"] .stars {
+  opacity: 0.5;
+  filter: hue-rotate(0deg) saturate(1);
+}
+
+body[data-world="nuevo"] .stars {
+  opacity: 0.62;
+  filter: hue-rotate(180deg) saturate(1.1);
+}
+
+body[data-world="idea"] .stars {
+  opacity: 0.58;
+  filter: hue-rotate(315deg) saturate(1.2);
+}
+
+.app {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+/* Header */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 28px 48px;
+}
+
+.brand {
+  display: flex;
+  min-width: 240px;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo {
+  position: relative;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid rgba(201, 166, 107, 0.25);
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1a1611 0%, #2a241c 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.logo::before {
+  content: "";
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+  opacity: 0.9;
+  transform: rotate(45deg);
+}
+
+.logo::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--gold);
+}
+
+.brand-text h1 {
+  color: #f0ede7;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 2.5px;
+}
+
+.brand-text p {
+  margin-top: 3px;
+  color: var(--text-3);
+  font-size: 11px;
+  letter-spacing: 0.3px;
+}
+
+.header-pill {
+  padding: 9px 20px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  backdrop-filter: blur(16px);
+  color: #b9b3a9;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+.nav {
+  display: flex;
+  gap: 32px;
+  color: var(--text-2);
+  font-size: 14px;
+}
+
+.nav a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nav a:hover {
+  color: var(--text);
+}
+
+/* Main */
+
+.main {
+  display: grid;
+  flex: 1;
+  grid-template-columns: 45% 55%;
+  align-items: center;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  gap: 48px;
+  padding: 24px 48px 120px;
+}
+

@@ -1,0 +1,220 @@
+/* ─── NODIA v3.0 — tinder.css ─── */
+
+/* ── MODO TINDER OVERLAY ── */
+.tinder-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--bg-primary, #0a0a0f);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tinder-overlay.active { display: flex; }
+
+/* Transición de entrada */
+.tinder-overlay { animation: tinder-enter 0.5s cubic-bezier(0.2, 0, 0, 1); }
+@keyframes tinder-enter {
+  from { opacity: 0; transform: scale(1.02); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── HEADER ── */
+.tinder-header {
+  width: 100%;
+  padding: 3vh 4vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.tinder-exit-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.5);
+  padding: 1vh 2vh;
+  border-radius: 0.8vh;
+  cursor: pointer;
+  font-size: 1.3vh;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.3s;
+}
+
+.tinder-exit-btn:hover {
+  border-color: rgba(255,255,255,0.4);
+  color: #fff;
+}
+
+/* ── FASE INDICATOR ── */
+.tinder-phase-wrap {
+  text-align: center;
+}
+
+.tinder-phase-label {
+  font-size: 1.1vh;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--gold, #C9A84C);
+  margin-bottom: 0.8vh;
+  font-weight: 600;
+}
+
+.tinder-phase-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2vh;
+  color: #fff;
+  margin-bottom: 1.2vh;
+}
+
+/* Barra de progreso de matches */
+.tinder-progress-bar {
+  display: flex;
+  gap: 0.6vh;
+  justify-content: center;
+}
+
+.progress-dot {
+  width: 1.2vh;
+  height: 1.2vh;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.progress-dot.matched {
+  background: var(--gold, #C9A84C);
+  border-color: var(--gold, #C9A84C);
+  box-shadow: 0 0 8px rgba(201, 168, 76, 0.6);
+  transform: scale(1.2);
+}
+
+/* ── DECK CONTAINER ── */
+.tinder-deck-container {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  position: relative;
+  perspective: 1200px;
+}
+
+.tinder-deck {
+  position: relative;
+  width: 32vh;
+  height: calc(32vh * 4/3);
+}
+
+.tinder-deck .genre-card {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Stack visual: tarjetas de fondo */
+.tinder-deck .genre-card:nth-child(2) {
+  transform: scale(0.95) translateY(1.5vh);
+  z-index: 0;
+  filter: brightness(0.7);
+}
+
+.tinder-deck .genre-card:nth-child(3) {
+  transform: scale(0.90) translateY(3vh);
+  z-index: -1;
+  filter: brightness(0.5);
+}
+
+.tinder-deck .genre-card:nth-child(n+4) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── CONTROLES TINDER ── */
+.tinder-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5vh;
+  padding: 3vh 0 4vh;
+  flex-shrink: 0;
+}
+
+.tinder-btn {
+  border-radius: 50%;
+  border: 2px solid;
+  background: transparent;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+  position: relative;
+}
+
+.tinder-btn svg { pointer-events: none; }
+
+.btn-pass {
+  width: 7vh;
+  height: 7vh;
+  border-color: rgba(255, 59, 48, 0.5);
+  color: #FF3B30;
+}
+
+.btn-pass svg { width: 3.5vh; height: 3.5vh; }
+
+.btn-pass:hover {
+  background: rgba(255, 59, 48, 0.12);
+  border-color: #FF3B30;
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(255, 59, 48, 0.3);
+}
+
+.btn-match {
+  width: 8.5vh;
+  height: 8.5vh;
+  border-color: rgba(52, 199, 89, 0.5);
+  color: #34C759;
+}
+
+.btn-match svg { width: 4.5vh; height: 4.5vh; }
+
+.btn-match:hover {
+  background: rgba(52, 199, 89, 0.12);
+  border-color: #34C759;
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(52, 199, 89, 0.3);
+}
+
+/* ── PANTALLA DE DESEMPATE ── */
+.desempate-screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  width: 100%;
+  gap: 4vh;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.desempate-screen.active { display: flex; }
+
+.desempate-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3vh;
+  color: var(--gold, #C9A84C);
+  text-align: center;
+}
+
+.desempate-subtitle {
+  font-size: 1.6vh;
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+}
+
+.fan-cards {
+  display: flex;
+  align-items: flex-end;

@@ -1,0 +1,220 @@
+  margin-top: 2.5vh;
+  padding-top: 2.5vh;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  text-align: center;
+}
+
+.tinder-divider-text {
+  font-size: 1.2vh;
+  color: var(--text3);
+  font-style: italic;
+  margin-bottom: 1.5vh;
+  line-height: 1.4;
+}
+
+/* Deck controls v3.0 */
+.deck-controls {
+  display: flex; align-items: center; justify-content: center;
+  gap: 2vh; margin-top: 2vh;
+}
+
+.deck-progress-bar { width: 8vh; height: 2px; background: rgba(255,255,255,0.1); border-radius: 1px; }
+.progress-fill { height: 100%; background: var(--gold); border-radius: 1px; transition: width 0.4s; }
+
+#deckCounter { font-size: 1.1vh; color: var(--text3); letter-spacing: 0.1em; min-width: 5vh; text-align: center; }
+
+/* Animación texto-changing (panel izquierdo) */
+.text-changing {
+  opacity: 0;
+  transform: translateY(0.8vh);
+  transition: opacity 0.25s, transform 0.25s;
+}
+
+/* ── COMPONENTE DE AYUDA (SOPORTE) ── */
+.help-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2vh;
+  margin-top: 2vh;
+  padding-bottom: 2vh;
+}
+
+.help-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5vh;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1.2vh;
+  padding: 2vh;
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.help-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(201, 168, 76, 0.1), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.help-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(201, 168, 76, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.help-card:hover::before {
+  opacity: 1;
+}
+
+.help-icon {
+  font-size: 3vh;
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.3);
+  width: 5vh;
+  height: 5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.8vh;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.help-info h4 {
+  font-family: var(--font-display);
+  font-size: 1.6vh;
+  margin-bottom: 0.5vh;
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.help-info p {
+  font-size: 1.25vh;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+.help-card.support-link {
+  grid-column: span 2;
+  background: rgba(201, 168, 76, 0.04);
+  border-color: rgba(201, 168, 76, 0.15);
+}
+
+.help-card.support-link:hover {
+  background: rgba(201, 168, 76, 0.08);
+  border-color: var(--gold);
+}
+
+/* ── FINAL OVERRIDES v4.7 (Plantillas UX/UI Fix) ── */
+.aurora-band {
+  transition: background 0.55s ease, filter 0.55s ease, opacity 0.55s ease;
+}
+body.aurora-shift .aurora-field {
+  animation: aurora-shift-glow 0.72s ease;
+}
+@keyframes aurora-shift-glow {
+  0% { filter: blur(34px) saturate(1.12) brightness(1); opacity: 0.5; }
+  50% { filter: blur(26px) saturate(1.26) brightness(1.12); opacity: 0.68; }
+  100% { filter: blur(34px) saturate(1.12) brightness(1); opacity: 0.5; }
+}
+
+.genre-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7vh;
+  margin: 0.45vh 0 1.35vh;
+}
+.genre-meta-pill {
+  font-size: 0.95vh;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.78);
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.22);
+  border-radius: 999px;
+  padding: 0.42vh 0.9vh;
+}
+
+.genre-deep-info {
+  margin-top: 1.6vh;
+  display: grid;
+  gap: 1.1vh;
+}
+
+.genre-deep-item {
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 1vh;
+  background: rgba(255,255,255,0.03);
+  padding: 0.9vh 1vh;
+}
+
+.deep-label {
+  display: block;
+  font-size: 0.95vh;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.64);
+  margin-bottom: 0.45vh;
+}
+
+.genre-deep-item p {
+  font-size: 1.18vh;
+  line-height: 1.42;
+  color: rgba(255,255,255,0.9);
+}
+
+.genre-desc {
+  margin-bottom: 2.2vh;
+}
+
+.genre-deck-wrapper {
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.deck-actions-panel {
+  width: min(36vh, 92%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.3vh;
+  margin-top: 1.1vh;
+}
+
+.primary-btn-right {
+  margin-top: 0;
+  width: 100%;
+}
+
+.discovery-box {
+  border-radius: 1.4vh;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: linear-gradient(145deg, rgba(255,255,255,0.045), rgba(255,255,255,0.014));
+  backdrop-filter: blur(10px);
+  padding: 1.35vh 1.2vh;
+  text-align: center;
+}
+
+.tinder-divider-text {
+  margin-bottom: 1vh;
+}
+
+.deck-controls {
+  gap: 2.2vh;
+  margin-top: 1.2vh;
+}
+
+.nav-btn {
+  width: 7.2vh;
+  height: 7.2vh;
+  border-radius: 1.6vh;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255,255,255,0.2), rgba(255,255,255,0.04)),

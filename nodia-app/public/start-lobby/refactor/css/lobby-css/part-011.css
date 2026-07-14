@@ -1,0 +1,220 @@
+  display: block !important;
+  animation: panel-enter-aurora 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.options-panel.panel-leave {
+  animation: panel-leave-aurora 260ms ease forwards;
+  pointer-events: none;
+}
+
+@keyframes panel-enter-aurora {
+  0% {
+    opacity: 0;
+    transform: translateY(1.05vh) scale(0.992);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes panel-leave-aurora {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-0.8vh) scale(0.994);
+    filter: blur(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  .options-panel.panel-enter,
+  .options-panel.panel-leave,
+  .q-identity.hero-refresh,
+  body.route-transition .shell {
+    animation: none !important;
+    transition: none !important;
+    filter: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* ── FINAL OVERRIDES v6.8 (restore classic header/nav, no top pill) ── */
+.header {
+  justify-content: space-between !important;
+  margin-bottom: 4vh !important;
+}
+
+.brand {
+  display: flex !important;
+  align-items: center !important;
+  gap: 15px !important;
+}
+
+.brand-name {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  letter-spacing: 2px !important;
+  line-height: 1.05;
+}
+
+.brand-sub {
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.2em !important;
+  opacity: 0.4 !important;
+}
+
+.nav-list {
+  display: flex !important;
+  gap: 40px !important;
+  list-style: none !important;
+  position: relative !important;
+  align-items: center !important;
+}
+
+.nav-list a {
+  text-decoration: none !important;
+  color: var(--text3) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.2em !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.nav-list a:hover {
+  color: var(--text) !important;
+}
+
+.nav-list a.active {
+  color: var(--text) !important;
+}
+
+.nav-indicator {
+  bottom: -8px !important;
+  height: 2px !important;
+  border-radius: 2px !important;
+  background: var(--gold) !important;
+  box-shadow: none !important;
+}
+
+/* ── FINAL OVERRIDES v6.9 (paragraph + new subgenre layout) ── */
+.genre-info-box {
+  gap: 0.82vh !important;
+}
+
+.genre-desc {
+  font-size: 1.26vh !important;
+  line-height: 1.62 !important;
+  color: rgba(231, 239, 255, 0.9) !important;
+  margin: 0.45vh 0 0.8vh !important;
+  -webkit-line-clamp: unset !important;
+  display: block !important;
+  overflow: visible !important;
+  max-height: none !important;
+}
+
+.subgenres-wrap {
+  margin-top: 0.32vh !important;
+}
+
+.sub-label {
+  margin-bottom: 0.5vh !important;
+  font-size: 0.98vh !important;
+  color: rgba(237, 223, 185, 0.9) !important;
+}
+
+/* Volver a subgéneros como chips (formato original) */
+.genre-tags-list {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.6vh !important;
+}
+
+.genre-tag-chip {
+  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-radius: 100px !important;
+  color: rgba(255,255,255,0.65) !important;
+  font-size: 1.1vh !important;
+  letter-spacing: 0.06em !important;
+  padding: 0.4vh 1vh !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+}
+
+.genre-tag-chip:hover {
+  background: rgba(201,168,76,0.12) !important;
+  border-color: rgba(201,168,76,0.4) !important;
+  color: var(--gold) !important;
+}
+
+/* Sello detrás del título del género (debajo de NODIA en Plantillas) */
+.view-header {
+  position: relative;
+  overflow: visible;
+}
+
+.detail-genre-seal-bg {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
+  width: clamp(7.8vh, 9.2vh, 11vh);
+  height: clamp(7.8vh, 9.2vh, 11vh);
+  opacity: 0.14;
+  color: color-mix(in srgb, var(--genre-color, #C5A367) 68%, white 32%);
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.35));
+  pointer-events: none;
+  z-index: 0;
+}
+
+.detail-genre-seal-bg svg {
+  width: 100%;
+  height: 100%;
+}
+
+#detail-genre-name {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── FINAL OVERRIDES v7.0 (lobby clean layout requested) ── */
+.arena {
+  grid-template-columns: 1.05fr 0.95fr !important;
+  grid-template-rows: auto auto !important;
+  align-items: center !important;
+  gap: 2.2vh 3vw !important;
+}
+
+.q-identity {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  align-self: end;
+}
+
+.q-identity .hero-title {
+  margin-bottom: 1.35vh !important;
+}
+
+.q-identity .hero-desc {
+  max-width: 56vh !important;
+  font-size: 1.95vh !important;
+  line-height: 1.52 !important;
+}
+
+/* ── FINAL OVERRIDES v7.4 (ornamentos por género en Plantillas) ── */
+.genre-symbol-field {
+  position: absolute;

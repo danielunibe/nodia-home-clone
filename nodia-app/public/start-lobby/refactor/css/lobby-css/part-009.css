@@ -1,0 +1,220 @@
+}
+
+@keyframes aurora-cosmic-a {
+  0% { transform: translate3d(-4vw, 0, 0) rotate(-4deg) scale(0.98); opacity: 0.44; }
+  50% { transform: translate3d(2vw, -1.2vh, 0) rotate(-1deg) scale(1.05); opacity: 0.64; }
+  100% { transform: translate3d(7vw, -2.1vh, 0) rotate(2deg) scale(1.09); opacity: 0.52; }
+}
+
+@keyframes aurora-cosmic-b {
+  0% { transform: translate3d(7vw, -0.4vh, 0) rotate(3deg) scale(0.94); opacity: 0.36; }
+  50% { transform: translate3d(1vw, -1.1vh, 0) rotate(0deg) scale(1.06); opacity: 0.6; }
+  100% { transform: translate3d(-8vw, -1.8vh, 0) rotate(-3deg) scale(1.1); opacity: 0.48; }
+}
+
+@keyframes aurora-cosmic-c {
+  0% { transform: translate3d(-2vw, 0, 0) rotate(-1deg) scale(0.96); opacity: 0.34; }
+  50% { transform: translate3d(3vw, -1vh, 0) rotate(1deg) scale(1.02); opacity: 0.56; }
+  100% { transform: translate3d(8vw, -1.6vh, 0) rotate(3deg) scale(1.08); opacity: 0.46; }
+}
+
+.view-title {
+  text-shadow:
+    0 2px 12px rgba(0,0,0,0.4),
+    0 0 16px color-mix(in srgb, var(--genre-color, #3A7BD5) 24%, transparent) !important;
+}
+
+/* ── FINAL OVERRIDES v6.5 (epic welcome cards instead of circle) ── */
+.q-portal {
+  align-items: stretch !important;
+  justify-content: stretch !important;
+}
+
+.welcome-stage {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1.2fr 1fr 1fr;
+  gap: 1vh;
+}
+
+.welcome-card {
+  position: relative;
+  border-radius: 1.5vh;
+  padding: 1.4vh 1.5vh;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02)),
+    linear-gradient(155deg, rgba(10, 16, 28, 0.84), rgba(10, 16, 28, 0.58));
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow:
+    0 16px 34px rgba(0,0,0,0.34),
+    inset 0 0 0 1px rgba(255,255,255,0.05),
+    0 0 30px color-mix(in srgb, var(--genre-color, #3A7BD5) 20%, transparent);
+  overflow: hidden;
+}
+
+.welcome-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 12% 18%, color-mix(in srgb, var(--genre-color, #3A7BD5) 34%, transparent), transparent 62%),
+    radial-gradient(ellipse at 84% 78%, color-mix(in srgb, var(--genre-color, #3A7BD5) 18%, transparent), transparent 66%);
+  pointer-events: none;
+  opacity: 0.72;
+}
+
+.welcome-card-main {
+  border-color: color-mix(in srgb, var(--genre-color, #3A7BD5) 44%, white 56%);
+  box-shadow:
+    0 20px 42px rgba(0,0,0,0.4),
+    inset 0 0 0 1px rgba(255,255,255,0.08),
+    0 0 38px color-mix(in srgb, var(--genre-color, #3A7BD5) 28%, transparent);
+}
+
+.welcome-kicker {
+  position: relative;
+  z-index: 2;
+  font-size: 0.94vh;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(248, 252, 255, 0.7);
+  margin-bottom: 0.4vh;
+}
+
+.welcome-card h3 {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2vh;
+  color: rgba(251, 252, 255, 0.96);
+  text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+
+.welcome-card p {
+  position: relative;
+  z-index: 2;
+  margin-top: 0.6vh;
+  font-size: 1.12vh;
+  line-height: 1.45;
+  color: rgba(228, 236, 255, 0.86);
+}
+
+/* ── FINAL OVERRIDES v6.6 (top pill + help hub + liquid glass) ── */
+.header {
+  justify-content: center !important;
+  margin-bottom: 3.1vh !important;
+}
+
+.top-nav-pill {
+  --pill-light-x: 50%;
+  --pill-light-y: 50%;
+  width: min(104vh, 100%);
+  min-height: 8.2vh;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04)),
+    linear-gradient(160deg, rgba(10,16,26,0.84), rgba(9,14,24,0.66));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    inset 0 -1px 0 rgba(255,255,255,0.08),
+    0 16px 32px rgba(0,0,0,0.35),
+    0 0 28px color-mix(in srgb, var(--genre-color, #3A7BD5) 18%, transparent);
+  backdrop-filter: blur(18px) saturate(1.16);
+  padding: 0.78vh 1.3vh 0.72vh 2vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.top-nav-pill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at var(--pill-light-x) var(--pill-light-y), rgba(255,255,255,0.24), transparent 45%),
+    linear-gradient(180deg, rgba(255,255,255,0.18), transparent 38%);
+  opacity: 0.7;
+}
+
+.top-nav-pill .top-nav-gloss {
+  position: absolute;
+  inset: 8% 22% auto 22%;
+  height: 42%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.26), rgba(255,255,255,0.02));
+  opacity: 0.38;
+  filter: blur(0.5px);
+  pointer-events: none;
+}
+
+.brand-inline {
+  gap: 0 !important;
+}
+
+.brand-inline .brand-name {
+  font-size: 2.4vh !important;
+  letter-spacing: 0.12em !important;
+  line-height: 1;
+}
+
+.brand-inline .brand-sub {
+  margin-top: 0.2vh;
+  font-size: 0.96vh !important;
+  opacity: 0.58;
+}
+
+.nav-list {
+  gap: 2.4vh !important;
+  align-items: center;
+}
+
+.nav-list a {
+  font-size: 1.06vh !important;
+  letter-spacing: 0.13em !important;
+  border-radius: 999px;
+  padding: 0.72vh 1.18vh;
+  color: rgba(224,233,255,0.74) !important;
+  transition: color 0.28s, background 0.28s, box-shadow 0.28s;
+}
+
+.nav-list a:hover,
+.nav-list a.active {
+  color: rgba(255,255,255,0.98) !important;
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--genre-color, #3A7BD5) 25%, transparent);
+}
+
+.nav-indicator {
+  bottom: -0.2vh !important;
+  height: 0.24vh !important;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--genre-color, #3A7BD5) 78%, #ffe6b5 22%) !important;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--genre-color, #3A7BD5) 60%, transparent);
+}
+
+.options-panel,
+.welcome-card,
+.act-btn-premium,
+.opt-item {
+  border-radius: 1.6vh !important;
+}
+
+.options-panel,
+.opt-item {
+  border-color: rgba(255,255,255,0.12) !important;
+  background-image:
+    linear-gradient(145deg, rgba(255,255,255,0.11), rgba(255,255,255,0.03)),
+    linear-gradient(160deg, rgba(8,13,22,0.84), rgba(9,13,22,0.65)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.14),
+    0 14px 30px rgba(0,0,0,0.3),
+    0 0 22px color-mix(in srgb, var(--genre-color, #3A7BD5) 15%, transparent);
+}

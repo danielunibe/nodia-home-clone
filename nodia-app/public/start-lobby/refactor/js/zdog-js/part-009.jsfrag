@@ -1,0 +1,164 @@
+/* Zdog Module Part 009 - Shape
+   Format: Modular Fragment <= 220 lines */
+(function(t,e) {
+  if(typeof module=="object"&&module.exports) {
+    module.exports=e(require("./boilerplate"),require("./vector"),require("./path-command"),require("./anchor"))
+  }
+  else {
+    var r=t.Zdog;
+    r.Shape=e(r,r.Vector,r.PathCommand,r.Anchor)
+  }
+}
+)(this,function t(e,r,p,i) {
+  var n=i.subclass( {
+    stroke:1,fill:false,color:"#333",closed:true,visible:true,path:[ {
+    }
+    ],front: {
+      z:1
+    }, backface:true
+  }
+  );
+  n.prototype.create=function(t) {
+    i.prototype.create.call(this,t);
+    this.updatePath();
+    this.front=new r(t.front||this.front);
+    this.renderFront=new r(this.front);
+    this.renderNormal=new r
+  };
+  var d=["move","line","bezier","arc"];
+  n.prototype.updatePath=function() {
+    this.setPath();
+    this.updatePathCommands()
+  };
+  n.prototype.setPath=function() {};n.prototype.updatePathCommands=function() {
+    var u;
+    this.pathCommands=this.path.map(function(t,e) {
+      var r=Object.keys(t);
+      var i=r[0];
+      var n=t[i];
+      var o=r.length==1&&d.indexOf(i)!=-1;
+      if(!o) {
+        i="line";
+        n=t
+      }
+      var s=i=="line"||i=="move";
+      var a=Array.isArray(n);
+      if(s&&!a) {
+        n=[n]
+      }
+      i=e===0?"move":i;
+      var h=new p(i,n,u);
+      u=h.endRenderPoint;
+      return h
+    }
+    )
+  };
+  n.prototype.reset=function() {
+    this.renderOrigin.set(this.origin);
+    this.renderFront.set(this.front);
+    this.pathCommands.forEach(function(t) {
+      t.reset()
+    }
+    )
+  };
+  n.prototype.transform=function(e,r,i) {
+    this.renderOrigin.transform(e,r,i);
+    this.renderFront.transform(e,r,i);
+    this.renderNormal.set(this.renderOrigin).subtract(this.renderFront);
+    this.pathCommands.forEach(function(t) {
+      t.transform(e,r,i)
+    }
+    );
+    this.children.forEach(function(t) {
+      t.transform(e,r,i)
+    }
+    )
+  };
+  n.prototype.updateSortValue=function() {
+    var t=this.pathCommands.length;
+    var e=this.pathCommands[0].endRenderPoint;
+    var r=this.pathCommands[t-1].endRenderPoint;
+    var i=t>2&&e.isSame(r);
+    if(i) {
+      t-=1
+    }
+    var n=0;
+    for(var o=0;
+    o<t;
+    o++) {
+      n+=this.pathCommands[o].endRenderPoint.z
+    }
+    this.sortValue=n/t
+  };
+  n.prototype.render=function(t,e) {
+    var r=this.pathCommands.length;
+    if(!this.visible||!r) {
+      return
+    }
+    this.isFacingBack=this.renderNormal.z>0;
+    if(!this.backface&&this.isFacingBack) {
+      return
+    }
+    if(!e) {
+      throw new Error("Zdog renderer required. Set to "+e)
+    }
+    var i=r==1;
+    if(e.isCanvas&&i) {
+      this.renderCanvasDot(t,e)
+    }
+    else {
+      this.renderPath(t,e)
+    }
+  };
+  var o=e.TAU;
+  n.prototype.renderCanvasDot=function(t) {
+    var e=this.getLineWidth();
+    if(!e) {
+      return
+    }
+    t.fillStyle=this.getRenderColor();
+    var r=this.pathCommands[0].endRenderPoint;
+    t.beginPath();
+    var i=e/2;
+    t.arc(r.x,r.y,i,0,o);
+    t.fill()
+  };
+  n.prototype.getLineWidth=function() {
+    if(!this.stroke) {
+      return 0
+    }
+    if(this.stroke==true) {
+      return 1
+    }
+    return this.stroke
+  };
+  n.prototype.getRenderColor=function() {
+    var t=typeof this.backface=="string"&&this.isFacingBack;
+    var e=t?this.backface:this.color;
+    return e
+  };
+  n.prototype.renderPath=function(t,e) {
+    var r=this.getRenderElement(t,e);
+    var i=this.pathCommands.length==2&&this.pathCommands[1].method=="line";
+    var n=!i&&this.closed;
+    var o=this.getRenderColor();
+    e.renderPath(t,r,this.pathCommands,n);
+    e.stroke(t,r,this.stroke,o,this.getLineWidth());
+    e.fill(t,r,this.fill,o);
+    e.end(t,r)
+  };
+  var s="http://www.w3.org/2000/svg";
+  n.prototype.getRenderElement=function(t,e) {
+    if(!e.isSvg) {
+      return
+    }
+    if(!this.svgElement) {
+      this.svgElement=document.createElementNS(s,"path");
+      this.svgElement.setAttribute("stroke-linecap","round");
+      this.svgElement.setAttribute("stroke-linejoin","round")
+    }
+    return this.svgElement
+  };
+  return n
+}
+);

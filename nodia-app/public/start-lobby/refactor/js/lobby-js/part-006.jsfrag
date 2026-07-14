@@ -1,0 +1,220 @@
+  applyWorldHero();
+}
+window.switchWorld = switchWorld;
+window.switchShowcaseGenre = switchShowcaseGenre;
+
+const SETTINGS_SECTION_MODEL = {
+  appearance: {
+    kicker: 'Apariencia',
+    title: 'Configura cómo se ve Nodia',
+    copy: 'Ajusta tema, estilo e intensidad visual para equilibrar inmersión y concentración.',
+    previewTitle: 'Obsidiana narrativo',
+    previewCopy: 'Ideal para sesiones largas: contraste alto, profundidad suave y acentos cálidos.',
+    previewNote: 'Si quieres menos fatiga visual, baja partículas y animaciones pero conserva el contraste del tema.',
+    groups: [
+      {
+        title: 'Tema visual',
+        controls: [
+          selectControl('Tema principal', ['Obsidiana', 'Papel nocturno', 'Archivo dorado', 'Bosque profundo', 'Alto contraste']),
+          selectControl('Estilo de interfaz', ['Cinemático', 'Minimalista', 'Técnico', 'Escritura inmersiva'])
+        ]
+      },
+      {
+        title: 'Intensidad visual',
+        controls: [
+          sliderControl('Blur de interfaz'),
+          sliderControl('Partículas de fondo'),
+          sliderControl('Animaciones'),
+          sliderControl('Profundidad de tarjetas')
+        ]
+      }
+    ]
+  },
+  writing: {
+    kicker: 'Escritura',
+    title: 'Adapta el editor a tu flujo',
+    copy: 'Personaliza lectura, ritmo y enfoque para sesiones largas de escritura.',
+    previewTitle: 'Modo foco editorial',
+    previewCopy: 'Columnas limpias, tipografía estable y señales narrativas sin ruido visual.',
+    previewNote: 'Activa guardado automático corto cuando estás iterando escenas de alto riesgo.',
+    groups: [
+      {
+        title: 'Modo predeterminado',
+        controls: [
+          selectControl('Arranque de escritura', ['Poe', 'Editor limpio', 'Modo enfoque']),
+          selectControl('Fuente del editor', ['DM Sans', 'Inter', 'Literata', 'Source Serif 4'])
+        ]
+      },
+      {
+        title: 'Preferencias activas',
+        controls: [
+          switchControl('Guardado automático'),
+          switchControl('Detección de señales narrativas'),
+          switchControl('Mostrar contador de palabras'),
+          switchControl('Ocultar interfaz al escribir')
+        ]
+      }
+    ]
+  },
+  ia: {
+    kicker: 'IA / Ethyria',
+    title: 'Define cuándo y cómo interviene la IA',
+    copy: 'Controla proactividad, tono de asistencia y límites de seguridad narrativa.',
+    previewTitle: 'Asistencia equilibrada',
+    previewCopy: 'Ethyria sugiere conflictos y ritmo sin reescribir tu voz autoral.',
+    previewNote: 'Puedes forzar modo silencioso para que la IA solo actúe cuando la invoques manualmente.',
+    groups: [
+      {
+        title: 'Comportamiento',
+        controls: [
+          selectControl('Nivel de asistencia', ['Silenciosa', 'Equilibrada', 'Proactiva']),
+          sliderControl('Nivel de intervención')
+        ]
+      },
+      {
+        title: 'Límites',
+        controls: [
+          switchControl('No reescribir sin permiso'),
+          switchControl('No alterar canon'),
+          switchControl('No cambiar nombres'),
+          switchControl('Pedir confirmación para giros mayores')
+        ]
+      }
+    ]
+  },
+  projects: {
+    kicker: 'Proyectos',
+    title: 'Protege y organiza tus mundos',
+    copy: 'Configura apertura, guardado y versionado para evitar pérdida de avance narrativo.',
+    previewTitle: 'Respaldo activo',
+    previewCopy: 'Snapshots automáticos antes de cambios grandes en escenas, nodos y arcos.',
+    previewNote: 'La combinación recomendada: abrir último proyecto + historial de escenas + rollback habilitado.',
+    groups: [
+      {
+        title: 'Inicio y guardado',
+        controls: [
+          selectControl('Al iniciar Nodia', ['Abrir último proyecto', 'Mostrar inicio', 'Preguntar cada vez']),
+          selectControl('Frecuencia de guardado', ['Cada 30 segundos', 'Cada 1 minuto', 'Manual'])
+        ]
+      },
+      {
+        title: 'Versionado',
+        controls: [
+          switchControl('Crear snapshot antes de cambios grandes'),
+          switchControl('Guardar historial de escenas'),
+          switchControl('Permitir rollback')
+        ]
+      }
+    ]
+  },
+  templates: {
+    kicker: 'Plantillas',
+    title: 'Controla cómo se exploran géneros y subgéneros',
+    copy: 'Define orden, contenido visible y nivel de guía para la biblioteca narrativa.',
+    previewTitle: 'Biblioteca guiada',
+    previewCopy: 'Cada plantilla muestra promesa narrativa, subgéneros y advertencias de clichés.',
+    previewNote: 'Activa compatibilidad por formato para ver recomendaciones por novela, cine o videojuego.',
+    groups: [
+      {
+        title: 'Orden y visualización',
+        controls: [
+          selectControl('Mostrar tarjetas por', ['Género', 'Tono', 'Complejidad', 'Uso narrativo']),
+          selectControl('Orden predeterminado', ['Recomendadas', 'Alfabético', 'Últimas usadas', 'Favoritas'])
+        ]
+      },
+      {
+        title: 'Contenido visible',
+        controls: [
+          switchControl('Promesa narrativa'),
+          switchControl('Conflictos recomendados'),
+          switchControl('Riesgos narrativos'),
+          switchControl('Arquetipo visual')
+        ]
+      }
+    ]
+  },
+  nodos: {
+    kicker: 'Nodos y Arco',
+    title: 'Ajusta la lectura de estructura narrativa',
+    copy: 'Elige densidad de mapa, conexión visual y alertas de consistencia.',
+    previewTitle: 'Mapa balanceado',
+    previewCopy: 'Conexiones por conflicto y estado narrativo con prioridad en legibilidad.',
+    previewNote: 'En proyectos grandes, usa densidad compacta y alertas críticas para revisar más rápido.',
+    groups: [
+      {
+        title: 'Vista predeterminada',
+        controls: [
+          selectControl('Modo de visualización', ['Mapa', 'Línea temporal', 'Arcos de personaje', 'Escenas']),
+          selectControl('Colores de nodos', ['Por personaje', 'Por género', 'Por conflicto', 'Por estado narrativo'])
+        ]
+      },
+      {
+        title: 'Alertas',
+        controls: [
+          switchControl('Contradicción narrativa'),
+          switchControl('Escena sin propósito'),
+          switchControl('Personaje sin arco'),
+          switchControl('Conflicto abandonado')
+        ]
+      }
+    ]
+  },
+  privacy: {
+    kicker: 'Privacidad',
+    title: 'Define permisos y control de datos',
+    copy: 'Administra memoria, exportación y permisos de IA para mantener tus historias seguras.',
+    previewTitle: 'Privacidad local',
+    previewCopy: 'Tus proyectos se mantienen locales por defecto y solo sincronizan si lo autorizas.',
+    previewNote: 'Antes de borrar memoria de proyecto, exporta un respaldo para conservar trazabilidad creativa.',
+    groups: [
+      {
+        title: 'Tus historias',
+        controls: [
+          selectControl('Ubicación de datos', ['Local por defecto', 'Sincronización opcional', 'Exportación manual']),
+          switchControl('Permitir análisis del proyecto activo por IA')
+        ]
+      },
+      {
+        title: 'Controles sensibles',
+        controls: [
+          switchControl('Confirmar antes de eliminar proyecto'),
+          switchControl('Confirmar antes de limpiar memoria IA'),
+          switchControl('Registrar historial de exportaciones')
+        ]
+      }
+    ]
+  },
+  integrations: {
+    kicker: 'Integraciones',
+    title: 'Conecta servicios de música, nube e IA externa',
+    copy: 'Activa módulos según tu flujo: ambiente creativo, respaldos y exportación.',
+    previewTitle: 'Módulos disponibles',
+    previewCopy: 'Spotify para sesiones, Google Drive para respaldos y exportación en formatos narrativos.',
+    previewNote: 'Mantén desactivadas integraciones no usadas para reducir ruido y riesgo de permisos innecesarios.',
+    groups: [
+      {
+        title: 'Música y ambiente',
+        controls: [
+          pillControl('Servicios', ['Apple Music', 'Spotify', 'YouTube'])
+        ]
+      },
+      {
+        title: 'Exportación y nube',
+        controls: [
+          pillControl('Formatos', ['PDF', 'Markdown', 'DOCX', 'JSON', 'Final Draft']),
+          pillControl('Nube', ['Google Drive', 'OneDrive', 'Dropbox'])
+        ]
+      }
+    ]
+  },
+  accessibility: {
+    kicker: 'Accesibilidad',
+    title: 'Ajusta legibilidad e interacción sin fricción',
+    copy: 'Optimiza lectura prolongada, navegación y reducción de movimiento.',
+    previewTitle: 'Lectura prolongada',
+    previewCopy: 'Tipografía clara, contraste alto y espaciado estable para sesiones extensas.',
+    previewNote: 'Activa modo sin animaciones si notas fatiga o distracción durante escritura intensa.',
+    groups: [
+      {
+        title: 'Lectura',
+        controls: [

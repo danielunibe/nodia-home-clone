@@ -1,0 +1,220 @@
+    0 10px 20px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.11);
+}
+
+/* ── FINAL OVERRIDES v8.6 (aurora AAA + professional film grain) ── */
+:root {
+  --aurora-intensity: 1;
+  --grain-opacity: 0.045;
+}
+
+.bg-canvas::before {
+  background:
+    radial-gradient(120% 105% at 14% 8%, rgba(255,255,255,0.08) 0%, transparent 36%),
+    radial-gradient(105% 90% at 85% 80%, rgba(255,255,255,0.04) 0%, transparent 52%),
+    radial-gradient(130% 110% at 16% 20%, color-mix(in srgb, var(--genre-bg-deep, rgba(58,123,213,0.72)) 86%, #111 14%) 0%, transparent 62%),
+    radial-gradient(140% 92% at 84% 88%, color-mix(in srgb, var(--genre-bg-vignette, #0f1f31) 82%, #0a0a0f 18%) 0%, transparent 58%),
+    linear-gradient(150deg, color-mix(in srgb, var(--genre-bg-solid, rgb(58,123,213)) 88%, #070809 12%) 0%, color-mix(in srgb, var(--genre-bg-night, #07111d) 88%, #070708 12%) 76%);
+}
+
+.bg-canvas::after {
+  content: '';
+  position: absolute;
+  inset: -2%;
+  pointer-events: none;
+  background:
+    radial-gradient(90% 66% at 50% 102%, rgba(0,0,0,0.52) 0%, transparent 64%),
+    radial-gradient(88% 80% at 50% -6%, rgba(255,255,255,0.055) 0%, transparent 70%);
+  mix-blend-mode: soft-light;
+  opacity: 0.85;
+}
+
+.aurora-field {
+  inset: -16%;
+  filter: blur(44px) saturate(1.24) contrast(1.05);
+  mix-blend-mode: screen;
+  opacity: calc(0.57 * var(--aurora-intensity));
+}
+
+.aurora-band {
+  width: 78vw;
+  height: 54vh;
+}
+
+.aurora-band-a {
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(124, 114, 240, 0.48) 0%, rgba(85, 205, 255, 0.2) 34%, transparent 74%);
+  animation: aurora-cinematic-a 20s ease-in-out infinite alternate;
+}
+
+.aurora-band-b {
+  background:
+    radial-gradient(ellipse at 50% 48%, rgba(96, 186, 255, 0.38) 0%, rgba(58, 124, 236, 0.16) 38%, transparent 76%);
+  animation: aurora-cinematic-b 24s ease-in-out infinite alternate;
+}
+
+.aurora-band-c {
+  background:
+    radial-gradient(ellipse at 50% 52%, rgba(120, 234, 212, 0.25) 0%, rgba(72, 128, 255, 0.13) 36%, transparent 76%);
+  animation: aurora-cinematic-c 22s ease-in-out infinite alternate;
+}
+
+.stars {
+  opacity: 0.24;
+  filter: blur(0.1px);
+  animation: stars-drift 34s linear infinite, stars-twinkle 11s ease-in-out infinite alternate;
+}
+
+.noise {
+  opacity: var(--grain-opacity);
+  mix-blend-mode: overlay;
+  filter: grayscale(1) contrast(1.05);
+  background: url('../home_assets/noise.png');
+  background-size: 280px 280px;
+  background-position: center;
+  animation: grain-float 16s steps(8) infinite;
+}
+
+.noise::before {
+  content: '';
+  position: absolute;
+  inset: -8%;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: soft-light;
+  background-image:
+    radial-gradient(rgba(255,255,255,0.22) 0.6px, transparent 1px),
+    radial-gradient(rgba(0,0,0,0.15) 0.55px, transparent 1px);
+  background-size: 5px 5px, 6px 6px;
+  background-position: 0 0, 2px 1px;
+  animation: grain-shift 14s steps(8) infinite;
+}
+
+.particles-canvas {
+  opacity: 0.66;
+  filter: blur(0.12px) saturate(1.08);
+}
+
+@keyframes aurora-cinematic-a {
+  0% { transform: translate3d(-10vw, 2vh, 0) rotate(-8deg) scale(0.96); opacity: 0.45; }
+  100% { transform: translate3d(10vw, -4vh, 0) rotate(5deg) scale(1.16); opacity: 0.72; }
+}
+
+@keyframes aurora-cinematic-b {
+  0% { transform: translate3d(8vw, 2vh, 0) rotate(6deg) scale(0.94); opacity: 0.4; }
+  100% { transform: translate3d(-10vw, -3vh, 0) rotate(-5deg) scale(1.18); opacity: 0.7; }
+}
+
+@keyframes aurora-cinematic-c {
+  0% { transform: translate3d(0vw, 3vh, 0) rotate(-2deg) scale(0.92); opacity: 0.32; }
+  100% { transform: translate3d(9vw, -2vh, 0) rotate(4deg) scale(1.14); opacity: 0.6; }
+}
+
+@keyframes stars-twinkle {
+  0% { opacity: 0.18; }
+  100% { opacity: 0.28; }
+}
+
+@keyframes grain-float {
+  0% { transform: translate3d(0, 0, 0); }
+  25% { transform: translate3d(-0.55%, 0.35%, 0); }
+  50% { transform: translate3d(0.4%, -0.45%, 0); }
+  75% { transform: translate3d(-0.3%, -0.25%, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes grain-shift {
+  0% { transform: translate3d(0, 0, 0); }
+  33% { transform: translate3d(0.45%, -0.35%, 0); }
+  66% { transform: translate3d(-0.4%, 0.32%, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-band-a,
+  .aurora-band-b,
+  .aurora-band-c,
+  .stars,
+  .noise,
+  .noise::before {
+    animation: none !important;
+  }
+}
+
+/* ── FINAL OVERRIDES v8.8 (system minimize/close controls) ── */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1.05vh;
+}
+
+.system-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5vh;
+}
+
+.sys-btn {
+  width: 3.15vh;
+  height: 3.15vh;
+  border-radius: 0.72vh;
+  border: 1px solid rgba(255,255,255,0.16);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02)),
+    rgba(8, 12, 20, 0.72);
+  color: rgba(236,243,255,0.9);
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+  box-shadow:
+    0 8px 16px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+.sys-btn svg {
+  width: 1.45vh;
+  height: 1.45vh;
+}
+
+.sys-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,0.3);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04)),
+    rgba(11, 17, 28, 0.86);
+}
+
+.sys-minimize:hover {
+  box-shadow:
+    0 10px 20px rgba(0,0,0,0.32),
+    0 0 18px rgba(113, 173, 255, 0.26),
+    inset 0 1px 0 rgba(255,255,255,0.14);
+}
+
+.sys-close:hover {
+  border-color: rgba(255, 120, 120, 0.56);
+  color: rgba(255,224,224,0.95);
+  box-shadow:
+    0 10px 20px rgba(0,0,0,0.32),
+    0 0 18px rgba(255, 92, 92, 0.28),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+/* ── FINAL OVERRIDES v8.9 (Plantillas: clarity + hierarchy) ── */
+#view-templates .templates-breadcrumb {
+  margin: 0 0 0.55vh;
+  font-size: 0.9vh;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgba(216, 226, 245, 0.64);
+}
+
+#view-templates .view-header {
+  margin-bottom: 0.55vh;
+}
+
+#view-templates .view-title {
+  font-size: clamp(5.2vh, 6.2vh, 7.6vh) !important;
+  line-height: 0.95 !important;
+}

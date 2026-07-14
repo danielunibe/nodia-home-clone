@@ -1,0 +1,220 @@
+    to top,
+    rgba(6, 6, 14, 0.97) 0%,
+    rgba(6, 6, 14, 0.92) 40%,
+    rgba(6, 6, 14, 0.72) 66%,
+    transparent 100%
+  );
+}
+
+.profile-identity {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.2vh;
+}
+
+.profile-name-wrap {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.78vh;
+}
+
+.profile-name {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: 2.55vh;
+  line-height: 1;
+  color: #F5F5F0;
+}
+
+.profile-age {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: 2.05vh;
+  color: rgba(245, 245, 240, 0.62);
+}
+
+.profile-seal {
+  width: 4.2vh;
+  height: 4.2vh;
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.72);
+  opacity: 0.7;
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--genre-dominant, #C5A367) 44%, transparent));
+}
+
+.profile-seal svg {
+  width: 100%;
+  height: 100%;
+}
+
+.profile-genre {
+  font-size: 1vh;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--genre-dominant, #C5A367) 78%, #ffffff 22%);
+}
+
+.profile-subgenres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.42vh;
+}
+
+.profile-subgenre-tag {
+  padding: 0.36vh 0.9vh;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(250, 252, 255, 0.82);
+  font-size: 0.86vh;
+  letter-spacing: 0.04em;
+}
+
+.profile-divider {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255,255,255,0.16) 30%,
+    rgba(255,255,255,0.16) 70%,
+    transparent
+  );
+}
+
+.profile-bio {
+  margin: 0;
+  color: rgba(245, 245, 240, 0.86);
+  font-size: 1.2vh;
+  line-height: 1.52;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.profile-bio.expanded {
+  -webkit-line-clamp: unset;
+}
+
+.profile-bio-expand {
+  border: none;
+  background: none;
+  color: color-mix(in srgb, var(--genre-dominant, #C5A367) 74%, #ffffff 26%);
+  font-size: 0.9vh;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0;
+  justify-self: start;
+  opacity: 0.84;
+}
+
+.profile-bio-expand:hover { opacity: 1; }
+
+.profile-tones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.46vh;
+}
+
+.profile-tone-chip {
+  font-size: 0.82vh;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.56);
+  padding: 0.26vh 0.64vh;
+  border-radius: 0.4vh;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.swipe-label-match,
+.swipe-label-nope {
+  position: absolute;
+  top: 2.2vh;
+  z-index: 24;
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: 2.2vh;
+  letter-spacing: 0.08em;
+  border: 0.3vh solid;
+  border-radius: 0.52vh;
+  padding: 0.2vh 1.1vh;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.08s linear;
+}
+
+.swipe-label-match {
+  left: 2.2vh;
+  color: #34C759;
+  border-color: #34C759;
+  transform: rotate(-12deg);
+}
+
+.swipe-label-nope {
+  right: 2.2vh;
+  color: #FF3B30;
+  border-color: #FF3B30;
+  transform: rotate(12deg);
+}
+
+.tinder-overlay .genre-card.swiping-right::after,
+.tinder-overlay .genre-card.swiping-left::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 2.2vh;
+  pointer-events: none;
+  z-index: 12;
+}
+
+.tinder-overlay .genre-card.swiping-right::after {
+  border: 2px solid rgba(52, 199, 89, 0.62);
+  background: linear-gradient(135deg, rgba(52, 199, 89, 0.24), transparent 62%);
+}
+
+.tinder-overlay .genre-card.swiping-left::after {
+  border: 2px solid rgba(255, 59, 48, 0.62);
+  background: linear-gradient(225deg, rgba(255, 59, 48, 0.24), transparent 62%);
+}
+
+.tinder-controls {
+  width: 100%;
+  gap: 2.8vh !important;
+  padding: 1.6vh 0 0.7vh !important;
+  position: relative;
+}
+
+.tinder-btn {
+  position: relative;
+}
+
+.btn-undo {
+  width: 5.1vh !important;
+  height: 5.1vh !important;
+  border: 1px solid rgba(255, 255, 255, 0.24) !important;
+  color: rgba(255, 255, 255, 0.64) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.btn-undo svg {
+  width: 2.3vh;
+  height: 2.3vh;
+}
+
+.btn-undo:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-pass {
+  width: 6.9vh !important;
+  height: 6.9vh !important;
+}
+
+.btn-match {
+  width: 8.2vh !important;
+  height: 8.2vh !important;
+}
+
